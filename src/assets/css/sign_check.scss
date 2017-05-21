@@ -1,0 +1,518 @@
+/* Scss Document */
+html,body,#app{
+  height:100%;
+  position: relative;
+  margin: 0;
+  padding:0;
+}
+a{
+  text-decoration: none;
+}
+a:link{
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: none;
+}
+a:visited{text-decoration: none;}
+a:active{text-decoration: none;}
+//a:link {} /* 未访问的链接 */
+//a:visited {background: none !important;} /* 已访问的链接 */
+//a:hover {background: none !important;} /* 当有鼠标悬停在链接上 */
+//a:active {background: none !important;} /* 被选择的链接 */
+.main_container{
+  height:100%;
+  background: $pink ;
+}
+
+.router-link-active{
+  color: $pink;
+}
+/*顶部*/
+.top_nav{
+  display: block;
+  margin-left: 170px;
+  .nav_menu{
+    height:49px;
+    border-bottom:1px #D3D7DA solid;
+    background: #f6f6f6;
+    width:100%;
+    p{
+      line-height:49px;
+      padding-left:30px;
+    }
+    &>div{
+      padding-right:30px;
+      margin-top:8px;
+      a{
+        padding:4px 15px;
+        background: $pink;
+        color: $white;
+        border-radius:20px;
+       // @include prefixer(border-radius,20px);
+        &:hover{
+          background: $pink !important;
+        }
+      }
+    }
+  }
+}
+
+/*公共样式*/
+.btn-default{
+  width: 150px;
+  height: 33px;
+  line-height: 33px;
+  text-align: center;
+  color: #4b4b4b;
+  border-radius:4px;
+  text-indent: 0;
+  background: $white;
+  border:1px #dedede solid;
+  display: inline-block;
+}
+.btn-pink{
+  background:$pink;
+  color: $white;
+  border:1px $pink solid;
+}
+/*右侧*/
+.right_col{
+  padding: 25px 30px 100px;
+  margin-left: 170px;
+  background: $gray2;
+  .panel-box{
+    h3{
+      height:45px;
+      line-height:45px;
+      text-indent:25px;
+      font-size:14px;
+      border-bottom:1px $gray3 solid;
+    }
+    margin-bottom:30px;
+    .panel-contain{
+      padding:50px;
+    }
+  }
+  .panel-white{
+    background: $white;
+    &.pb180{
+      padding-bottom:180px;
+    }
+    &.pb50{
+      padding-bottom:50px;
+    }
+    .panel-upload{
+      min-height:390px;
+      background: url($URL+'sign_light.jpg') center top no-repeat;
+      background-size:auto 390px;
+      text-align: center;
+      //@include prefixer(background-size,auto 390px);
+      img{
+        display: block;
+        width:210px;
+        margin:0 auto;
+        padding-top:140px;
+      }
+      .upload-btn{
+        position: relative;
+        width:130px;
+        font-size: 14px;
+        height:40px;
+        line-height:40px;
+        text-align: center;
+        background: $white;
+        border:1px #ccc solid;
+        //@include prefixer(border-radius,4px);
+        border-radius:4px;
+        display: block;
+        margin:80px auto 0;
+        color: #000;
+
+        &:hover{
+          background: $white;
+          color: $pink;
+        }
+        input{
+          display: block;
+          width:100%;
+          height:100%;
+          position: absolute;
+          top:0;
+          left:0;
+          opacity:0;
+          cursor: pointer;
+        }
+      }
+      .warn{
+        padding:20px 0 80px;
+        i,span{
+          color: $pink;
+        }
+      }
+      .upload-tip{
+        width:576px;
+        height:72px;
+        margin:0 auto;
+        background: url($URL+"sign_line.png") no-repeat;
+       // @include prefixer(background-size,100% 100%);
+       background-size:100% 100%;
+        p{
+          line-height:82px;
+          color: $white;
+        }
+      }
+    }
+
+    .panel-img{
+      width:204px;
+      height:204px;
+      margin:0 auto;
+      display: block;
+      text-align: center;
+      border:1px $gray2 solid;
+      //display: table-cell;
+      vertical-align: middle;
+      img{
+        max-width: 100%;
+        max-height: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        margin: 0 auto;
+      }
+    }
+    .panel-success{
+      text-align: center;
+      .icon-check-default{
+        font-size:90px;
+        color: #8AC249;
+      }
+      .panel-false{
+        .warn{
+          line-height:60px;
+        }
+      }
+      .icon-close2{
+        color: $pink;
+        font-size: 90px;
+      }
+      h4{
+        font-size:16px;
+        font-weight:bold;
+      }
+      .panel-square{
+        padding:50px 0;
+        border:1px $border solid;
+        text-align: left;
+        position: relative;
+        float: none;
+        ul{
+          width:100%;
+          li{
+            display: block;
+            line-height:35px;
+            span:nth-child(1){
+              text-indent: 25px;
+            }
+          }
+        }
+        .float-box{
+          background: $white;
+          position: absolute;
+          padding:0 15px;
+          height:35px;
+          line-height:35px;
+          top:-16px;
+          left:50%;
+          //@include prefixer(transform,translatex(-50%));
+          transform: translatex(-50%);
+          span{
+           // @include prefixer(border-radius,100%);
+           border-radius:100%;
+            background: #8AC249;
+            color: $white;
+            display: inline-block;
+            width:20px;
+            height:20px;
+            line-height:20px;
+            text-align: center;
+            margin:0 5px;
+            border-box:box-sizing;
+          }
+        }
+      }
+      #contain-btn{
+        width:120px;
+        height: 40px;
+        line-height:40px;
+        display: block;
+        margin:50px auto;
+        border:1px $border solid;
+        //@include  prefixer(border-radius,4px);
+        border-radius:4px;
+        color: $black;
+        font-weight:bold;
+      }
+    }
+  }
+}
+$border2:#dedede;
+//签署次数
+.statistics_count{
+  .panel-box{
+    .search{
+      padding:10px;
+      .search-box{
+        padding:10px;
+        background: $gray3;
+        line-height: 30px;
+        span{
+          display: block;
+          height: 30px;
+          line-height: 30px;
+          float: left;
+
+          &.input{
+            width: 40%;
+            border:1px $border2 solid;
+            border-radius:4px;
+            background:#fff;
+          }
+          &.txt{
+            width: 10%;
+            text-align:center;
+          }
+        }
+        input{
+          width: 100%;
+          height:30px;
+          line-height:30px;
+          background: #fff;
+          border:1px $border2 solid;
+          border-radius:4px;
+          text-indent: 10px;
+        }
+        .btn-box{
+          a{
+            width: 40%;
+            max-width: 60px;
+            margin-left:5%;
+            display: inline-block;
+            text-align: center;
+            border-radius:4px;
+            border:1px $border2 solid;
+            background:#fff;
+            color: $black;
+            &.search-btn{
+              background:$pink;
+              color: $white;
+              border:1px $pink solid;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .panel-box{
+    .title{
+      color: #bdbdbd;
+      height: 55px;
+      line-height: 55px;
+      border-bottom:1px #e6e7ed solid;
+      position:relative;
+      font-weight: normal;
+      a{
+        width: 110px;
+        display: block;
+        float:right;
+        margin: 10px 10px 0 0;
+      }
+    }
+    .table{
+      //padding:0 10px;
+
+      li{
+        &.title{
+          background:#f6f8fc;
+          height: 45px;
+          line-height: 45px;
+          padding: 0 2%;
+          width: 96%;
+          font-weight: normal;
+          span{
+            color: #a3a3a3;
+          }
+        }
+        width: 96%;
+        height: 55px;
+        margin: 0 auto;
+        line-height: 55px;
+        border-bottom:1px #e6e7ed solid;
+        span{
+          width: 50%;
+          float: left;
+          //text-indent: 20px;
+          color: $black;
+        }
+        &:last-child{
+          border-bottom:none;
+          span{
+            color:#bdbdbd;
+          }
+        }
+      }
+    }
+  }
+}
+
+.statistics_detail{
+  .panel-box{
+    .search{
+      padding:10px;
+      .search-box{
+        padding:10px;
+        background: $gray3;
+        line-height: 30px;
+        input{
+          width: 40%;
+          text-indent: 10px;
+          height: 35px;
+          border:1px #dedede solid;
+          border-radius:4px;
+          line-height: 35px;
+        }
+        a{
+          height: 33px;
+          line-height: 33px;
+          margin-left: 15px;
+          width: 100px;
+        }
+      }
+    }
+    .table{
+      li{
+        &.title{
+          padding: 0 2%;
+          width: 96%;
+        }
+        span{
+          width: 14%;
+          padding-right:2%;
+          float: left;
+          //text-indent: 20px;
+          color: $black;
+          word-break:keep-all;/* 不换行 */
+          white-space:nowrap;/* 不换行 */
+          overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+          text-overflow:ellipsis;
+        }
+      }
+    }
+  }
+}
+.file{
+	
+	.right_col{
+	position:relative;
+	}
+	.file-left{
+		background:#fff;
+		width:280px;
+		position:absolute;
+		left:30px;
+		top:25px;
+		.file-edit{
+			height:45px;
+			line-height:45px;
+			background:$pink;
+			color:#fff;
+			padding:0 10px;
+			.file-icon-box{
+				position:absolute;
+				height:25px;
+				line-height:25px;
+				position:absolute;
+				right:10px;
+				top:10px;
+				span{
+					text-align:center;
+					margin:0 2.5px;
+					width:25px;
+					height:25px;
+					line-height:25px;
+					display:inline-block;
+					cursor:pointer;
+					&:hover,.active{
+						background:red;
+						border-radius:4px;
+					}
+				}
+			}
+		}
+		.search{
+			padding:10px;
+			position:relative;
+			input{
+				width:100%;
+				display:block;
+				height:35px;
+				line-height:35px;
+				border:1px $border2 solid;
+				border-radius:4px;
+				text-indent:35px;
+			}
+			span{
+				position:absolute;
+				display:block;
+				top:18px;
+				font-size:18px;
+				width:25px;
+				height:25px;
+				left:15px;
+				text-align:center;
+				color:#979797;
+			}
+		}
+		.contract-list{
+		padding-bottom:10px;
+		height:800px;
+		height:800px;
+			li{
+				padding:0 25px;
+				height:35px;
+				line-height:35px;
+				cursor:pointer;
+				span{
+					margin-right:15px;
+				
+				}
+				&:hover,&.active{
+				background:#FFEBE9;
+				}
+			}
+		}
+	}
+	.file-right{
+		padding:0 0 0 310px;
+	}
+}
+@media (max-width:992px) {
+  .statistics_count .panel-box .search .search-box{
+    div{
+          margin-bottom:10px;
+        }
+  }
+}
+
+.pr{
+  position:relative;
+}
+.page-box{
+  position:absolute;
+  right: 0px;
+  top:10px;
+  height: 34px;
+  line-height: 34px;
+}
+
