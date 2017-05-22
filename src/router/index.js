@@ -43,14 +43,9 @@ export default new Router({
       component: statistics_count
     },
     {
-      path: '/statistics_detail',
+      path: '/statistics_detail/:displayName/:startTime/:endTime',
       name: 'statistics_detail',
       component: statistics_detail
     }
-   /* {
-      path: '/',
-      name: 'statistics_count',
-      component: statistics_count
-    }*/
   ]
 })

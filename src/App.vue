@@ -3,6 +3,7 @@
     <!-- <img src="./assets/logo.png"> -->
     <div class="main_container">
       <menuBar></menuBar>
+      <menuTop></menuTop>
       <router-view></router-view>	  
     </div>
   </div>
@@ -10,6 +11,7 @@
 
 <script>
 import menuBar from './components/menu_left';
+import menuTop from './components/nav_top';
 export default {
   name: 'app',
   data(){
@@ -17,7 +19,8 @@ export default {
 	}
   },
   components:{
-      menuBar:menuBar
+      menuBar:menuBar,
+      menuTop:menuTop
   },
   
   methods:{

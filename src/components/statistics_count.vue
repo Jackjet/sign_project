@@ -8,35 +8,39 @@
                 <div class="row clf">
                   <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">签约时间</div>
                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <span class="input"><calendar @changeDate="changeDate"></calendar></span>
+                    <span class="input"><calendar @changeDate="changeStartDate"></calendar></span>
                     <span class="txt">至</span>
-                    <span class="input"><calendar @changeDate="changeDate"></calendar></span>
+                    <span class="input"><calendar @changeDate="changeEndDate"></calendar></span>
                   </div>
-                  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" name="" placeholder="关键字：企业名称"></div>
-                  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 btn-box"><a href="#" class="search-btn">查询</a><a href="#">清空</a></div>
+                  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <input v-model="statisticsParms.displayName" type="text" name="" placeholder="关键字：企业名称" @keyup.enter="searchHandle(statisticsParms.displayName)">
+                    </div>
+                  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 btn-box">
+                    <a href="javascript:;" class="search-btn" @click="searchHandle(statisticsParms.displayName)">查询</a>
+                    <a href="javascript:;" @click="deleteHandle" >清空</a>
+                    </div>
                 </div>
               </div>
           </div>
       </div>
-      <div class="panel-box panel-white">
-        <h3 class="title">统计时间：2017.05.19 13:00 <a class="btn-default btn-pink" href="#">导出Excel</a></h3>
+      <div class="panel-box panel-white"  v-cloak>
+        <h3 class="title">统计时间：2017.05.19 13:00 <a class="btn-default btn-pink" href="javascript:;" @click="exportData()">导出Excel</a></h3>
         <div class="table">
           <li class="title">
             <span>企业名称</span>
             <span>签约次数（次/企业）</span>
           </li>
-          <li>
-            <span>广东信签科技信息有限公司</span>
-            <span>10000</span>
+          <li v-for="item in statisticsList" class="li-class">
+            <span>{{item.displayName}}</span>
+            <span @click="jumpTo(item.displayName)">{{item.signCount}}</span>
+            <i></i>
           </li>
-          <li>
-            <span>广东信签科技信息有限公司</span>
-            <span>10000</span>
+          <li v-show="statisticsList.length == 0" v-text="'暂无数据'">
           </li>
           <li class="pr">
-            <span>共324条记录</span>
+            <span>共{{pageData.total}}条记录/当前页为第{{statisticsParms.pageIndex}}页</span>
             <div class="page-box">
-               <pagination :total="pageData.total" :currentpage="pageData.currentpage" :display="pageData.display"  @pagechange="pageChangeHandel"></pagination>
+               <pagination  :total="pageData.total" :currentpage="statisticsParms.pageIndex" :display="statisticsParms.pageLength"  @pagechange="pageChangeHandel"></pagination>
             </div>
           </li>
         </div>
@@ -56,43 +60,89 @@ export default {
   },
   data () {
     return {
-		tableData:{},
-		pageData:{
-			total: 81,      //总条数
-			display: 15,    //每页条数
-			currentpage: 1  //当前页数	
-		},
-		show:false,
-		type:"date", //date datetime
-		value:"2015-12-11",
-		begin:"2015-12-20",
-		end:"2015-12-25",
-		x:0,
-		y:0,
-		range:true//是否多选
+  		pageData:{           //翻页配置
+  			total: 0,          //总条数
+  			//display: 1,      //每页条数
+  			//currentpage: 1   //当前页数	
+  		},
+      searchTitle:"",      //查询中间变量，避免多次请求数据库
+      statisticsParms:{    //统计接口参数
+        startTime:"",
+        endTime:"",
+        displayName:"",
+        pageIndex:1,  
+        pageLength:5
+      },
+      statisticsList:[]    //统计接口返回参数列表
     }
   },
   methods:{
     getData(){
-      this.httpGet('cus/account/getCurAccount',function(response){
-        console.log(response)
+      var _this = this;
+      this.httpGet('doc/documentInfo/signStatistics',{
+        signStartDate:_this.statisticsParms.startTime,
+        signEndDate:_this.statisticsParms.endTime,
+        displayName:_this.statisticsParms.displayName,
+        pageIndex:(_this.statisticsParms.pageIndex),
+        pageLength:_this.statisticsParms.pageLength
+      },function(response){
+        var result = response.data;
+        if(result.meta.success){
+            _this.statisticsList = result.data.list;
+            _this.pageData.total = result.data.totalCount;
+        }
       },function(response){
         console.log(response);
       })
     },
-	pageChangeHandel(currentNum){  //侦听翻页函数
-		console.log("我被翻页了，页码是："+currentNum);
-	},
-	change:function(propName,newVal,oldVal){
-		this[propName]=newVal;
-			console.log("组件tab的" +propName+ "属性变更为" +newVal);
-	},
-	changeDate(value){
-		console.log("子组件修改了日期，值为："+value)	
-	}
+    exportData(){  //导出接口
+      console.log(this.apiPath)
+      window.open(this.apiPath+"doc/documentInfo/exportSignStatistics?signStartDate="+this.statisticsParms.startTime+"&signEndDate="+this.statisticsParms.endTime+"&pageIndex="+this.statisticsParms.pageIndex+"&pageLength="+this.statisticsParms.pageLength);      
+    },
+  	pageChangeHandel(currentNum){  //侦听翻页函数
+  		//console.log("我被翻页了，页码是："+currentNum);
+      this.statisticsParms.pageIndex = currentNum;
+      this.getData();
+  	},
+  	changeStartDate(value){
+      this.statisticsParms.startTime=value
+  	},
+    changeEndDate(value){
+      this.statisticsParms.endTime = value;
+    },
+    searchHandle(title){ 
+      /*if(this.searchTitle == title && title != ""){
+          return;
+      }*/
+      this.getData();
+      //this.searchTitle = title;
+    },
+    deleteHandle(){
+      this.statisticsParms.displayName = "";
+      this.getData();
+      /*this.statisticsParms.startTime="";
+      this.statisticsParms.endTime="";*/
+    },
+    jumpTo(item){
+      console.log(item)
+      this.$router.push({ 
+        name: 'statistics_detail', 
+        params: { 
+          "displayName": item,
+          "startTime":this.statisticsParms.startTime,
+          "endTime":this.statisticsParms.endTime
+        }
+      })
+    },
+    getNowDate(){
+        this.statisticsParms.startTime = this.getDataFn().formatwdate;
+        this.statisticsParms.endTime = this.getDataFn().currentdate;
+    }
   },
   mounted(){
-    //this.getData();
+   
+    this.getNowDate();
+    this.getData();
   }
 }
 </script>

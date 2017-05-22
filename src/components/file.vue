@@ -22,7 +22,7 @@
 		</div>
 		<div class="file-right">
 			<div class="panel-box panel-white">
-			  <h3>查询</h3>
+			  <h3>经销商合同</h3>
 			  <div class="search clf">
 				  <div class="search-box clf">
 					<div class="row clf">
@@ -38,6 +38,33 @@
 				  </div>
 			  </div>
 		  </div>
+          <div class="panel-box panel-white">
+            <div class="table">
+              <li class="title">
+                <span>名称</span>
+                <span>签署方</span>
+                <span>发送时间</span>
+                <span>完成时间</span>
+                <span>状态</span>
+                <span>操作</span>                
+              </li>
+              <li class="li-class">
+                <span>704562587@qq.com</span>
+                <span>1020020155555</span>
+                <span>电脑采购采购草孤傲的骄傲是</span>
+                <span>1000</span>
+                <span>数安时代</span>
+                <span>签约时间</span>
+                <i class="line"></i>
+              </li>
+              <li class="pr">
+                <span>共324条记录</span>
+                <div class="page-box" >
+                   <pagination :total="10" :currentpage="1" :display="5"  @pagechange="pageChangeHandel"></pagination>
+                </div>
+              </li>
+            </div>
+          </div>
 		</div>
     </div>
   </div>
@@ -52,21 +79,13 @@ export default {
   },
   data () {
     return {
-		show:false,
-		type:"date", //date datetime
-		value:"2015-12-11",
-		begin:"2015-12-20",
-		end:"2015-12-25",
-		x:0,
-		y:0,
-		range:true,//是否多选
-      msg: 'Welcome to Your Vue.js App',
-	  contractList:["a","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf"]
+        dirList:[],        
+	    contractList:["a","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf"]
     }
   },
   methods:{
-    getData(){
-      this.httpGet('cus/account/getCurAccount',function(response){
+    getdirListData(){
+      this.httpGet('doc/archiveDir/searchArchiveDirList',{},function(response){
         console.log(response)
       },function(response){
         console.log(response);
@@ -80,7 +99,7 @@ export default {
 	}
   },
   mounted(){
-    //this.getData();
+    this.getdirListData();
   }
 }
 </script>

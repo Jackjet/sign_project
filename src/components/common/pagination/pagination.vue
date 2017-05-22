@@ -1,5 +1,5 @@
 <template>
-	<div class="pagination-box">
+	<div class="pagination-box" v-show="page > 1">
 		<ul class="pagination">
 			<li :class="{'disabled': current == 1}"><a href="javascript:;" @click="setCurrent(1)"> 首页 </a></li>
 			<li :class="{'disabled': current == 1}"><a href="javascript:;" @click="setCurrent(current - 1)"> 上一页 </a></li> 
@@ -75,7 +75,6 @@ export default {
 				(this.current > count + 1) && list.unshift({ text:'...',val: list[0].val - 1 });
 				(this.current < this.page - count) && list.push({ text:'...',val: list[list.length - 1].val + 1 });
 			}
-			console.log(list)
 			return list;
 		}
 	},

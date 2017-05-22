@@ -1,4 +1,7 @@
 /* Scss Document */
+[v-cloak] {
+  display: none;
+}
 html,body,#app{
   height:100%;
   position: relative;
@@ -78,7 +81,7 @@ a:active{text-decoration: none;}
 }
 /*右侧*/
 .right_col{
-  padding: 25px 30px 100px;
+  padding: 75px 30px 100px;
   margin-left: 170px;
   background: $gray2;
   .panel-box{
@@ -337,23 +340,39 @@ $border2:#dedede;
           background:#f6f8fc;
           height: 45px;
           line-height: 45px;
-          padding: 0 2%;
-          width: 96%;
+          padding: 0;
+          width: 100%;
           font-weight: normal;
           span{
             color: #a3a3a3;
+
           }
         }
-        width: 96%;
+        width: 100%;
         height: 55px;
         margin: 0 auto;
         line-height: 55px;
         border-bottom:1px #e6e7ed solid;
+        position:relative;
+        i{
+          display: block;
+          height: 55px;
+          width: 4px;
+          background:$white;
+          left:0;
+          top:0;
+          position:absolute;
+        }
         span{
-          width: 50%;
+          width: 47.5%;
           float: left;
+          padding-left:2.5%;
           //text-indent: 20px;
           color: $black;
+          &:nth-child(2){
+            cursor: pointer;
+          }
+          
         }
         &:last-child{
           border-bottom:none;
@@ -361,6 +380,13 @@ $border2:#dedede;
             color:#bdbdbd;
           }
         }
+        &.li-class:hover{
+          background:$gray2;
+          i{
+            background:$pink;
+          }
+        }
+        
       }
     }
   }
@@ -393,12 +419,12 @@ $border2:#dedede;
     .table{
       li{
         &.title{
-          padding: 0 2%;
-          width: 96%;
+          padding:0;
+          width: 100%;
         }
         span{
           width: 14%;
-          padding-right:2%;
+          padding-left:2%;
           float: left;
           //text-indent: 20px;
           color: $black;
@@ -418,10 +444,10 @@ $border2:#dedede;
 	}
 	.file-left{
 		background:#fff;
-		width:280px;
+		width:250px;
 		position:absolute;
 		left:30px;
-		top:25px;
+		top:75px;
 		.file-edit{
 			height:45px;
 			line-height:45px;
@@ -494,7 +520,42 @@ $border2:#dedede;
 		}
 	}
 	.file-right{
-		padding:0 0 0 310px;
+		padding:0 0 0 280px;
+    .table{
+      li{
+        position:relative;
+        &.title{
+           padding:0;
+          width: 100%;
+        }
+        i{
+          display: block;
+          height: 55px;
+          width: 4px;
+          background:$white;
+          left:0;
+          top:0;
+          position:absolute;
+        }
+        span{
+          width: 14%;
+          padding-left:2%;
+          float: left;
+          //text-indent: 20px;
+          color: $black;
+          word-break:keep-all;/* 不换行 */
+          white-space:nowrap;/* 不换行 */
+          overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+          text-overflow:ellipsis;
+        }
+        &.li-class:hover{
+          background:$gray2;
+          i{
+            background:$pink;
+          }
+        }
+      }
+    }
 	}
 }
 @media (max-width:992px) {
@@ -503,6 +564,9 @@ $border2:#dedede;
           margin-bottom:10px;
         }
   }
+  .main_container .right_col{
+    margin-left:0;
+  }
 }
 
 .pr{
@@ -510,7 +574,7 @@ $border2:#dedede;
 }
 .page-box{
   position:absolute;
-  right: 0px;
+  right: 15px;
   top:10px;
   height: 34px;
   line-height: 34px;

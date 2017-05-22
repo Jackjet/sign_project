@@ -105,7 +105,7 @@ export default {
   methods:{
     getData(){
       var That = this;
-      this.httpGet('/cus/account/getCurAccount',{},function(response){
+      this.httpGet('cus/account/getCurAccount',{},function(response){
         var result = response.data;
         if(result.meta.success){
           That.msg = result.data;
@@ -154,6 +154,7 @@ export default {
   background: #2A3137;
   left:0;
   position: fixed;
+  z-index: 10;
   .nav_title{
     background: #2A3137;
     width: 170px;
@@ -285,6 +286,11 @@ export default {
         background: $pink !important;
       }
     }
+  }
+}
+@media (max-width:992px) {
+  .main_container #divSidebarMenu{
+    display: none !important;
   }
 }
 </style>

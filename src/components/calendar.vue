@@ -3,8 +3,9 @@
         <div class='input-wrapper' v-show='showInput'>
             <!--<i class='date-icon' :style='setIconUrl'></i>-->
             <div class='input' v-text='value' :style='{width: inputWidth}' @click='togglePanel = !togglePanel'></div>
-            <span class='input-clear' v-show="value" @click='clearValue'></span>
-            <span class='input-icon icon-calendar' v-show="!value" @click='togglePanel = !togglePanel'></span>
+           <!--  <span class='input-clear' v-show="value" @click='clearValue'></span> -->
+            <!-- <span class='input-icon icon-calendar' v-show="!value" @click='togglePanel = !togglePanel'></span> -->
+            <span class='input-icon icon-calendar' @click='togglePanel = !togglePanel'></span>
         </div>
         <transition name='toggle'>
             <div class='pannel-wrapper' :style='themePannelBg' v-show='togglePanel'>
@@ -479,7 +480,6 @@
             //     }
             // },
             inputWidth() {
-                console.log(this.inputwidth)
                 return /(?:px|%|vh|vw|vmin|vmax)/.test(this.inputwidth) ? this.inputwidth : '';
             },
             themePannelBg() {
