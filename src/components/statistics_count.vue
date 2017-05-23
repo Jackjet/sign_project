@@ -32,10 +32,10 @@
           </li>
           <li v-for="item in statisticsList" class="li-class">
             <span>{{item.displayName}}</span>
-            <span @click="jumpTo(item.displayName)">{{item.signCount}}</span>
+            <span @click="jumpTo(item.companyId)">{{item.signCount}}</span>
             <i></i>
           </li>
-          <li v-show="statisticsList.length == 0" v-text="'暂无数据'">
+          <li class="no-message" v-show="statisticsList.length == 0" v-text="'暂无数据'">
           </li>
           <li class="pr">
             <span>共{{pageData.total}}条记录/当前页为第{{statisticsParms.pageIndex}}页</span>
@@ -96,7 +96,6 @@ export default {
       })
     },
     exportData(){  //导出接口
-      console.log(this.apiPath)
       window.open(this.apiPath+"doc/documentInfo/exportSignStatistics?signStartDate="+this.statisticsParms.startTime+"&signEndDate="+this.statisticsParms.endTime+"&pageIndex="+this.statisticsParms.pageIndex+"&pageLength="+this.statisticsParms.pageLength);      
     },
   	pageChangeHandel(currentNum){  //侦听翻页函数
@@ -124,11 +123,10 @@ export default {
       this.statisticsParms.endTime="";*/
     },
     jumpTo(item){
-      console.log(item)
       this.$router.push({ 
         name: 'statistics_detail', 
         params: { 
-          "displayName": item,
+          "companyId": item,
           "startTime":this.statisticsParms.startTime,
           "endTime":this.statisticsParms.endTime
         }

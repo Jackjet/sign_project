@@ -11,9 +11,12 @@
 			</div>
 			<div class="alert-footer">
 				<slot name="alert-footer">
-					<div>
+					<div v-show="type == 2">
 						<a href="javascript:;" class="cancel-btn"  @click="cancelHandle">取消</a>
 						<a href="javascript:;" class="sure-btn" @click="sureHandle">确定</a>
+					</div>
+					<div v-show="type == 1">
+						<a href="javascript:;" class="center-btn"  @click="cancelHandle">确定</a>
 					</div>
 				</slot>
 			</div>
@@ -38,6 +41,10 @@ export default {
 		showState:{
 			type:Boolean,
 			default:false
+		},
+		type:{
+			type:Number,
+			default:1
 		}
 	},
 	data() {
@@ -66,6 +73,7 @@ export default {
 	top:0;
 	left:0;
 	background:rgba(0,0,0,0.8);
+	z-index: 100;
 	.alert-model{
 		width:398px;
 		position:absolute;
@@ -102,6 +110,9 @@ export default {
 			padding:30px 20px;
 			min-height:20px;
 			text-align:center;
+			h3{
+				font-weight: normal;
+			}
 		}
 		.alert-footer{
 			padding:10px 50px;
@@ -124,6 +135,13 @@ export default {
 					color:#fff;
 					border:1px #ff503f solid;
 					float:right;
+				}
+				&.center-btn{
+					background:#ff503f;
+					color:#fff;
+					border:1px #ff503f solid;
+					float:none;
+					margin:2.5% auto;
 				}
 			}
 		}

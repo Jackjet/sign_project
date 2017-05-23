@@ -5,40 +5,33 @@
           <h3>查询</h3>
           <div class="search clf">
               <div class="search-box clf">
-               <input type="text" name="" placeholder="关键字：签约ID/名称"><a href="#" class="btn-pink btn-default">查询</a><a class="btn-default" href="#">清空</a>
+               <input type="text" name="" placeholder="关键字：签约ID/名称" v-model="statisticsParms.docName"  @keyup.enter="searchHandle(statisticsParms.docName)" ><a href="javascript:;" class="btn-pink btn-default" @click="searchHandle(statisticsParms.docName)">查询</a><a class="btn-default" href="javascript:;" @click="deleteHandle()">清空</a>
               </div>
           </div>
       </div>
       <div class="panel-box panel-white">
-        <h3 class="title">统计时间：2017.05.19 13:00 <a class="btn-default btn-pink" href="#">导出Excel</a></h3>
-        <div class="table">
+        <h3 class="title">统计时间：2017.05.19 13:00 <a class="btn-default btn-pink" href="javascript:;"  @click="exportData()">导出Excel</a></h3>
+        <div class="table table-five">
           <li class="title">
             <span>账号(电子邮箱)</span>
             <span>签约ID</span>
             <span>名称</span>
-            <span>签约金额</span>
+           <!--  <span>签约金额</span> -->
             <span>签署人</span>
             <span>签约时间</span>
           </li>
-          <li class="li-class">
-            <span>704562587@qq.com</span>
-            <span>1020020155555</span>
-            <span>电脑采购采购草孤傲的骄傲是</span>
-            <span>1000</span>
-            <span>数安时代</span>
-            <span>签约时间</span>
+          
+          <li v-for = "item in statisticsList" class="li-class">
+            <span :title="item.accNo">{{item.accNo}}</span>
+            <span :title="item.docId">{{item.docId}}</span>
+            <span :title="item.docName">{{item.docName}}</span>
+           <!--  <span>1000</span> -->
+            <span :title="item.signDisplayName">{{item.signDisplayName}}</span>
+            <span :title="item.signTime">{{item.signTime}}</span>
             <i></i>
           </li>
-          <li v-for = "item in statisticsList" class="li-class">
-            <span>{{item.accNo}}</span>
-            <span>{{item.docId}}</span>
-            <span>电脑采购采购草孤傲的骄傲是</span>
-            <span>1000</span>
-            <span>数安时代</span>
-            <span>{{item.signTime}}</span>
-          </li>
           <li class="pr">
-            <span>共324条记录</span>
+            <span>共{{pageData.total}}条记录</span>
             <div class="page-box">
                <pagination :total="pageData.total" :currentpage="pageData.currentpage" :display="pageData.display"  @pagechange="pageChangeHandel"></pagination>
             </div>
@@ -55,16 +48,18 @@ export default {
   name: 'statistics_detail',
   data () {
     return {
+      searchTitle:"",
       pageData:{
-    		total: 81,      //总条数
-    		display: 15,    //每页条数
-    		currentpage: 1  //当前页数	
+    		total: null,      //总条数
+    		/*display: 15,    //每页条数
+    		currentpage: 1  //当前页数	*/
   	  },
       statisticsParms:{    //统计详情接口参数
         startTime:"",
         endTime:"",
-        displayName:"",
-        pageIndex:0,  
+        companyId:"",
+        docName:"",
+        pageIndex:1,  
         pageLength:10
       },
       statisticsList:[]    //统计接口返回参数列表
@@ -76,15 +71,16 @@ export default {
       this.httpGet('doc/documentInfo/signStatisticsDetails',{
         signStartDate:That.statisticsParms.startTime,
         signEndDate:That.statisticsParms.endTime,
-        displayName:That.statisticsParms.displayName,
+        companyId:That.statisticsParms.companyId,
+        docName:That.statisticsParms.docName,
         pageIndex:That.statisticsParms.pageIndex,
         pageLength:That.statisticsParms.pageLength
       },function(response){
         console.log(response)
         var result = response.data;
         if(result.meta.success){
-          this.statisticsList = result.data.list;
-          console.log(resule.data.list)
+          That.statisticsList = result.data.list;
+          That.pageData.total = result.data.totalCount;
         }
       },function(response){
         console.log(response);
@@ -92,24 +88,25 @@ export default {
     },
     pageChangeHandel(currentNum){  //侦听翻页函数
       //console.log("我被翻页了，页码是："+currentNum);
-      this.statisticsParms.pageIndex = currentNum-1;
+      this.statisticsParms.pageIndex = currentNum;
       this.getData();
     },
     searchHandle(title){ 
-      /*if(this.searchTitle == title && title != ""){
+      if(this.searchTitle == title &&  title != ""){
           return;
-      }*/
+      }
       this.getData();
-      //this.searchTitle = title;
+      this.searchTitle = title;
     },
     deleteHandle(){
-      this.statisticsParms.displayName = "";
+      this.statisticsParms.docName = "";
       this.getData();
-      /*this.statisticsParms.startTime="";
-      this.statisticsParms.endTime="";*/
+    },
+    exportData(){  //导出接口
+      window.open(this.apiPath+"doc/documentInfo/exportSignStatisticsDetails?signStartDate="+this.statisticsParms.startTime+"&signEndDate="+this.statisticsParms.endTime+"&companyId="+this.statisticsParms.companyId+"&docName="+this.statisticsParms.docName+"&pageIndex="+this.statisticsParms.pageIndex+"&pageLength="+this.statisticsParms.pageLength);      
     },
     init(){
-        this.statisticsParms.displayName = this.$route.params.displayName;
+        this.statisticsParms.companyId = this.$route.params.companyId;
         this.statisticsParms.startTime = this.$route.params.startTime;
         this.statisticsParms.endTime = this.$route.params.endTime;
     }

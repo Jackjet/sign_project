@@ -43,7 +43,7 @@ export default new Router({
       component: statistics_count
     },
     {
-      path: '/statistics_detail/:displayName/:startTime/:endTime',
+      path: '/statistics_detail/:companyId/:startTime/:endTime',
       name: 'statistics_detail',
       component: statistics_detail
     }
