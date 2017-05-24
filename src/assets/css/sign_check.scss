@@ -608,23 +608,16 @@ $border2:#dedede;
 	.file-right{
 		padding:0 0 0 280px;
     .table{
-      padding-bottom:55px;
+      // padding-bottom:55px;
+      position:relative;
       li{
         height: auto;
-        position:relative;
+        position:static;
         &.title{
            padding:0;
           width: 100%;
         }
-        i{
-          display: block;
-          height: 55px;
-          width: 4px;
-          background:$white;
-          left:0;
-          top:0;
-          position:absolute;
-        }
+        
         span{
           width: 14%;
           padding-left:2%;
@@ -635,6 +628,18 @@ $border2:#dedede;
           white-space:nowrap;/* 不换行 */
           overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
           text-overflow:ellipsis;
+          &:nth-child(1){
+            position:relative;
+            i{
+              display: block;
+              height: 100%;
+              width: 4px;
+              background:$white;
+              left:0;
+              top:0;
+              position:absolute;
+            }
+          }
           &:nth-child(6){
             word-break:keep-all;/* 不换行 */
             white-space:normal;/* 不换行 */
@@ -642,16 +647,96 @@ $border2:#dedede;
             text-overflow:ellipsis;
           }
         }
+        b{
+          padding-left: 2.5%;
+          color: #ccc;
+          font-weight:normal;
+        }
         &.li-class:hover{
           background:$gray2;
           i{
             background:$pink;
           }
         }
+        a{
+          color: #3F9CDB ;
+          cursor: pointer;
+        }
+        .page-box{
+          top: auto;
+          bottom:10px;
+        }
+      }
+      .againAlert{
+        width: 450px;
+        height: 400px;
+        background:#fff;
+        position:absolute;
+        box-shadow:0 0 10px #ccc;
+        border-radius:10px;
+        z-index: 10;
+        i{
+            font-size:0;  
+            width:0;  
+            height:0;  
+            border:5px solid; 
+            border-color:rgba(0,0,0,0) rgba(0,0,0,0) rgba(255,255,255,1) rgba(0,0,0,0); 
+            right:30px;
+            position: absolute;
+            top:-10px; 
+            z-index: 55;
+          }
+          .searchFile{
+            padding:10px 0;
+            input{
+              width: 90%;
+              border:1px #dedede solid;
+              height: 35px;
+              line-height: 35px;
+              margin: 0 auto;
+              display: block;
+              border-radius:4px;
+              text-indent: 45px;
+              color: $black;
+            }
+            span{
+              position: absolute;
+              width: 35px;
+              height: 35px;
+              text-align:center;
+              top: 12px;
+              line-height: 35px;
+              font-size: 18px;
+              left:25px;
+              color: #ccc;
+            }
+          }
+          .fileList{
+            height: 40px;
+            line-height: 40px;
+            height: 320px;
+            li{
+              padding:0 25px;
+              cursor: pointer;
+              b{
+                  padding-right:10px;
+                  &.icon-circle{
+                    color: #ccc;
+                  }
+                  &.icon-check-default{
+                    color: $pink;
+                  }
+              }
+              &:hover,.active{
+                background: #F6F7FC ;
+              }
+            }
+          }
       }
     }
 	}
 }
+
 @media (max-width:992px) {
   .statistics_count .panel-box .search .search-box{
     div{

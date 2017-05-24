@@ -10,6 +10,14 @@ exports.install = function (Vue, options) {
      		headers: {'X-Requested-With':'XMLHttpRequest'}
      	}).then(success).catch(fail)
   };
+
+  Vue.prototype.httpPost=function(url,data,success,fail){
+     this.$http.post(apiPath + url,
+      {
+        params:data,
+        headers: {'X-Requested-With':'XMLHttpRequest'}
+      }).then(success).catch(fail)
+  };
   /*
    * 获取当前时间和一个月
   */
@@ -32,5 +40,7 @@ exports.install = function (Vue, options) {
         "currentdate":currentdate
     }
   }
+
+
  
 }

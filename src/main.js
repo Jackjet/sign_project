@@ -7,7 +7,7 @@ import axios from 'axios'
 Vue.prototype.$http = axios;
 import MyPlugin from './assets/js/common.js'
 Vue.use(MyPlugin)
-
+import 'babel-polyfill'
 
 //页码公共组件
 import pagination from './components/common/pagination/index.js';

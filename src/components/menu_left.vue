@@ -125,7 +125,6 @@ export default {
         })
         this.getData();
         $("#sidebar-menu ul>li.active").find('.child_menu').slideDown();
-    //console.log(this.$route)
   },
   watch: {
     // 如果路由有变化，会再次执行该方法

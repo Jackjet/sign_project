@@ -6,7 +6,7 @@
           <div class="panel-upload">
               <img src="../assets/images/sign_icon.png" alt="">
               <!--<a class="upload-btn" href="javascript:;">上传PDF文件</a>-->
-              <div class="upload-btn">上传PDF文件<input type="file" value="上传PDF文件"></div>
+              <div class="upload-btn">上传PDF文件<input type="file" accept="pdf" name="file" value="上传PDF文件" id="fileInput" @click="upLoadHandle()"></div>
               <p class="warn"><i class="icon-warn"></i>不支持该格式文档，请上传<span>PDF</span>文件</p>
               <div class="upload-tip">
                   <p>验证文件签名的有效性，以及是否被篡改！</p>
@@ -28,7 +28,7 @@ export default {
   },
   methods:{
     getData(){
-      this.httpGet('cus/account/getCurAccount',function(response){
+      this.httpGet('cus/account/getCurAccount',{},function(response){
         console.log(response)
       },function(response){
         console.log(response);
@@ -40,8 +40,38 @@ export default {
         .catch(function (response) {
          // console.log(response);
         });*/
+    },
+    upLoadHandle(){
+      var That = this;
+      $('#fileInput').on('change',function(){
+        var formData = new FormData();
+        formData.append("uploadFile", document.getElementById("fileInput").files[0]);   
+        console.log(this.files)
+        console.log(this.files[0].type);
+        var filesName = this.files[0].name;
+        if (/pdf$/.test( this.files[0].type)){
+           That.httpPost('doc/docVerify/verify',{
+              "uploadFile":filesName
+            },function(response){
+              console.log(response)
+            },function(response){
+              console.log(response);
+            })
+
+           /* That.$http.post('/api/doc/docVerify/verify',{
+              uploadFile:filesName,
+            })
+            .then(function(res){
+              console.log(res);
+            })
+            .catch(function(err){
+              console.log(err);
+            });*/
+        }
+      })
     }
   },
+
   mounted(){
     //this.getData();
   }

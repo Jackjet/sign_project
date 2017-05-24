@@ -71,9 +71,11 @@ export default {
         endTime:"",
         displayName:"",
         pageIndex:1,  
-        pageLength:5
+        pageLength:10
       },
-      statisticsList:[]    //统计接口返回参数列表
+      statisticsList:[],    //统计接口返回参数列表,
+      timeSelect:false,  //判断有没有选日期，
+      searchTitleTem:""
     }
   },
   methods:{
@@ -104,17 +106,22 @@ export default {
       this.getData();
   	},
   	changeStartDate(value){
-      this.statisticsParms.startTime=value
+      this.statisticsParms.startTime=value;
+      this.timeSelect = true;
   	},
     changeEndDate(value){
       this.statisticsParms.endTime = value;
+      this.timeSelect = true;
     },
-    searchHandle(title){ 
-      /*if(this.searchTitle == title && title != ""){
-          return;
-      }*/
-      this.getData();
-      //this.searchTitle = title;
+    searchHandle(val){ 
+        if(this.timeSelect){
+            this.getData();
+            this.timeSelect = false;
+        }else{
+            if(this.searchTitleTem == val) return;
+            this.getData();
+            this.searchTitleTem = val;
+        }
     },
     deleteHandle(){
       this.statisticsParms.displayName = "";
