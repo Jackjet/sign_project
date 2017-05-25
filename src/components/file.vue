@@ -92,6 +92,10 @@
                         <b  :class="[againNowIndex == index ? 'icon-check-default' : 'icon-circle']"></b>{{val}}
                       </li>
                   </ul>
+                  <div class="btn-box">
+                      <a href="javascript:;" @click="cancelAgainFolder()">取消</a>
+                      <a href="javascript:;" @click="sureAgainFolder()">确定</a>
+                  </div>
               </div>
             </div>
           </div>
@@ -106,6 +110,7 @@
 
 <script>
 import calendar from "./calendar.vue";
+import '../assets/js/jquery.form.js';
 export default {
   name: 'file',
   components:{
@@ -121,21 +126,22 @@ export default {
         editorIndex:-1,   
         deleteIndex:-1,        
         againNowIndex:-1,      //重新归档列表当前选中下标
+        againNowIndexTem:-1,   //重新归档列表当前选中下标临时变量
 	    //contractList:["a","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf","b","c","1545","asdfasf"],
         showAlertData:{        //公共弹框参数
             showAlert:false,
             title:"警告",
             context:""
         },
-        addDir:false,          //添加弹框是否显示
-        addFolderName:"",      //添加文件的文件夹名称
+        addDir:false,           //添加弹框是否显示
+        addFolderName:"",       //添加文件的文件夹名称
         seFolderName:"",        //搜索的文件夹名称
         seFolderNameTem:"",     //搜索的文件夹名称临时变量
         againFileState:false,   //重新归档状态
         againSeName:"关键字：文件夹名称",
         againSeNameCenter:"",
         againFileList:[],         //重新归档文件列表
-        againFolderList:[],       //重新归档文件夹列表
+        againFolderList:['a','b','c','d'],       //重新归档文件夹列表
         getReParms:{
             signStartDate:'',
             signEndDate:'',
@@ -318,16 +324,25 @@ export default {
         console.log(num)
         this.againNowIndex = num;
     },
-    keyUpDown(event){
-        console.log(event.keyCode)
+    keyUpDown(event){       //重新归档选择
+        console.log(event.keyCode || event.button)
         if(event.keyCode == 13 &&　this.againSeName != "" && this.againSeNameCenter != this.againSeName){
             this.againSeNameCenter = this.againSeName;
+            this.againNowIndex = -1;
             console.log("请求获取归档接口");
             return false;
         }
 
-        if(event.keyCode == 13 && this.againNowIndex != -1 && this.againSeNameCenter == this.againSeName){
-            console.log("提交重新归档接口");
+        if((event.keyCode == 13) && this.againNowIndex != -1 && this.againSeNameCenter == this.againSeName){
+           
+            if(this.againNowIndexTem != this.againNowIndex){
+                 console.log("提交重新归档接口");
+                 this.againSeName="关键字：文件夹名称";
+                 this.againSeNameCenter = "";
+                 this.againFileState = false;
+                 this.againNowIndexTem = this.againNowIndex = -1;
+            }
+            
             return false;
         }
 
@@ -349,6 +364,23 @@ export default {
         }
         
     },
+    sureAgainFolder(){        //点击确认归档
+        if(this.againNowIndex != -1){
+            if(this.againNowIndexTem != this.againNowIndex){
+                 console.log("提交重新归档接口");
+                 this.againSeName="关键字：文件夹名称";
+                 this.againSeNameCenter = "";
+                 this.againFileState = false;
+                 this.againNowIndexTem = this.againNowIndex = -1;
+            }
+        }
+    },
+    cancelAgainFolder(){
+        this.againSeName="关键字：文件夹名称";
+        this.againSeNameCenter = "";
+        this.againFileState = false;
+        this.againNowIndexTem = this.againNowIndex = -1;
+    },
 	pageChangeHandel(currentNum){  //侦听翻页函数
 		console.log("我被翻页了，页码是："+currentNum);
 	},
@@ -368,6 +400,34 @@ export default {
   mounted(){
     this.getdirListData();
     this.getNowDate();
+
+    var _this = this;
+
+    $('#uploadForm').ajaxForm({  
+        url : this.apiPath + 'ProjSellinto/initByImport.html',
+        dataType: 'json',  
+        xhrFields: {
+              withCredentials: true
+        },
+        beforeSubmit: function() {
+            if ($(':file').fieldValue() == "") {
+                alert('请选择文件！');
+                return false;
+            }
+        },
+        success: function(res){
+
+            if (res.code == 0) {
+
+                // 跳转到排版页面
+                _this.$router.push({path: "/proj-terminal-sch/" + _this.proj_id});
+
+            } else {
+                _this.submitCallback(res);
+            }
+        }
+    });  
+
     
   }
 }

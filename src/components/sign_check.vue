@@ -1,13 +1,26 @@
 <template>
   <div class="sign_check">
-    <div class="right_col">
+    <Loading :text="'上传中，请稍后'" v-show="submitStatus"></Loading>
+    <div class="right_col" v-cloak>
       <div class="panel-box panel-white pb180">
           <h3>文件验签</h3>
           <div class="panel-upload">
               <img src="../assets/images/sign_icon.png" alt="">
               <!--<a class="upload-btn" href="javascript:;">上传PDF文件</a>-->
-              <div class="upload-btn">上传PDF文件<input type="file" accept="pdf" name="file" value="上传PDF文件" id="fileInput" @click="upLoadHandle()"></div>
-              <p class="warn"><i class="icon-warn"></i>不支持该格式文档，请上传<span>PDF</span>文件</p>
+              <!-- <div class="upload-btn">上传PDF文件
+                <input type="file" accept="pdf" name="file" value="上传PDF文件" id="fileInput" @click="upLoadHandle()">
+              </div> -->
+              <form id="uploadForm" method="post" enctype="multipart/form-data"  style="padding-bottom:100px;"> 
+                     <!--  <a class="upload-btn" href="javascript:;">上传PDF文件</a>            -->       
+                     <p class="uploadFileName">{{uploadFileName}}</p>
+                      <div class="upload-btn"  @click="selectFile()">{{tipName}}
+                          
+                          <input type="file" id="file" name="uploadFile" >
+                      </div>
+                      <!-- <button type="submit" class="btn btn-primary">下一步</button> -->
+                       <p class="warn" v-show="uploadWarn" ><i class="icon-warn"></i>不支持该格式文档，请上传<span>PDF</span>文件</p>
+              </form>
+             
               <div class="upload-tip">
                   <p>验证文件签名的有效性，以及是否被篡改！</p>
               </div>
@@ -18,62 +31,75 @@
 </template>
 
 <script>
-
+import '../assets/js/jquery.form.js';
 export default {
   name: 'sign_check',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      uploadWarn: false,
+      uploadFileName:"",
+      tipName:"上传PDF文件",
+      clickStatus:true,
+      submitStatus:false
     }
   },
   methods:{
-    getData(){
-      this.httpGet('cus/account/getCurAccount',{},function(response){
-        console.log(response)
-      },function(response){
-        console.log(response);
-      })
-     /* this.$http.get('api/cus/account/getCurAccount')
-        .then(function (response) {
-         // console.log(response);
-        })
-        .catch(function (response) {
-         // console.log(response);
-        });*/
-    },
-    upLoadHandle(){
-      var That = this;
-      $('#fileInput').on('change',function(){
-        var formData = new FormData();
-        formData.append("uploadFile", document.getElementById("fileInput").files[0]);   
-        console.log(this.files)
-        console.log(this.files[0].type);
-        var filesName = this.files[0].name;
-        if (/pdf$/.test( this.files[0].type)){
-           That.httpPost('doc/docVerify/verify',{
-              "uploadFile":filesName
-            },function(response){
-              console.log(response)
-            },function(response){
-              console.log(response);
-            })
+    selectFile(){
+      var _this = this;
+      $("#file").on('change',function(){
+        _this.uploadFileName = this.value;
 
-           /* That.$http.post('/api/doc/docVerify/verify',{
-              uploadFile:filesName,
-            })
-            .then(function(res){
+        $('#uploadForm').ajaxSubmit({  
+          url : 'http://192.168.22.254:7001/doc/docVerify/verify',  
+          //url : 'http://apioa.cuxiaoke.cn/pc/Jackay',  
+
+          dataType: 'json',  
+          xhrFields: {
+                withCredentials: true
+          },
+          type:'post',    
+          beforeSubmit: function() {
+
+              var val = $(':file').fieldValue();
+              var arr = val[0].split('.');
+              var Suffix = arr[arr.length-1];
+              console.log(Suffix)
+              if (val == "") {
+                  return false;
+              }
+              if(Suffix != 'pdf'){
+                _this.uploadWarn = true;
+                _this.tipName = "重新上传";
+                return false;
+              }
+              
+              _this.uploadWarn = false;
+              _this.submitStatus = true;
+          },
+          success: function(res){
+
               console.log(res);
-            })
-            .catch(function(err){
-              console.log(err);
-            });*/
-        }
+              if (res.meta.success) {
+                  _this.setLSData("uploadState",res.data);
+                  // 跳转到排版页面
+                 _this.$router.push({
+                  name: 'sign_state'
+                  });
+
+              } else {
+                 // _this.submitCallback(res);
+              }
+          }
+      });
+
       })
+
     }
   },
 
   mounted(){
-    //this.getData();
+console.log()
+     
   }
 }
 </script>

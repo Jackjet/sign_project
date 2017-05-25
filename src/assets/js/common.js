@@ -18,6 +18,7 @@ exports.install = function (Vue, options) {
         headers: {'X-Requested-With':'XMLHttpRequest'}
       }).then(success).catch(fail)
   };
+
   /*
    * 获取当前时间和一个月
   */
