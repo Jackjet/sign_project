@@ -77,19 +77,17 @@ export default {
               _this.submitStatus = true;
           },
           success: function(res){
-
-              console.log(res);
-              if (res.meta.success) {
-                  _this.setLSData("uploadState",res.data);
-                  // 跳转到排版页面
+                 _this.setLSData("uploadData",res.data);
+                 _this.setLSData("uploadMessage",res.meta);
                  _this.$router.push({
-                  name: 'sign_state'
+                    name: 'sign_state'
                   });
-
+              /*if (res.meta.success) {
               } else {
-                 // _this.submitCallback(res);
-              }
+                 _this.submitCallback(res);
+              }*/
           }
+          //timeout:   3000  
       });
 
       })
@@ -98,7 +96,6 @@ export default {
   },
 
   mounted(){
-console.log()
      
   }
 }

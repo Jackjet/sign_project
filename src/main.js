@@ -3,7 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import axios from 'axios'
+
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
 Vue.prototype.$http = axios;
 import MyPlugin from './assets/js/common.js'
 Vue.use(MyPlugin)
@@ -30,8 +35,8 @@ const JQ3 = require('./assets/js/jquery.mousewheel.min.js');
 const JQ4 = require('./assets/js/jquery.mCustomScrollbar.min.js');*/
 
 
-Vue.prototype.setLSData=function(key, value){
-      localStorage.setItem(key, JSON.stringify(value));
+    Vue.prototype.setLSData=function(key, value){
+     localStorage.setItem(key, JSON.stringify(value));
     };
     /*
      * 获取localStorage
@@ -53,6 +58,7 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

@@ -3,9 +3,9 @@
     <div class="right_col">
 		<div class="file-left">
 			<div class="file-edit">
-				<h3>归档文件夹{{addDir}}</h3>
+				<h3>归档文件夹</h3>
 				<div class="file-icon-box">
-					<span @click="editHandle" :class="[editorIndex >= 0 ? 'active' : '','icon-editor']"></span>
+					<!-- <span @click="editHandle" :class="[editorIndex >= 0 ? 'active' : '','icon-editor']"></span> -->
 					<span class="icon-add-folders-kong" @click.stop="addDir = true" :class="[addDir ? 'active' : '']">
                         <div class="add-folder-box" v-show="addDir">
                            <i></i>
@@ -17,7 +17,7 @@
                           
                         </div>               
                     </span>
-					<span class="icon-del" @click="delFolderHandle()" ></span>
+					<!-- <span class="icon-del" @click="delFolderHandle()" ></span> -->
 				</div>				
 			</div>
 			<div class="search">
@@ -27,9 +27,12 @@
 			<div class="contract-list mCustomScrollbar">
 				<ul>
 					<li v-show="dirList != 0"  @click="selectLi(index)" v-for="(item,index) in dirList"  :class="[index == selectIndex ? 'active' : '',index == editorIndex ? 'editActive':'']">
+                        <i class="icon-del" @click.stop="delFolderHandle(index)"></i>
+                        <i class="icon-editor" @click.stop="editHandle(index)"></i>
                         <span class="icon-folder"></span>
-                        <p v-show="index != editorIndex">{{item.dirName}}</p>
+                        <p :title="item.dirName" class="shengl" v-show="index != editorIndex">{{item.dirName}}</p>
                         <input @keyup.enter="resetFolderName(item.dirName,item.dirId)" v-show="index == editorIndex" type="text" name=""   v-model="item.dirName" />
+                        
                     </li>
                     <li v-if="dirList.length == 0">
                         <p v-text="'暂无数据，赶快添加吧！'"></p>
@@ -39,7 +42,7 @@
 		</div>
 		<div class="file-right">
 			<div class="panel-box panel-white">
-			  <h3>经销商合同</h3>
+			  <h3>经销商合同<a href="javascript:;" @click="addFile.addFileState = true"><i class=" icon-send-person" ></i>添加归档</a></h3>
 			  <div class="search clf">
 				  <div class="search-box clf">
 					<div class="row clf">
@@ -66,13 +69,14 @@
                 <span>操作</span>                
               </li>
               <li  v-show="againFileList.length > 0" class="li-class clf" v-for="(item,index) in againFileList">
-                <span>{{item.docName}}<i class="line"></i></span>
-                <span>{{item.signators}}</span>
-                <span>{{item.sendTime}}</span>
-                <span>{{item.efectTime || '暂无数据'}}</span>
-                <span>{{item.cycle}}</span>
-                <span><a @click="againFile($event)">重新归档</a><a href="javascript:;">撤销归档</a></span>     
+                <span :title="item.docName">{{item.docName}}<i class="line"></i></span>
+                <span :title="item.signators">{{item.signators}}</span>
+                <span :title="item.sendTime">{{item.sendTime}}</span>
+                <span :title="item.efectTime">{{item.efectTime || '暂无数据'}}</span>
+                <span :title="item.cycle">{{item.cycle}}</span>
+                <span><a @click="againFile($event,index)">重新归档</a><a href="javascript:;" @click="cancelFile(item)">撤销归档</a></span>     
               </li>
+              <li class="no-message" v-show="loadingState">加载中，请稍后</li>
               <li class="no-message" v-show="againFileList.length == 0" v-text="'暂无数据'"></li>
               <li class="pr">
                 <b>共{{pageData.total}}条记录/当前为第{{getReParms.pageIndex}}页</b>
@@ -86,10 +90,10 @@
                         <span class="icon-search"></span>
                       <input type="text" name="" :value="againSeName" v-model="againSeName" @click="inputInit(againSeName)" @keydown="keyUpDown($event)">
                   </div>
-                  <ul class="fileList mCustomScrollbar">
+                  <ul class="fileList">
 
                       <li v-for="(val,index) in againFolderList" :class="[againNowIndex == index ? 'active' : '']" @click="selectFile(index)">
-                        <b  :class="[againNowIndex == index ? 'icon-check-default' : 'icon-circle']"></b>{{val}}
+                        <b  :class="[againNowIndex == index ? 'icon-check-default' : 'icon-circle']"></b>{{val.dirName}}
                       </li>
                   </ul>
                   <div class="btn-box">
@@ -101,16 +105,138 @@
           </div>
 		</div>
     </div>
-    <alertModel :title="showAlertData.title" :context="showAlertData.context" :type="showAlertData.type"  :showState="showAlertData.showAlert"  v-show="showAlertData.showAlert"  @cancelHandle="showAlertData.showAlert = false" @sureHandle="sureHandle">
+    <div class="addFileAlert" v-show="addFile.addFileState">
+        <div class="cover"></div>
+        <div class="addFileContent">
+            <div class="alert-header">
+                <h3>添加文件<i class="icon-close" @click="addFile.addFileState = false"></i></h3>
+            </div>
+            <div class="alert-body">
+                <div class="search">
+                    <span class="icon-search"></span>
+                    <input type="text" name="" :value="'关键字为合同名称，企业'">
+                </div>
+                <div class="table-list">
+                    <ul>
+                        <li class="clf">
+                            <span><i class="icon-check2-default"></i>名称</span>
+                            <span>签署方</span>
+                            <span>发起时间</span>
+                        </li>
+                        <li class="clf">
+                            <span><i class="icon-square"></i>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span><i class="icon-square"></i>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span><i class="icon-square"></i>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span><i class="icon-square"></i>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span><i class="icon-square"></i>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span><i class="icon-square"></i>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <!-- @pagechange="pageChangeHandel2" -->
+                        <li>
+                            <p>共{{0}}条记录</p>
+                            <div class="page-box"><pagination :total="20" :currentpage="1" :display="10"  ></pagination></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="selectList">
+                    <h3>已选文件<span>(单击移除)</span><b>6/244</b></h3>
+                    <div class="table-list select-list mCustomScrollbar">
+                    <ul>
+                        <li class="clf">
+                            <span>名称</span>
+                            <span>签署方</span>
+                            <span>发起时间</span>
+                        </li>
+                        <li class="clf">
+                            <span>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                        <li class="clf">
+                            <span>交易合同</span>
+                            <span>数安时代，新签</span>
+                            <span>2017.3.23</span>
+                        </li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+            <div class="alert-footer">
+                <a href="javascript:;" class="cancel-btn">取消</a>
+                <a href="javascript:;" class="sure-btn">确定</a>                 
+            </div>
+        </div>
+    </div>
+    <!--公共弹框-->
+    <alertModel :title="showAlertData.title" :context="showAlertData.context" :type="showAlertData.type"  :showState="showAlertData.showAlert"  v-show="showAlertData.showAlert"  @cancelHandle="showAlertData.showAlert = false" >
     </alertModel>
-
+    <!--确认删除弹框-->
+    <alertModel :title="showDelAlter.title" :context="showDelAlter.context" :type="showDelAlter.type"  :showState="showDelAlter.showAlert"  v-show="showDelAlter.showAlert"  @cancelHandle="showDelAlter.showAlert = false" @sureHandle="sureDelHandle()">
+        <ul slot="alert-content">
+            <div class="del-alter">
+                <p>该文件夹将被删除，其中的文档将<span>被撤销归档</span></p>
+                <p class="gray">如需重新归档，需到文档列表操作</p>
+            </div>
+        </ul>
+    </alertModel>
+    <!--确认撤销归档弹框-->
+    <alertModel :title="showCancelAlert.title" :context="showCancelAlert.context" :type="showCancelAlert.type"  :showState="showCancelAlert.showAlert"  v-show="showCancelAlert.showAlert"  @cancelHandle="showCancelAlert.showAlert = false" @sureHandle="cancelArchiveRecord()">
+        <ul slot="alert-content">
+            <div class="del-alter">
+                <p class="text-center">确定撤销归档？</p>
+                <p class="gray text-center">如需重新归档，需到文档列表操作</p>
+            </div>
+        </ul>
+    </alertModel>
    
   </div>
 </template>
 
 <script>
 import calendar from "./calendar.vue";
-import '../assets/js/jquery.form.js';
+
 export default {
   name: 'file',
   components:{
@@ -133,6 +259,16 @@ export default {
             title:"警告",
             context:""
         },
+        showDelAlter:{         //删除弹框
+            showAlert:false,
+            title:"删除归档文件夹",
+            type:2
+        },
+        showCancelAlert:{
+            showAlert:false,
+            title:"撤销归档",
+            type:2
+        },
         addDir:false,           //添加弹框是否显示
         addFolderName:"",       //添加文件的文件夹名称
         seFolderName:"",        //搜索的文件夹名称
@@ -150,22 +286,58 @@ export default {
             pageIndex:1,
             pageLength:10
         },
-        searchTitleTem:"",
-        timeSelect:false
+        modifyParams:{   //重新归档文件接口
+            recordId:"",
+            dirId:"",
+            docId:""
+        },
+        cancelParams:{   //删除归档文件接口参数
+            dirId:"",
+            docId:""
+        },
+        searchTitleTem:"",   //搜索临时变量
+        timeSelect:false,
+        loadingState:false,
+        addFile:{            //添加文件
+            addFileState:false
+        }
 
     }
   },
   methods:{
-    getdirListData(){        //获取文件夹数据
+    getdirListData(){       //获取文件夹数据
+
         var That = this;
         this.httpGet('doc/archiveDir/searchArchiveDirList',{
             'dirName':That.seFolderName
         },function(response){
         var result = response.data;
         if(result.meta.success){
-            That.dirList = result.data;     
-            That.getReParms.dirId = That.dirList[0].dirId;
-            That.againFileListData();
+            That.dirList = That.againFolderList = result.data;     
+            That.getReParms.dirId = That.dirList[That.selectIndex].dirId;
+            /*if(That.selectIndex == 0){
+                That.againFileListData();
+            } */ 
+            That.againFileListData();          
+        }else{
+            That.showAlertData = {
+                showAlert:true,
+                context:result.meta.message
+            }
+        }
+      },function(response){
+        console.log(response);
+      })
+    },
+    getdirListDataRight(){       //获取文件夹数据
+        var That = this;
+        this.httpGet('doc/archiveDir/searchArchiveDirList',{
+            'dirName':That.againSeName
+        },function(response){
+        var result = response.data;
+        if(result.meta.success){
+            That.againFolderList = result.data;     
+            That.getReParms.dirId = That.dirList[That.selectIndex].dirId;          
         }else{
             That.showAlertData = {
                 showAlert:true,
@@ -177,6 +349,8 @@ export default {
       })
     },
     againFileListData(){      //获取归档文件列表
+        //this.loadingState = true;
+        console.log("获取归档文件列表")
         var That = this;
         this.httpGet('doc/archiveRecord/searchArchiveRecordList',{
             signStartDate:That.getReParms.signStartDate,
@@ -188,8 +362,62 @@ export default {
         },function(response){
         var result = response.data;
         if(result.meta.success){
+           // That.loadingState = false;
             That.againFileList = result.data.list;   
             That.pageData.total = result.data.totalCount;     
+        }else{
+            That.showAlertData = {
+                showAlert:true,
+                context:result.meta.message
+            }
+        }
+      },function(response){
+        console.log(response);
+      })
+    },
+    modifyArchiveRecordDir(){       //修改归档文件接口
+        var That = this;
+        this.httpGet('doc/archiveRecord/modifyArchiveRecordDir',{
+            recordId:That.modifyParams.recordId,
+            dirId:That.modifyParams.dirId,
+            docId:That.modifyParams.docId
+        },function(response){
+        var result = response.data;
+        if(result.meta.success){
+            That.showAlertData = {
+                showAlert:true,
+                context:"重新归档成功"
+            }
+            That.againSeName="关键字：文件夹名称";
+            That.againSeNameCenter = "";
+            That.againFileState = false;
+            That.againNowIndexTem = That.againNowIndex = -1; 
+            That.getdirListData();
+        }else{
+            That.showAlertData = {
+                showAlert:true,
+                context:result.meta.message
+            }
+        }
+      },function(response){
+        console.log(response);
+      })
+    },
+    cancelArchiveRecord(){        //撤销文件归档列表
+        var That = this;
+        this.httpGet('doc/archiveRecord/cancelArchiveRecord',{
+            dirId:That.cancelParams.dirId,
+            docId:That.cancelParams.docId
+        },function(response){
+        var result = response.data;
+        if(result.meta.success){
+           // That.loadingState = false;
+            That.showCancelAlert.showAlert = false;
+            That.showAlertData = {
+                showAlert:true,
+                context:"文件撤销归档成功！"
+            }    
+            That.againFileListData();
         }else{
             That.showAlertData = {
                 showAlert:true,
@@ -224,6 +452,7 @@ export default {
         },function(response){
             var result = response.data;
             if(result.meta.success){
+                That.addDir = false;
                 That.getdirListData();
             }
         },function(response){
@@ -231,26 +460,14 @@ export default {
         })
     },
     selectLi(num){             //选中文件夹
-        if(this.selectIndex == num ) {
-            this.selectIndex = -1;
-        }
-        else{
-            this.selectIndex = num;
-        }
-        
+        this.selectIndex = num;
+        this.getReParms.dirId = this.dirList[this.selectIndex].dirId;
+        //if(num == 0) return;
+        this.getReParms.searchKeyword = "";
+        this.againFileListData();
     },
-    editHandle(){
-        if(this.selectIndex == -1){
-            this.showAlertData = {
-                showAlert:true,
-                title:"提示",
-                context:"主人，您还没有选中任何一个想要删除的列表",
-                type:1
-            }
-        }else{
-            this.editorIndex = this.selectIndex;
-        }
-        
+    editHandle(index){            //编辑文件夹名称
+        this.editorIndex = index;
     },
     resetFolderName(value,id){          //重设文件夹名称
        var That = this;      
@@ -267,32 +484,23 @@ export default {
             console.log(response);
         })
     },
-    delFolderHandle(){
-        if(this.selectIndex == -1){
-            this.showAlertData = {
-                showAlert:true,
-                title:"提示",
-                context:"主人，您还没有选中任何一个想要删除的列表"
-            }
-        }else{            
-            this.showAlertData = {
-                showAlert:true,
-                title:"提示",
-                context:"确认删除？",
-                type:2
-            }
+    delFolderHandle(index){
+        this.deleteIndex = index;
+        this.showDelAlter = {
+            showAlert:true,
+            title:"删除归档文件夹",
+            type:2  
         }
     },
-    sureHandle(){             //确认删除文件夹列表
-        this.deleteIndex = this.selectIndex;
-        this.showAlertData.showAlert = false;
+    sureDelHandle(){             //确认删除文件夹列表
+        this.showDelAlter.showAlert = false;
         var That = this;
         this.httpGet("doc/archiveDir/deleteArchiveDir",{
             "dirId":That.dirList[That.deleteIndex].dirId,
         },function(response){
             var result = response.data;
             if(result.meta.success){
-                That.selectIndex = That.deleteIndex = -1;
+                That.deleteIndex = -1;
                 That.getdirListData();
             }
         },function(response){
@@ -300,13 +508,12 @@ export default {
         })
     },
     searchHandle(val){        //搜索文件夹名称
-        //alert(this.seFolderName)
         if(this.seFolderNameTem == val) return;
         this.getdirListData();
         this.seFolderNameTem = val;
         
     },
-    againFile(event){         //重新归档弹框显示
+    againFile(event,index){         //重新归档弹框显示
         this.againFileState = !this.againFileState;
         var tagX = event.target.offsetLeft;
         var tagY = event.target.offsetTop;
@@ -314,6 +521,17 @@ export default {
         var objHtml = document.getElementById("againAlert");
         objHtml.style.left=tagX-382+'px';
         objHtml.style.top=tagY+40+'px';
+        this.modifyParams.recordId = this.againFileList[index].recordId;
+        this.modifyParams.docId = this.againFileList[index].docId;
+    },
+    cancelFile(item){   //撤销归档
+        this.cancelParams.dirId = item.dirId;
+        this.cancelParams.docId = item.docId;
+        this.showCancelAlert = {
+            showAlert:true,
+            type:2
+        }
+        
     },
     inputInit(value){
         if(value == '关键字：文件夹名称'){
@@ -330,17 +548,25 @@ export default {
             this.againSeNameCenter = this.againSeName;
             this.againNowIndex = -1;
             console.log("请求获取归档接口");
+            //请求获取归档接口
+            //this.getdirListData();
+            //this.seFolderName = this.againSeName;
+            this.getdirListDataRight()
             return false;
         }
 
         if((event.keyCode == 13) && this.againNowIndex != -1 && this.againSeNameCenter == this.againSeName){
            
             if(this.againNowIndexTem != this.againNowIndex){
+                 
+                 this.modifyParams.dirId = this.againFolderList[this.againNowIndex].dirId;
                  console.log("提交重新归档接口");
-                 this.againSeName="关键字：文件夹名称";
-                 this.againSeNameCenter = "";
-                 this.againFileState = false;
-                 this.againNowIndexTem = this.againNowIndex = -1;
+                 this.modifyArchiveRecordDir();
+                 
+                 // this.againSeName="关键字：文件夹名称";
+                 // this.againSeNameCenter = "";
+                 // this.againFileState = false;
+                 // this.againNowIndexTem = this.againNowIndex = -1;
             }
             
             return false;
@@ -367,11 +593,14 @@ export default {
     sureAgainFolder(){        //点击确认归档
         if(this.againNowIndex != -1){
             if(this.againNowIndexTem != this.againNowIndex){
-                 console.log("提交重新归档接口");
+                 /*console.log("提交重新归档接口");
                  this.againSeName="关键字：文件夹名称";
                  this.againSeNameCenter = "";
                  this.againFileState = false;
-                 this.againNowIndexTem = this.againNowIndex = -1;
+                 this.againNowIndexTem = this.againNowIndex = -1;*/
+                 this.modifyParams.dirId = this.againFolderList[this.againNowIndex].dirId;
+                 console.log("提交重新归档接口");
+                 this.modifyArchiveRecordDir()
             }
         }
     },
@@ -401,32 +630,7 @@ export default {
     this.getdirListData();
     this.getNowDate();
 
-    var _this = this;
-
-    $('#uploadForm').ajaxForm({  
-        url : this.apiPath + 'ProjSellinto/initByImport.html',
-        dataType: 'json',  
-        xhrFields: {
-              withCredentials: true
-        },
-        beforeSubmit: function() {
-            if ($(':file').fieldValue() == "") {
-                alert('请选择文件！');
-                return false;
-            }
-        },
-        success: function(res){
-
-            if (res.code == 0) {
-
-                // 跳转到排版页面
-                _this.$router.push({path: "/proj-terminal-sch/" + _this.proj_id});
-
-            } else {
-                _this.submitCallback(res);
-            }
-        }
-    });  
+     
 
     
   }

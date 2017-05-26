@@ -106,10 +106,13 @@ export default {
     getData(){
       var That = this;
       this.httpGet('cus/account/getCurAccount',{},function(response){
+        console.log(256)
         var result = response.data;
         if(result.meta.success){
           That.msg = result.data;
           That.userState = result.data.accType;
+          That.$store.dispatch('changeState',{'userState':result.data.accType});
+
         }
       },function(response){
         console.log(response);
@@ -135,6 +138,9 @@ export default {
         }
     }
 
+  },
+  mounted(){
+    this.getData();
   }
 }
 </script>

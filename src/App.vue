@@ -15,16 +15,23 @@ import menuTop from './components/nav_top';
 export default {
   name: 'app',
   data(){
-	return{
-	}
+  	return{
+  	}
   },
   components:{
       menuBar:menuBar,
       menuTop:menuTop
   },
-  
+  computed:{
+    userState(){
+      return this.$store.state.count
+    }
+  },
   methods:{
 	
+  },
+  mounted(){
+   // this.$store.dispatch('changeState',{'a':87899})
   }
 }
 </script>
