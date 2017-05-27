@@ -6,7 +6,7 @@
 				<h3>归档文件夹</h3>
 				<div class="file-icon-box">
 					<!-- <span @click="editHandle" :class="[editorIndex >= 0 ? 'active' : '','icon-editor']"></span> -->
-					<span class="icon-add-folders-kong" @click.stop="addDir = true" :class="[addDir ? 'active' : '']">
+					<span class="icon-add-folders-kong" @click.stop="addDir = true" :class="[addDir ? 'active' : '']" v-if="userState != 2">
                         <div class="add-folder-box" v-show="addDir">
                            <i></i>
                            <input type="text" placeholder="输入文件夹名称" name="" v-model="addFolderName" @keyup.enter="sureAddHandle()">
@@ -35,14 +35,14 @@
                         
                     </li>
                     <li v-if="dirList.length == 0">
-                        <p v-text="'暂无数据，赶快添加吧！'"></p>
+                        <p class="no-message" v-text="'暂无数据！'"></p>
                     </li>
 				</ul>
 			</div>
 		</div>
 		<div class="file-right">
 			<div class="panel-box panel-white">
-			  <h3>经销商合同<a href="javascript:;" @click="addFile.addFileState = true"><i class=" icon-send-person" ></i>添加归档</a></h3>
+			  <h3>经销商合同<a href="javascript:;" @click="addFileHandle()" v-if="userState != 1"><i class=" icon-send-person" ></i>添加归档</a></h3>
 			  <div class="search clf">
 				  <div class="search-box clf">
 					<div class="row clf">
@@ -71,9 +71,9 @@
               <li  v-show="againFileList.length > 0" class="li-class clf" v-for="(item,index) in againFileList">
                 <span :title="item.docName">{{item.docName}}<i class="line"></i></span>
                 <span :title="item.signators">{{item.signators}}</span>
-                <span :title="item.sendTime">{{item.sendTime}}</span>
-                <span :title="item.efectTime">{{item.efectTime || '暂无数据'}}</span>
-                <span :title="item.cycle">{{item.cycle}}</span>
+                <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
+                <span :title="item.efectTime">{{item.efectTime | filterdata}}</span>
+                <span :title="item.cycle">{{item.cycle == 300 ? '已完成':''}}</span>
                 <span><a @click="againFile($event,index)">重新归档</a><a href="javascript:;" @click="cancelFile(item)">撤销归档</a></span>     
               </li>
               <li class="no-message" v-show="loadingState">加载中，请稍后</li>
@@ -109,54 +109,31 @@
         <div class="cover"></div>
         <div class="addFileContent">
             <div class="alert-header">
-                <h3>添加文件<i class="icon-close" @click="addFile.addFileState = false"></i></h3>
+                <h3>添加归档文件<i class="icon-close" @click="addFile.addFileState = false"></i></h3>
             </div>
             <div class="alert-body">
                 <div class="search">
                     <span class="icon-search"></span>
-                    <input type="text" name="" :value="'关键字为合同名称，企业'">
+                    <input type="text" v-model="addFile.params.condition" name="" :value="addFile.params.condition" @click="inputInit(addFile.params.condition)"  @keydown.enter="searchFileList(addFile.params.condition)">
                 </div>
                 <div class="table-list">
                     <ul>
+                        <!-- icon-check2-default -->
                         <li class="clf">
-                            <span><i class="icon-check2-default"></i>名称</span>
+                            <span><i class="icon-check"></i>名称</span>
                             <span>签署方</span>
                             <span>发起时间</span>
                         </li>
-                        <li class="clf">
-                            <span><i class="icon-square"></i>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
+                        <li class="clf" v-for="(item,index) in addFile.fileList" @click="selectFileHandle(item)">
+                            <span :title="item.docName"><i :class="[item.select ? 'icon-check2-default' : 'icon-square']"></i>{{item.docName}}</span>
+                            <span :title="item.signators">{{item.signators}}</span>
+                            <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
                         </li>
-                        <li class="clf">
-                            <span><i class="icon-square"></i>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span><i class="icon-square"></i>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span><i class="icon-square"></i>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span><i class="icon-square"></i>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span><i class="icon-square"></i>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
+                        <li class="no-message" v-show="addFile.fileList.length == 0" v-text="'暂无数据'">
                         <!-- @pagechange="pageChangeHandel2" -->
                         <li>
-                            <p>共{{0}}条记录</p>
-                            <div class="page-box"><pagination :total="20" :currentpage="1" :display="10"  ></pagination></div>
+                            <p>共{{addFile.total}}条记录</p>
+                            <div class="page-box"><pagination :total="addFile.total" :currentpage="addFile.pageIndex" :display="addFile.pageLength"  @pagechange="pageHandelAlert"></pagination></div>
                         </li>
                     </ul>
                 </div>
@@ -169,35 +146,10 @@
                             <span>签署方</span>
                             <span>发起时间</span>
                         </li>
-                        <li class="clf">
-                            <span>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
-                        </li>
-                        <li class="clf">
-                            <span>交易合同</span>
-                            <span>数安时代，新签</span>
-                            <span>2017.3.23</span>
+                        <li class="clf" @click="delFileHandle(item)" v-for="(item,val) in addFile.selectFileList">
+                            <span :title="item.docName">{{item.docName}}</span>
+                            <span :title="item.signators">{{item.signators}}</span>
+                            <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
                         </li>
                     </ul>
                 </div>
@@ -277,7 +229,7 @@ export default {
         againSeName:"关键字：文件夹名称",
         againSeNameCenter:"",
         againFileList:[],         //重新归档文件列表
-        againFolderList:['a','b','c','d'],       //重新归档文件夹列表
+        againFolderList:[],       //重新归档文件夹列表
         getReParms:{
             signStartDate:'',
             signEndDate:'',
@@ -299,9 +251,24 @@ export default {
         timeSelect:false,
         loadingState:false,
         addFile:{            //添加文件
-            addFileState:false
+            addFileState:false,
+            fileList:[],
+            total:0,
+            params:{
+                condition:"关键字：合同名称",
+                pageIndex:1,
+                pageLength:5
+            },
+            searchTitleTem:"",   //搜索中间变量
+            selectFileList:[]
+
         }
 
+    }
+  },
+  computed:{
+    userState(){
+      return this.$store.state.userState
     }
   },
   methods:{
@@ -350,7 +317,7 @@ export default {
     },
     againFileListData(){      //获取归档文件列表
         //this.loadingState = true;
-        console.log("获取归档文件列表")
+        //console.log("获取归档文件列表")
         var That = this;
         this.httpGet('doc/archiveRecord/searchArchiveRecordList',{
             signStartDate:That.getReParms.signStartDate,
@@ -428,6 +395,63 @@ export default {
         console.log(response);
       })
     },
+    addFileHandle(){              //添加归档文件列表
+        this.addFile.addFileState = true;
+        var That = this;
+        var searchTitle = "";
+        if(this.addFile.params.condition == "关键字：合同名称"){
+            searchTitle = "";
+        }else{
+            searchTitle = this.addFile.params.condition;
+        }
+        this.httpGet('doc/documentList/searchDocumentList',{
+            'condition':searchTitle,
+            'pageIndex':That.addFile.params.pageIndex,
+            'pageLength':That.addFile.params.pageLength
+        },function(response){
+        var result = response.data;
+        if(result.meta.success){
+            That.addFile.fileList = result.data.list;     
+            for(var i = 0 ; i< That.addFile.fileList.length; i++){
+                That.addFile.fileList[i].select = false;
+                for(var j = 0;j<That.addFile.selectFileList.length;j++){
+                    That.addFile.selectFileList[j].select = true;
+                    if(That.addFile.selectFileList[j].docId == That.addFile.fileList[i].docId){
+                        That.addFile.fileList[i].select = true;
+                    }
+                }
+            }
+            That.addFile.total = result.data.totalCount;     
+        }else{
+            That.showAlertData = {
+                showAlert:true,
+                context:result.meta.message
+            }
+        }
+     },function(response){
+        console.log(response);
+     })
+    },
+    searchFileList(val){        //查询归档文件列表
+        if(val  == this.addFile.searchTitleTem) return
+
+        this.addFileHandle();
+        this.addFile.searchTitleTem = val;
+    },
+    selectFileHandle(item){      //添加归档文件
+        var state = item.select;
+        if(state){
+            this.removeArr(this.addFile.selectFileList,item);
+            item.select = false;
+        }else{
+            item.select = true;
+            this.addFile.selectFileList.push(item);
+        } 
+    },
+    delFileHandle(item){   //取消归档文件
+        item.select = false;
+        this.removeArr(this.addFile.selectFileList,item);
+    },
     searchFileHandle(val){
         //this.getReParms.searchKeyword = this.searchTitle;
         if(this.timeSelect){
@@ -453,6 +477,7 @@ export default {
             var result = response.data;
             if(result.meta.success){
                 That.addDir = false;
+                That.addFolderName = "";
                 That.getdirListData();
             }
         },function(response){
@@ -517,7 +542,7 @@ export default {
         this.againFileState = !this.againFileState;
         var tagX = event.target.offsetLeft;
         var tagY = event.target.offsetTop;
-        console.log(document.getElementById("againAlert"))
+        //console.log(document.getElementById("againAlert"))
         var objHtml = document.getElementById("againAlert");
         objHtml.style.left=tagX-382+'px';
         objHtml.style.top=tagY+40+'px';
@@ -537,9 +562,12 @@ export default {
         if(value == '关键字：文件夹名称'){
             this.againSeName = ""
         }
+        if(value == '关键字：合同名称'){
+            this.addFile.params.condition = "";
+        }
     },
     selectFile(num){   //选中归档文件
-        console.log(num)
+        //console.log(num)
         this.againNowIndex = num;
     },
     keyUpDown(event){       //重新归档选择
@@ -599,7 +627,7 @@ export default {
                  this.againFileState = false;
                  this.againNowIndexTem = this.againNowIndex = -1;*/
                  this.modifyParams.dirId = this.againFolderList[this.againNowIndex].dirId;
-                 console.log("提交重新归档接口");
+                 //console.log("提交重新归档接口");
                  this.modifyArchiveRecordDir()
             }
         }
@@ -611,8 +639,14 @@ export default {
         this.againNowIndexTem = this.againNowIndex = -1;
     },
 	pageChangeHandel(currentNum){  //侦听翻页函数
-		console.log("我被翻页了，页码是："+currentNum);
+		//console.log("我被翻页了，页码是："+currentNum);
+        this.getReParms.pageIndex = currentNum;
+        this.againFileListData();
 	},
+    pageHandelAlert(currentNum){
+        this.addFile.params.pageIndex = currentNum;
+        this.addFileHandle();
+    },
 	changeStartDate(value){
       this.getReParms.signStartDate=value;
       this.timeSelect = true;
@@ -629,10 +663,7 @@ export default {
   mounted(){
     this.getdirListData();
     this.getNowDate();
-
-     
-
-    
+    this.$store.dispatch('changeTitle','我的文档>归档');         
   }
 }
 </script>

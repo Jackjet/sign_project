@@ -46,6 +46,13 @@ export default new Router({
       path: '/statistics_detail/:companyId/:startTime/:endTime',
       name: 'statistics_detail',
       component: statistics_detail
+    },{
+      path:"/",
+      redirect: '' 
+    },
+    {
+      path:"*",
+      redirect: '' 
     }
   ]
 })

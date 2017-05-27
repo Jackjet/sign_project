@@ -27,7 +27,7 @@
             <span :title="item.docName">{{item.docName}}</span>
            <!--  <span>1000</span> -->
             <span :title="item.signDisplayName">{{item.signDisplayName}}</span>
-            <span :title="item.signTime">{{item.signTime}}</span>
+            <span :title="item.signTime">{{item.signTime | filterdata}}</span>
             <i></i>
           </li>
           <li class="pr">
@@ -76,7 +76,6 @@ export default {
         pageIndex:That.statisticsParms.pageIndex,
         pageLength:That.statisticsParms.pageLength
       },function(response){
-        console.log(response)
         var result = response.data;
         if(result.meta.success){
           That.statisticsList = result.data.list;
@@ -114,6 +113,7 @@ export default {
   mounted(){
     this.init();
     this.getData();
+    this.$store.dispatch('changeTitle','统计>签署次数');   
   }
 }
 </script>

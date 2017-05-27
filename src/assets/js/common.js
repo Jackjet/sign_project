@@ -1,8 +1,17 @@
 exports.install = function (Vue, options) {
-
+  
+  
+  //
+  /*开发环境*/
+  var localHost = 'http://192.168.22.237:8080';
   const apiPath = "/api/";
-  Vue.prototype.apiPath = "http://localhost:8080/";
- // const apiPath = "http://192.168.22.237:8080"
+  Vue.prototype.apiPath = "/api/";
+
+  /*线上环境*/
+  /*var localHost = window.location.host;
+  const apiPath = localHost;
+  Vue.prototype.apiPath = localHost;*/
+
   Vue.prototype.httpGet=function(url,data,success,fail){
      this.$http.get(apiPath + url,
      	{

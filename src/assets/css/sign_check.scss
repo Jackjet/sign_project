@@ -917,13 +917,14 @@ $border2:#dedede;
           height: 40px;
           line-height: 40px;
           position:relative;
+          cursor: pointer;
           span{
             width:33%;
             float: left;
             i{
               margin: 0 5px;
               color: #ccc;
-              &.icon-check-default{
+              &.icon-check2-default{
                 color: $pink;
               }
             }

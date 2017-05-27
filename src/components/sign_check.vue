@@ -50,7 +50,7 @@ export default {
         _this.uploadFileName = this.value;
 
         $('#uploadForm').ajaxSubmit({  
-          url : 'http://192.168.22.254:7001/doc/docVerify/verify',  
+          url : _this.apiPath+'doc/docVerify/verify',  
           //url : 'http://apioa.cuxiaoke.cn/pc/Jackay',  
 
           dataType: 'json',  
@@ -79,6 +79,9 @@ export default {
           success: function(res){
                  _this.setLSData("uploadData",res.data);
                  _this.setLSData("uploadMessage",res.meta);
+
+                 /*_this.$store.dispatch('changeStorageData',res.data);
+                 _this.$store.dispatch('changeStorageMsg',res.meta);*/
                  _this.$router.push({
                     name: 'sign_state'
                   });
@@ -96,7 +99,7 @@ export default {
   },
 
   mounted(){
-     
+    this.$store.dispatch('changeTitle','我的文档>验签');  
   }
 }
 </script>

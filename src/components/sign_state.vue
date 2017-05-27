@@ -45,7 +45,7 @@
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex';
 export default {
   name: 'sign_state',
   data () {
@@ -57,6 +57,18 @@ export default {
       imgUrl:"",
       list:[]
     }
+  },
+  computed:{
+    uploadData(){
+      return this.$store.state.uploadData;
+    },
+    uploadMessage(){
+      return this.$store.state.uploadMessage;
+    }
+    /*...mapGetters([
+      'uploadData',
+      'uploadMessage'
+    ])*/
   },
   methods:{
     againSign(){      
@@ -79,9 +91,8 @@ export default {
   mounted(){
     this.lostorgData = this.getLSData('uploadData');
     this.lostorgMsg = this.getLSData('uploadMessage');
-    console.log(this.lostorgData)
-    console.log(this.lostorgMsg)
     this.init();
+    this.$store.dispatch('changeTitle','我的文档>验签');  
   }
 }
 </script>

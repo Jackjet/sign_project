@@ -1,11 +1,11 @@
 <template>
   <div class="nav_top">
     <div class="nav-contain">
-      <h3>标题</h3>
-      <div class="btn-box">
-        <a href="javascript:;"><i class="icon-users"></i>添加成员</a>
-        <a href="javascript:;"><i class="icon-partner"></i>添加合作伙伴</a>
-        <a href="javascript:;"><i class="icon-sign"></i>发起签约</a>
+      <h3>{{topTitle}}</h3>
+      <div class="btn-box"> 
+        <a href="cus/orgStructure/toOrgStructurePage" v-if="userState == 1 "><i class="icon-users"></i>添加成员</a>
+        <a href="cus/companyPartners/toCompanyPartnersManagement" v-if="userState == 1"><i class="icon-partner"></i>添加合作伙伴</a>
+        <a href="doc/document/toFillin" v-if="userState == 2 || userState ==3"><i class="icon-sign" ></i>发起签约</a>
       </div>
     </div>
   </div>
@@ -16,47 +16,15 @@ export default {
   name: 'nav_top',
   data () {
     return {
-      url: 'http://192.168.22.237:8080',
-      userState:null,
-      msg:{},
-      activeFile:true,
-      activeTj:true,
     }
   },
-  methods:{
-    getData(){
-      var That = this;
-      this.httpGet('cus/account/getCurAccount',{},function(response){
-        var result = response.data;
-        if(result.meta.success){
-          That.msg = result.data;
-          That.userState = result.data.accType;
-        }
-      },function(response){
-        console.log(response);
-      })
+  computed:{
+    userState(){
+      return this.$store.state.userState
+    },
+    topTitle(){
+      return this.$store.state.top_title;
     }
-  },
-  mounted(){        
-        $('#sidebar-menu ul>li[name="menuLiUser"]').on('click',function () {
-            $(this).addClass('active');
-            $(this).children('.child_menu').slideDown();
-            $(this).siblings('li').removeClass('active');
-            $(this).siblings('li').children('.child_menu').slideUp();
-        })
-        this.getData();
-        $("#sidebar-menu ul>li.active").find('.child_menu').slideDown();
-    //console.log(this.$route)
-  },
-  watch: {
-    // 如果路由有变化，会再次执行该方法
-    '$route': function(to,from){
-        var _this = this;
-        if(to.name == "file" || to.name == "sign_check"){
-          _this.activeFile = true;
-        }
-    }
-
   }
 }
 </script>

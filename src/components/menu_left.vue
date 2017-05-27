@@ -5,7 +5,6 @@
                     <a href="/jsp/cus/account/accountIndex" class="site_title"><i></i></a>
                 </div>
                 <div class="clearfix"></div>
-                <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                     <div class="menu_section">
                         <ul class="side-menu">
@@ -17,10 +16,8 @@
                                 <a id="indLogoutIcon" href="#">
                                     <i class=" icon-sign-out-1" title="退出"></i>
                                 </a>
-
                             </li>
-
-                            <li name="menuLiAdmin" v-if="userState == 0"><a><i class="icon-group"></i> 企业管理 <span
+                            <li name="menuLiAdmin" v-if="userStateNum == 0"><a><i class="icon-group"></i> 企业管理 <span
                                     class="fa fa-chevron-left"></span></a>
 
                                 <ul class="child_menu">
@@ -30,52 +27,52 @@
                                 </ul>
 
                             </li>
-                            <li name="menuLiAdmin" v-if="userState == 0"><a><i class="icon-mail-list"></i> 系统管理 <span
+                            <li name="menuLiAdmin" v-if="userStateNum == 0"><a><i class="icon-mail-list"></i> 系统管理 <span
                                     class="fa fa-chevron-left"></span></a>
                                 <ul class="child_menu" style="display:none">
                                     <li><a :href="url+'/sys/function/functionPage'">功能管理</a></li>
                                     <li><a :href="url+'/sys/function/roleFunctionPage'">权限管理</a></li>
                                 </ul>
                             </li>
-                            <li name="menuLiAdmin" :class="[{ active: activeTj}]" v-if="userState == 0" class="active">
+                            <li name="menuLiAdmin" :class="[{ active: activeTj}]" v-if="userStateNum == 0" class="active">
                                 <a><i class="icon-file"></i> 统计 <span class="fa fa-chevron-left"></span></a>
                                 <ul class="child_menu" style="display:block">
                                     <li><router-link to="/statistics_count">签署次数</router-link></li>
                                     <!-- <li><a to="/">日志</a></li> -->
                                 </ul>
                             </li>
-                            <li v-if="userState != 0" name="menuLiUser" ><a :href="url+'/cus/account/accountIndex'"><i
+                            <li v-if="userStateNum != 0" name="menuLiUser" ><a :href="url+'/cus/account/accountIndex'"><i
                                     class="icon-home"></i> 首页 </a></li>
-                            <li v-if="userState != 0" :class="[{ active: activeFile}]" name="menuLiUser" ><a><i class="icon-file"></i> 我的文档{{activeFile}}<span class="fa fa-chevron-left"></span></a>
+                            <li v-if="userStateNum != 0" :class="[{ active: activeFile}]" name="menuLiUser" ><a><i class="icon-file"></i> 我的文档<span class="fa fa-chevron-left"></span></a>
                                 <ul class="child_menu">
                                     <li><a :href="url+'/doc/documentList/sign'">文档列表</a></li>
-                                    <li id="aDraft" v-if="userState == 2 || userState == 3"><a :href="url+'/doc/documentList/draft'">草稿箱</a> </li>
+                                    <li id="aDraft" v-if="userStateNum == 2 || userStateNum == 3"><a :href="url+'/doc/documentList/draft'">草稿箱</a> </li>
                                     <li><router-link to="/file">归档</router-link></li>
                                     <li><router-link to="/sign_check">验签</router-link></li>
                                 </ul>
                             </li>
-                            <li v-if="userState != 0" name="menuLiUser"><a><i class="icon-user"></i> 我的账户 <span class="fa fa-chevron-left"></span></a>
+                            <li v-if="userStateNum != 0" name="menuLiUser"><a><i class="icon-user"></i> 我的账户 <span class="fa fa-chevron-left"></span></a>
                                 <ul class="child_menu">
                                     <li><a :href="url+'/cus/account/security'">安全设置</a></li>
                                     <li><a :href="url+'/cus/account/basicInfo'">基本信息</a></li>
                                     <li><a :href="url+'/doc/stamp/stampList'">签章样式</a></li>
                                 </ul>
                             </li>
-                            <li v-if="userState != 0" name="menuLiUser"><a><i class="icon-mail-list"></i> 通讯录 <span class="fa fa-chevron-left"></span></a>
+                            <li v-if="userStateNum != 0" name="menuLiUser"><a><i class="icon-mail-list"></i> 通讯录 <span class="fa fa-chevron-left"></span></a>
                                 <ul class="child_menu">
-                                    <li class="hideMenuLi adminPartners" v-if="userState == 1"><a
+                                    <li class="hideMenuLi adminPartners" v-if="userStateNum == 1"><a
                                             :href="url+'/cus/companyPartners/toCompanyPartnersManagement'">合作伙伴</a>
                                     </li>
-                                    <li class="hideMenuLi adminPartners" v-if="userState == 1"><a
+                                    <li class="hideMenuLi adminPartners" v-if="userStateNum == 1"><a
                                             :href="url+'/cus/orgStructure/toOrgStructurePage'">组织架构</a>
                                     </li>
-                                    <li class="hideMenuLi cusPartners" v-if="userState == 2 "><a
+                                    <li class="hideMenuLi cusPartners" v-if="userStateNum == 2 "><a
                                             :href="url+'/cus/companyPartners/toCompanyPartnersManagement'">合作伙伴</a>
                                     </li>
-                                    <li class="hideMenuLi cusPartners" v-if="userState == 2"><a
+                                    <li class="hideMenuLi cusPartners" v-if="userStateNum == 2"><a
                                             :href="url+'/cus/orgStructure/toOrgStructurePage'">组织架构</a>
                                     </li>
-                                    <li class="hideMenuLi comPartners" v-if="userState == 3"><a
+                                    <li class="hideMenuLi comPartners" v-if="userStateNum == 3"><a
                                             :href="url+'/cus/companyPartners/toCompanyPartnersManagement'">合作伙伴</a>
                                     </li>
                                 </ul>
@@ -85,49 +82,54 @@
 
                     </div>
                 </div>
-                <!-- /sidebar menu -->
             </div>
         </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'menu_left',
   data () {
     return {
-      url: 'http://192.168.22.237:8080',
-      userState:null,
+      url: '',
       msg:{},
+      userStateNum:null,
       activeFile:true,
-      activeTj:true,
+      activeTj:true
     }
+  },
+  computed:{
+    ...mapGetters([
+      'userState'
+    ])
   },
   methods:{
     getData(){
       var That = this;
       this.httpGet('cus/account/getCurAccount',{},function(response){
-        console.log(256)
         var result = response.data;
         if(result.meta.success){
           That.msg = result.data;
-          That.userState = result.data.accType;
-          That.$store.dispatch('changeState',{'userState':result.data.accType});
-
+          That.userStateNum = result.data.accType;
+          That.$store.dispatch('changeState',result.data.accType);          
         }
       },function(response){
         console.log(response);
       })
     }
   },
-  mounted(){        
+  mounted(){    
+         this.getData();          
         $('#sidebar-menu ul>li[name="menuLiUser"]').on('click',function () {
-            $(this).addClass('active');
-            $(this).children('.child_menu').slideDown();
-            $(this).siblings('li').removeClass('active');
-            $(this).siblings('li').children('.child_menu').slideUp();
+          $(this).addClass('active');
+          $(this).children('.child_menu').slideDown();
+          $(this).siblings('li').removeClass('active');
+          $(this).siblings('li').children('.child_menu').slideUp();
         })
-        this.getData();
+        //this.getData();
         $("#sidebar-menu ul>li.active").find('.child_menu').slideDown();
+        this.url = this.apiPath;
   },
   watch: {
     // 如果路由有变化，会再次执行该方法
@@ -137,10 +139,6 @@ export default {
           _this.activeFile = true;
         }
     }
-
-  },
-  mounted(){
-    this.getData();
   }
 }
 </script>
