@@ -24,7 +24,7 @@
           </div>
       </div>
       <div class="panel-box panel-white"  v-cloak>
-        <h3 class="title">统计时间：2017.05.19 13:00 <a class="btn-default btn-pink" href="javascript:;" @click="exportData()">导出Excel</a></h3>
+        <h3 class="title">统计时间：{{statisticsParms.startTime}} 至 {{statisticsParms.endTime}} <a class="btn-default btn-pink" href="javascript:;" @click="exportData()">导出Excel</a></h3>
         <div class="table">
           <li class="title">
             <span>企业名称</span>
@@ -148,7 +148,8 @@ export default {
    
     this.getNowDate();
     this.getData();
-    this.$store.dispatch('changeTitle','统计>签署次数');         
+    this.$store.dispatch('changeTitle','统计>签署次数');  
+    document.title = "统计>签署次数";       
   }
 }
 </script>

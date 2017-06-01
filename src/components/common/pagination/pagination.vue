@@ -86,7 +86,10 @@ export default {
 				this.$emit('pagechange',idx);               	
 			}                
 		}
-	}
+	},
+    mounted(){
+        console.log(this.currentpage)
+    }
 }
 </script>
 <style scoped lang="scss">

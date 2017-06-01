@@ -31,8 +31,8 @@
                   </div>
                   <ul class="clf">
                       <li class="row clf" v-for="(item,index) in list">
-                          <span class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >签署方：{{item.auth}}</span>
-                          <span class="col-lg-4 col-md-4 col-sm-4 col-xs-4">颁发机构：{{item.signCertName}}</span>
+                          <span class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >签署方：{{item.signCertName}}</span>
+                          <span class="col-lg-4 col-md-4 col-sm-4 col-xs-4">颁发机构：{{item.auth}}</span>
                           <span class="col-lg-4 col-md-4 col-sm-4 col-xs-4">签约时间：{{item.signTime}}</span>
                       </li>
                   </ul>
@@ -93,6 +93,7 @@ export default {
     this.lostorgMsg = this.getLSData('uploadMessage');
     this.init();
     this.$store.dispatch('changeTitle','我的文档>验签');  
+    document.title = "我的文档>验签";
   }
 }
 </script>

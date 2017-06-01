@@ -113,7 +113,8 @@ export default {
   mounted(){
     this.init();
     this.getData();
-    this.$store.dispatch('changeTitle','统计>签署次数');   
+    this.$store.dispatch('changeTitle','统计>签署次数'); 
+    document.title = "统计>签署次数";         
   }
 }
 </script>

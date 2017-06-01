@@ -1,32 +1,36 @@
-exports.install = function (Vue, options) {
-  
+exports.install = function (Vue, options) { 
   
   //
+  
+  var localHost = window.location.host;
+
   /*开发环境*/
-  var localHost = 'http://192.168.22.237:8080';
   const apiPath = "/api/";
   Vue.prototype.apiPath = "/api/";
 
+  
+
   /*线上环境*/
-  /*var localHost = window.location.host;
-  const apiPath = localHost;
-  Vue.prototype.apiPath = localHost;*/
+  // const apiPath = localHost+'/';
+  // Vue.prototype.apiPath = 'http://'+localHost+'/';
+
+
+  //Vue.prototype.url = localHost;
 
   Vue.prototype.httpGet=function(url,data,success,fail){
-     this.$http.get(apiPath + url,
+
+      /*测试*/
+      this.$http.get(apiPath+url,
+
+      /*开发*/
+      // this.$http.get(url,
      	{
      		params:data,
      		headers: {'X-Requested-With':'XMLHttpRequest'}
      	}).then(success).catch(fail)
   };
 
-  Vue.prototype.httpPost=function(url,data,success,fail){
-     this.$http.post(apiPath + url,
-      {
-        params:data,
-        headers: {'X-Requested-With':'XMLHttpRequest'}
-      }).then(success).catch(fail)
-  };
+  
 
   /*
    * 获取当前时间和一个月

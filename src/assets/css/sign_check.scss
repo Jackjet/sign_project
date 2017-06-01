@@ -421,7 +421,51 @@ $border2:#dedede;
         }
       }
     }
-
+    .table-seven{
+      li{
+        span{
+          width:12%;
+          padding-left:2%;
+          word-break:keep-all;/* 不换行 */
+          white-space:nowrap;/* 不换行 */
+          overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+          text-overflow:ellipsis;
+          &.widthAuto{
+            width: auto;
+          }
+        }
+      } 
+    }
+    .table-six{
+      li{
+        span{
+          width:14%;
+          padding-left:2%;
+          word-break:keep-all;/* 不换行 */
+          white-space:nowrap;/* 不换行 */
+          overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+          text-overflow:ellipsis;
+          &.widthAuto{
+            width: auto;
+          }
+        }
+      } 
+    }
+    .table-elven{
+      li{
+        span{
+          width:8%;
+          padding-left:2%;
+          word-break:keep-all;/* 不换行 */
+          white-space:nowrap;/* 不换行 */
+          overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+          text-overflow:ellipsis;
+          &.widthAuto{
+            width: auto;
+          }
+        }
+      } 
+    }
   }
 }
 
@@ -476,6 +520,7 @@ $border2:#dedede;
         }
       } 
     }
+    
   }
 }
 .file{
@@ -921,6 +966,10 @@ $border2:#dedede;
           span{
             width:33%;
             float: left;
+            word-break:keep-all;/* 不换行 */
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;
             i{
               margin: 0 5px;
               color: #ccc;

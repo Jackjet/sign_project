@@ -9,11 +9,11 @@
                     <div class="menu_section">
                         <ul class="side-menu">
                             <li class="menuUserHeadIcon">
-                                <img src="../assets/images/img.jpg">
+                                <img src="/cus/account/getHeadIcon">
                                 
                                 <h3 id="menuDisplayNameText " class="shengl">{{msg.displayName}}</h3>
                                 <p id="menuCompanyNameText" class="shengl">{{msg.companyName}}</p>
-                                <a id="indLogoutIcon" href="#">
+                                <a id="indLogoutIcon" href="/logout">
                                     <i class=" icon-sign-out-1" title="退出"></i>
                                 </a>
                             </li>
@@ -38,6 +38,7 @@
                                 <a><i class="icon-file"></i> 统计 <span class="fa fa-chevron-left"></span></a>
                                 <ul class="child_menu" style="display:block">
                                     <li><router-link to="/statistics_count">签署次数</router-link></li>
+                                    <li><router-link to="/log">日志</router-link></li>
                                     <!-- <li><a to="/">日志</a></li> -->
                                 </ul>
                             </li>
@@ -129,7 +130,8 @@ export default {
         })
         //this.getData();
         $("#sidebar-menu ul>li.active").find('.child_menu').slideDown();
-        this.url = this.apiPath;
+       // this.url = this.url;
+       // console.log(this.url)
   },
   watch: {
     // 如果路由有变化，会再次执行该方法
@@ -269,7 +271,10 @@ export default {
         border-left:4px solid #FF503F;
         &>a{
           background: $pink;
-          color: $white;
+          color: $white ;
+          a{
+            color: white;
+          }
           &:hover{
             background: $pink;
           }
@@ -277,6 +282,11 @@ export default {
         .fa{
           //@include prefixer(transform,rotate(-90deg));
           transform:rotate(-90deg);
+        }
+      }
+      &.active{
+        a{
+          color: white;
         }
       }
     }

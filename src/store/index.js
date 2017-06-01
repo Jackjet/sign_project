@@ -35,7 +35,6 @@ const Mutations = {
       state.uploadMessage = jsonData;
   },
   changeTitle(state,stringData){
-    console.log(stringData)
       state.top_title = stringData;
   }
 }

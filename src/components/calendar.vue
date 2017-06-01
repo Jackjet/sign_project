@@ -3,9 +3,9 @@
         <div class='input-wrapper' v-show='showInput'>
             <!--<i class='date-icon' :style='setIconUrl'></i>-->
             <div class='input' v-text='value' :style='{width: inputWidth}' @click='togglePanel = !togglePanel'></div>
-           <!--  <span class='input-clear' v-show="value" @click='clearValue'></span> -->
+            <span class='input-clear' v-show="value" @click='clearValue'></span>
             <!-- <span class='input-icon icon-calendar' v-show="!value" @click='togglePanel = !togglePanel'></span> -->
-            <span class='input-icon icon-calendar' @click='togglePanel = !togglePanel'></span>
+            <span class='input-icon icon-calendar'  v-show="!value" @click='togglePanel = !togglePanel'></span>
         </div>
         <transition name='toggle'>
             <div class='pannel-wrapper' :style='themePannelBg' v-show='togglePanel'>
@@ -106,6 +106,10 @@
             }
         },
         props: {
+            val:{          //默认显示值
+                type:String,
+                default:"2"
+            },
             type: {
                 type: String,
                 default: 'single'            //range/time
@@ -216,12 +220,9 @@
             }
         },
         created() {  //初始化
-            //this.changeValue();
+            this.changeValue();            
         },
         methods: {
-            clearValue() {
-                this.date = '';
-            },
             showYearPannel() {
                 this.pannelType = 'year';
             },
@@ -341,7 +342,12 @@
             changeValue() {
                 switch(this.type) {
                     case 'single':
-                        this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
+                        //this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
+                        if(this.val == 1){
+                            this.value = this.getDataFn().formatwdate;
+                        }else{
+                            this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
+                        }
                         break;
                     case 'range':
                         this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate} -- ${this.endYear}${this.format}${this.endMonth + 1}${this.format}${this.endDate}`;
@@ -538,6 +544,7 @@
                 }
             }
         }
+
     }
 </script>
 

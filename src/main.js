@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store/index.js'
 import axios from 'axios'
+axios.defaults.withCredentials = true;
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
@@ -53,6 +54,16 @@ Vue.prototype.removeArr = function(arr,val) {
     return arr;
 };
 
+Vue.prototype.httpPost=function(url,data,success,fail){
+      this.$http({
+        "method":"POST",
+        "url":Vue.prototype.apiPath + url,
+        "data":JSON.stringify(data),
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        requestHeader:{'Content-Type':'application/json'},
+        responseType: 'json'
+      }).then(success).catch(fail)
+  };
 
 Vue.filter('filterdata', function (value) {//value为13位的时间戳
     function add0(m) {

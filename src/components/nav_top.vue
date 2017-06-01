@@ -3,9 +3,9 @@
     <div class="nav-contain">
       <h3>{{topTitle}}</h3>
       <div class="btn-box"> 
-        <a href="cus/orgStructure/toOrgStructurePage" v-if="userState == 1 "><i class="icon-users"></i>添加成员</a>
-        <a href="cus/companyPartners/toCompanyPartnersManagement" v-if="userState == 1"><i class="icon-partner"></i>添加合作伙伴</a>
-        <a href="doc/document/toFillin" v-if="userState == 2 || userState ==3"><i class="icon-sign" ></i>发起签约</a>
+        <a href="/cus/orgStructure/toOrgStructurePage" v-if="userState == 1 "><i class="icon-users"></i>添加成员</a>
+        <a href="/cus/companyPartners/toCompanyPartnersManagement" v-if="userState == 1"><i class="icon-partner"></i>添加合作伙伴</a>
+        <a href="/doc/document/toFillin" v-if="userState == 2 || userState ==3"><i class="icon-sign" ></i>发起签约</a>
       </div>
     </div>
   </div>

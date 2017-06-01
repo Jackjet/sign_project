@@ -48,12 +48,12 @@
 					<div class="row clf">
 					  <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">签约时间</div>
 					  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-						<span class="input"><calendar @changeDate="changeStartDate"></calendar></span>
+						<span class="input"><calendar @changeDate="changeStartDate" :val="dataVal"></calendar></span>
 						<span class="txt">至</span>
 						<span class="input"><calendar @changeDate="changeEndDate"></calendar></span>
 					  </div>
 					  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" name="" placeholder="关键字：企业名称" v-model="getReParms.searchKeyword"  @keyup.enter="searchFileHandle(getReParms.searchKeyword)"></div>
-					  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 btn-box"><a href="#" class="search-btn" @click="searchFileHandle(getReParms.searchKeyword)">查询</a><a href="#">清空</a></div>
+					  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 btn-box"><a href="javascript:;" class="search-btn" @click="searchFileHandle(getReParms.searchKeyword)">查询</a><a href="javascript:;" @click="deleteHandle()">清空</a></div>
 					</div>
 				  </div>
 			  </div>
@@ -73,7 +73,7 @@
                 <span :title="item.signators">{{item.signators}}</span>
                 <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
                 <span :title="item.efectTime">{{item.efectTime | filterdata}}</span>
-                <span :title="item.cycle">{{item.cycle == 300 ? '已完成':''}}</span>
+                <span :title="item.cycle">{{item.cycle == 300 ? '已完成':'&nbsp;'}}</span>
                 <span><a @click="againFile($event,index)">重新归档</a><a href="javascript:;" @click="cancelFile(item)">撤销归档</a></span>     
               </li>
               <li class="no-message" v-show="loadingState">加载中，请稍后</li>
@@ -109,7 +109,7 @@
         <div class="cover"></div>
         <div class="addFileContent">
             <div class="alert-header">
-                <h3>添加归档文件<i class="icon-close" @click="addFile.addFileState = false"></i></h3>
+                <h3>添加归档文件<i class="icon-close" @click="cancelBatch()"></i></h3>
             </div>
             <div class="alert-body">
                 <div class="search">
@@ -133,12 +133,12 @@
                         <!-- @pagechange="pageChangeHandel2" -->
                         <li>
                             <p>共{{addFile.total}}条记录</p>
-                            <div class="page-box"><pagination :total="addFile.total" :currentpage="addFile.pageIndex" :display="addFile.pageLength"  @pagechange="pageHandelAlert"></pagination></div>
+                            <div class="page-box"><pagination :total="addFile.total" :currentpage="addFile.params.pageIndex" :display="addFile.params.pageLength"  @pagechange="pageHandelAlert"></pagination></div>
                         </li>
                     </ul>
                 </div>
                 <div class="selectList">
-                    <h3>已选文件<span>(单击移除)</span><b>6/244</b></h3>
+                    <h3>已选文件<span>(单击移除)</span><!-- <b>6/244</b> --></h3>
                     <div class="table-list select-list mCustomScrollbar">
                     <ul>
                         <li class="clf">
@@ -146,7 +146,7 @@
                             <span>签署方</span>
                             <span>发起时间</span>
                         </li>
-                        <li class="clf" @click="delFileHandle(item)" v-for="(item,val) in addFile.selectFileList">
+                        <li class="clf" @click="delFileHandle(item)" v-for="(item,val) in selectFileList">
                             <span :title="item.docName">{{item.docName}}</span>
                             <span :title="item.signators">{{item.signators}}</span>
                             <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
@@ -156,8 +156,8 @@
                 </div>
             </div>
             <div class="alert-footer">
-                <a href="javascript:;" class="cancel-btn">取消</a>
-                <a href="javascript:;" class="sure-btn">确定</a>                 
+                <a class="cancel-btn" @click="cancelBatch()">取消</a>
+                <a class="sure-btn" @click="batchaddArchiveRecords()">确定</a>                 
             </div>
         </div>
     </div>
@@ -250,7 +250,7 @@ export default {
         searchTitleTem:"",   //搜索临时变量
         timeSelect:false,
         loadingState:false,
-        addFile:{            //添加文件
+        addFile:{            //添加归档
             addFileState:false,
             fileList:[],
             total:0,
@@ -260,9 +260,12 @@ export default {
                 pageLength:5
             },
             searchTitleTem:"",   //搜索中间变量
-            selectFileList:[]
+            //selectFileList:[]
 
-        }
+        },
+        selectFileList:[],
+        batchAdd:[],      //批量添加归档文件数据
+        dataVal:'1'
 
     }
   },
@@ -271,9 +274,20 @@ export default {
       return this.$store.state.userState
     }
   },
-  methods:{
-    getdirListData(){       //获取文件夹数据
+  watch:{
+    selectFileList:{
+        handler: function (val, oldVal) {
 
+        },
+        deep: true
+    }
+  },
+  methods:{
+    deleteHandle(){    //清空
+        this.dataVal='2';
+        console.log(this.dataVal)
+    },
+    getdirListData(){       //获取文件夹数据
         var That = this;
         this.httpGet('doc/archiveDir/searchArchiveDirList',{
             'dirName':That.seFolderName
@@ -380,6 +394,8 @@ export default {
         if(result.meta.success){
            // That.loadingState = false;
             That.showCancelAlert.showAlert = false;
+            That.selectFileList = [];
+            That.addFile.fileList = [];
             That.showAlertData = {
                 showAlert:true,
                 context:"文件撤销归档成功！"
@@ -394,6 +410,72 @@ export default {
       },function(response){
         console.log(response);
       })
+    },
+    cancelBatch(){   //取消归档
+        this.addFile.addFileState = false;
+        this.selectFileList = [];
+        this.addFile.fileList = [];
+    },
+    batchaddArchiveRecords(){  
+       /*this.httpPost('doc/archiveRecord/addArchiveRecords',{
+            archiveRecordsJsonStr: 123
+        },function(response){
+            console.log(response)                      
+        });*/
+        //批量添加归档文件
+        var batchAddLength = this.selectFileList.length;
+        if(batchAddLength == 0) return;
+
+        var dirId = this.dirList[this.selectIndex].dirId;
+        for(var i = 0; i<this.selectFileList.length;i++){
+            this.batchAdd.push({
+                "dirId":dirId,
+                "docId":this.selectFileList[i].docId
+            })
+        }
+        var That = this;        
+        $.ajax({
+            type: 'POST',
+            async: false,// 同步
+            url: That.apiPath+'doc/archiveRecord/addArchiveRecords',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(That.batchAdd),
+            dataType: 'json',
+            cache: false,
+            success: function(response) {
+                if(response.meta.success){
+                    That.addFile.addFileState = false;
+                    That.againFileListData();
+                    That.showAlertData = {
+                        showAlert:true,
+                        context:"批量归档成功！"
+                    }    
+                }else{
+                    That.showAlertData = {
+                        showAlert:true,
+                        context:result.meta.message
+                    }
+                } 
+            }
+        });
+
+       /* this.httpGet('doc/archiveRecord/addArchiveRecords',{
+            "archiveRecordsJsonStr":That.batchAdd
+        },function(response){
+            if(result.meta.success){
+                That.showAlertData = {
+                    showAlert:true,
+                    context:"批量归档成功！"
+                }    
+            }else{
+                That.showAlertData = {
+                    showAlert:true,
+                    context:result.meta.message
+                }
+            }                       
+        },function(response){
+            console.log(response)
+        })*/
     },
     addFileHandle(){              //添加归档文件列表
         this.addFile.addFileState = true;
@@ -414,9 +496,9 @@ export default {
             That.addFile.fileList = result.data.list;     
             for(var i = 0 ; i< That.addFile.fileList.length; i++){
                 That.addFile.fileList[i].select = false;
-                for(var j = 0;j<That.addFile.selectFileList.length;j++){
-                    That.addFile.selectFileList[j].select = true;
-                    if(That.addFile.selectFileList[j].docId == That.addFile.fileList[i].docId){
+                for(var j = 0;j<That.selectFileList.length;j++){
+                    That.selectFileList[j].select = true;
+                    if(That.selectFileList[j].docId == That.addFile.fileList[i].docId){
                         That.addFile.fileList[i].select = true;
                     }
                 }
@@ -440,17 +522,18 @@ export default {
     },
     selectFileHandle(item){      //添加归档文件
         var state = item.select;
+        console.log(item)
         if(state){
-            this.removeArr(this.addFile.selectFileList,item);
+            this.removeArr(this.selectFileList,item);
             item.select = false;
         }else{
             item.select = true;
-            this.addFile.selectFileList.push(item);
+            this.selectFileList.unshift(item);
         } 
     },
     delFileHandle(item){   //取消归档文件
         item.select = false;
-        this.removeArr(this.addFile.selectFileList,item);
+        this.removeArr(this.selectFileList,item);
     },
     searchFileHandle(val){
         //this.getReParms.searchKeyword = this.searchTitle;
@@ -648,10 +731,13 @@ export default {
         this.addFileHandle();
     },
 	changeStartDate(value){
+        console.log(new Date(value).getTime())
+      
       this.getReParms.signStartDate=value;
       this.timeSelect = true;
     },
     changeEndDate(value){
+        console.log(new Date(value).getTime())
       this.getReParms.signEndDate=value;
       this.timeSelect = true;
     },
@@ -663,7 +749,8 @@ export default {
   mounted(){
     this.getdirListData();
     this.getNowDate();
-    this.$store.dispatch('changeTitle','我的文档>归档');         
+    this.$store.dispatch('changeTitle','我的文档>归档');    
+    document.title = "我的文档>归档"         
   }
 }
 </script>

@@ -1,6 +1,6 @@
 /* Scss Document */
-html{font-family:"Microsoft YaHei","Microsoft YaHei UI",sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;font-size:14px;}
-html,body,div,object,iframe,applet,object,h1,h2,h3,h4,h5,h6,p,blockquote,pre,address,dl,dt,dd,ol,ul,li,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,ruby,section,summary,time,mark,audio,video,progress{margin:0;padding:0;border:0;vertical-align:baseline}
+html{font-family:"Microsoft YaHei", tahoma, arial, "Hiragino Sans GB", "宋体", sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;font-size:14px;}
+html,body,div,object,iframe,applet,object,h1,h2,h3,h4,h5,h6,p,blockquote,pre,address,dl,dt,dd,ol,ul,li,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,menu,nav,output,ruby,section,summary,time,mark,audio,video,progress{margin:0;padding:0;border:0;vertical-align:baseline;font-family:"Microsoft YaHei", tahoma, arial, "Hiragino Sans GB", "宋体", sans-serif;}
 li{list-style:none}
 article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}
 audio,canvas,progress,video{display:inline-block}
@@ -45,6 +45,10 @@ html,body,#app{height:100%;width:100%;position:relative; margin:0;padding:0}
 body{
   margin: 0 !important;
 }
+a{
+  cursor: pointer;
+}
+a:focus{outline:none !important;}
 //bootstrap
 .container {
   padding-right: 15px;
