@@ -47,10 +47,16 @@ Vue.prototype.removeLSData=function(key){
 };
 
 Vue.prototype.removeArr = function(arr,val) {
+  // console.log("开始数组")
+  //  console.log(arr)
+  //  console.log("比较数组")
+  //  console.log(val)
     var index = arr.indexOf(val);
     if (index > -1) {
         arr.splice(index, 1);
     }
+    // console.log("结果数组")
+    // console.log(arr)
     return arr;
 };
 
@@ -79,6 +85,18 @@ Vue.filter('filterdata', function (value) {//value为13位的时间戳
 
 
 router.beforeEach((to, from, next) => {
+  if(to.name == "file"){
+    document.title="我的文档>归档"
+  }
+  if(to.name == "sign_check"){
+    document.title="我的文档>验签"
+  }
+  if(to.name == "statistics_count"){
+    document.title="统计>签署次数"
+  }
+  if(to.name == "log"){
+    document.title="统计>日志"
+  }
   if(to.name != 'sign_state'){   
     localStorage.removeItem('uploadData');
     localStorage.removeItem('uploadMessage');    

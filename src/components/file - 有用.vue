@@ -299,7 +299,6 @@ export default {
     },
     getdirListData(){       //获取文件夹数据
         var That = this;
-        console.log("dirName:"+That.seFolderName)
         this.httpGet('doc/archiveDir/searchArchiveDirList',{
             'dirName':That.seFolderName
         },function(response){
@@ -308,11 +307,8 @@ export default {
             That.dirList = result.data;     
             That.getReParms.dirId = That.dirList[That.selectIndex].dirId;
             That.selectTitle = That.dirList[That.selectIndex].dirName; 
-            for(var i = 0 ; i < That.dirList.length; i++){  
-               // console.log(That.dirList[i]);
-
+            for(var i = 0 ; i < That.dirList.length; i++){    
                 (function(i){
-                    console.log("dirId:"+That.dirList[i].dirId)
                     That.httpGet('doc/archiveRecord/getArchiveRecordCount',{
                         'dirId':That.dirList[i].dirId
                     },function(res){
@@ -320,7 +316,6 @@ export default {
                        // console.log(result2.meta.success)
                         if(result2.meta.success){
                             That.dirList[i].num = result2.data;
-                           // alert(That.dirList[i].num)
                         }
                     },function(){})
                 })(i)
@@ -584,7 +579,7 @@ export default {
         console.log("状态"+state2)
        
        if(state2){
-            item2.select = true;
+            item.select = true;
             this.removeArr(this.selectFileList,item2);
             item2.selectItem = false;
         }else{

@@ -38,7 +38,7 @@
                                 <a><i class="icon-file"></i> 统计 <span class="fa fa-chevron-left"></span></a>
                                 <ul class="child_menu" style="display:block">
                                     <li><router-link to="/statistics_count">签署次数</router-link></li>
-                                    <li><router-link to="/log">日志</router-link></li>
+                                    <li><router-link to="/log/user_operation/1">日志</router-link></li>
                                     <!-- <li><a to="/">日志</a></li> -->
                                 </ul>
                             </li>
@@ -180,17 +180,17 @@ export default {
       padding-left: 2px;
       i {
         display: block;
-        width:142px;
-        height:50px;
-        background: url($URL+'logo-white03.png') left no-repeat;
-        -webkit-background-size:100% 100%;
-        background-size:100% 100%;
+        width:79px;
+        height:39px;
+        background: url($URL+'logo.svg') left no-repeat;
+        -webkit-background-size:90% 90%;
+        background-size:90% 90%;
         -webkit-border-radius:0px;
         -moz-border-radius:0px;
         border-radius:0px;
         border:none;
-        padding:0;
-        margin-top:-2px;
+        padding-left:18px;
+        margin-top:5px;
       }
     }
   }

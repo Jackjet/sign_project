@@ -2,9 +2,11 @@
   <div class="statistics_count">
     <div class="right_col">
       <div class="tab-nav">
-        <router-link to="/log/user_operation/1">用户操作日志</router-link>
-        <router-link to="/log/user_operation/2">文档操作日志</router-link>
-        <router-link to="/log/user_operation/3">签署过程日志</router-link>
+        <div class="tab-box">
+          <router-link to="/log/user_operation/1">用户操作日志</router-link>
+          <router-link to="/log/user_operation/2">文档操作日志</router-link>
+          <router-link to="/log/user_operation/3">签署过程日志</router-link>
+        </div>
       </div>  
       <router-view></router-view> 
     </div>

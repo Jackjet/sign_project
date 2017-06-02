@@ -73,7 +73,7 @@ export default {
 	top:0;
 	left:0;
 	background:rgba(0,0,0,0.8);
-	z-index: 100;
+	z-index: 9999;
 	.alert-model{
 		width:398px;
 		position:absolute;
@@ -112,6 +112,7 @@ export default {
 			text-align:center;
 			h3{
 				font-weight: normal;
+				line-height:35px;
 			}
 		}
 		.alert-footer{

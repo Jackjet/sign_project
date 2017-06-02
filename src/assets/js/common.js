@@ -11,19 +11,19 @@ exports.install = function (Vue, options) {
   
 
   /*线上环境*/
-  // const apiPath = localHost+'/';
-  // Vue.prototype.apiPath = 'http://'+localHost+'/';
+   // const apiPath = localHost+'/';
+   // Vue.prototype.apiPath = 'http://'+localHost+'/';
 
 
   //Vue.prototype.url = localHost;
 
   Vue.prototype.httpGet=function(url,data,success,fail){
 
-      /*测试*/
+      /*开发*/
       this.$http.get(apiPath+url,
 
-      /*开发*/
-      // this.$http.get(url,
+      /*线上*/
+      //this.$http.get(url,
      	{
      		params:data,
      		headers: {'X-Requested-With':'XMLHttpRequest'}

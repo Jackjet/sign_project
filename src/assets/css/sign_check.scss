@@ -644,10 +644,26 @@ $border2:#dedede;
         position:relative;
         p{
           position: absolute;
-          width: 120px;
+          width: 160px;
           left: 55px;
           top: 0;
           z-index: 1;
+          b{
+            width: 100px;
+            display: block;
+            word-break:keep-all;/* 不换行 */
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;
+            float: left; 
+          }
+          span{
+            width: 80px;
+            word-break:keep-all;/* 不换行 */
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;
+          }
         }
         input{
           position: absolute;
@@ -663,7 +679,7 @@ $border2:#dedede;
 				
 				}
         i{
-          width: 35px;
+          width: 25px;
           height: 35px; 
           // background: #fff;
           position:absolute;
@@ -679,7 +695,7 @@ $border2:#dedede;
             right:0px;
           }
            &:nth-child(2){
-            right:40px;
+            right:30px;
           }
         }
 				&:hover,&.active{
@@ -1053,6 +1069,30 @@ $border2:#dedede;
   }
 }
 
+.right_col{
+  .tab-nav{
+    padding:10px;
+    background: #fff;
+    margin-bottom: 10px;
+    .tab-box{
+      background: $gray3;
+      height: 35px;
+      padding:10px 0;
+      line-height: 35px;
+      a{
+        display: inline-block;
+        padding:0 10px;
+        border-radius:20px;
+        color: $black;
+        margin:0 10px;
+        &.router-link-active{
+            background: $pink;
+            color: #fff;
+        }
+      }
+    }
+  }
+}
 @media (max-width:992px) {
   .statistics_count .panel-box .search .search-box{
     div{

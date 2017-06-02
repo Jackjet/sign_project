@@ -103,6 +103,7 @@
                 monthList: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
                 flag: true,
                 check: '',
+                clickOne:true
             }
         },
         props: {
@@ -290,7 +291,7 @@
                 //是否修改月份
                 item.isPrevMonth ? (this.tmpMonth === 0 ? (--this.tmpYear,this.tmpMonth = 11) : --this.tmpMonth) : (item.isNextMonth ? (this.tmpMonth === 11 ? (++this.tmpYear, this.tmpMonth = 0) : ++this.tmpMonth) : (this.tmpYear, this.tmpMonth));
                 switch(this.type) {
-                    case 'single':
+                    case 'single':  console.log(123)
                     case 'time':
                         this.startDate = this.endDate = item.value;
                         this.startMonth = this.endMonth = this.tmpMonth;
@@ -343,11 +344,21 @@
                 switch(this.type) {
                     case 'single':
                         //this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
-                        if(this.val == 1){
-                            this.value = this.getDataFn().formatwdate;
+                        if(this.clickOne){
+                            if(this.val == 1){
+                                this.value = this.getDataFn().formatwdate;
+                                this.clickOne = false;
+                            }else{
+                                this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
+                            }
                         }else{
                             this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
                         }
+                       /* if(this.val == 1 && clickOne){
+                            this.value = this.getDataFn().formatwdate;
+                        }else{
+                            this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
+                        }*/
                         break;
                     case 'range':
                         this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate} -- ${this.endYear}${this.format}${this.endMonth + 1}${this.format}${this.endDate}`;

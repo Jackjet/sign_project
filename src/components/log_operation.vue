@@ -7,7 +7,7 @@
                 <div class="row clf">
                   <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">签约时间</div>
                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <span class="input"><calendar @changeDate="changeStartDate"></calendar></span>
+                    <span class="input"><calendar @changeDate="changeStartDate" :val="'1'"></calendar></span>
                     <span class="txt">至</span>
                     <span class="input"><calendar @changeDate="changeEndDate"></calendar></span>
                   </div>
@@ -50,7 +50,7 @@
           </li>
           <li class="pr">
             <span class="widthAuto">共{{pageData.total}}条记录/当前页为第{{statisticsParms.pageIndex}}页</span>
-            <div class="page-box">{{pageIndex}}
+            <div class="page-box">
                <pagination  :total="pageData.total" :currentpage="pageIndex" :display="statisticsParms.pageLength"  @pagechange="pageChangeHandel"></pagination>
             </div>
           </li>
@@ -83,8 +83,8 @@
             <span :title="item.clientPort">{{item.clientPort = item.clientPort != null ? item.clientPort : "&nbsp;" }}</span>
             <span :title="item.clientOs">{{item.clientOs = item.clientOs != null ? item.clientOs : "&nbsp;" }}</span>
             <span :title="item.clientBrowser">{{item.clientBrowser = item.clientBrowser != null ? item.clientBrowser : "&nbsp;" }}</span>
-            <span :title="item.serverTime">{{item.serverTime = item.serverTime != null ? item.serverTime : "&nbsp;" }}</span>
-            <span :title="item.operStamp">{{item.operStamp = item.operStamp != null ? item.operStamp : "&nbsp;" }}</span>
+            <span :title="item.serverTime">{{(item.serverTime = item.serverTime != null ? item.serverTime  : "&nbsp;") | filterdata}}</span>
+            <span :title="item.operStamp">{{(item.operStamp = item.operStamp != null ? item.operStamp  : "&nbsp;") | filterdata }}</span>
             <span :title="item.memo">{{item.memo = item.memo != null ? item.memo : "&nbsp;" }}</span>
             <i></i>
           </li>
@@ -92,7 +92,7 @@
           </li>
           <li class="pr">
             <span class="widthAuto">共{{pageData.total}}条记录/当前页为第{{statisticsParms.pageIndex}}页</span>
-            <div class="page-box">{{pageIndex}}
+            <div class="page-box">
                <pagination  :total="pageData.total" :currentpage="pageIndex" :display="statisticsParms.pageLength"  @pagechange="pageChangeHandel"></pagination>
             </div>
           </li>
@@ -117,14 +117,14 @@
             <span :title="item.accId">{{item.accId = item.accId != null ? item.accId : "&nbsp;" }}</span>
             <span :title="item.type">{{item.type = item.type != null ? item.type : "&nbsp;" }}</span>
             <span :title="item.cycle">{{item.cycle = item.cycle != null ? item.cycle : "&nbsp;" }}</span>
-            <span :title="item.operTime">{{item.operTime = item.operTime != null ? item.operTime : "&nbsp;" }}</span>            
+            <span :title="item.operTime">{{(item.operTime = item.operTime != null ? item.operTime : "&nbsp;") | filterdata }}</span>            
             <i></i>
           </li>
           <li class="no-message" v-show="statisticsList.length == 0" v-text="'暂无数据'">
           </li>
           <li class="pr">
             <span class="widthAuto">共{{pageData.total}}条记录/当前页为第{{statisticsParms.pageIndex}}页</span>
-            <div class="page-box">{{pageIndex}}
+            <div class="page-box">
                <pagination  :total="pageData.total" :currentpage="pageIndex" :display="statisticsParms.pageLength"  @pagechange="pageChangeHandel"></pagination>
             </div>
           </li>
@@ -236,8 +236,6 @@ export default {
        this.getNowDate();    
        this.paramsId = to.params.id;
        this.getData(to.params.id);
-       //this.$store.dispatch('changeTitle','统计>日志');  
-       // console.log(to.params.id)
     }
   },
   mounted(){
@@ -247,7 +245,6 @@ export default {
     this.getData(this.paramsId);
     this.$store.dispatch('changeTitle','统计>日志');  
     document.title = "统计>日志";
-    //console.log(this.$route.params.id)    
   }
 }
 </script>

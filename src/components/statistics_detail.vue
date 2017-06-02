@@ -10,7 +10,7 @@
           </div>
       </div>
       <div class="panel-box panel-white">
-        <h3 class="title">统计时间：2017.05.19 13:00 <a class="btn-default btn-pink" href="javascript:;"  @click="exportData()">导出Excel</a></h3>
+        <h3 class="title">统计时间：{{statisticsParms.startTime}} 至 {{statisticsParms.endTime}} <a class="btn-default btn-pink" href="javascript:;"  @click="exportData()">导出Excel</a></h3>
         <div class="table table-five">
           <li class="title">
             <span>账号(电子邮箱)</span>

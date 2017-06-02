@@ -100,6 +100,7 @@ export default {
 
   mounted(){
     this.$store.dispatch('changeTitle','我的文档>验签');  
+    //document.title = "我的文档>验签";
   }
 }
 </script>
