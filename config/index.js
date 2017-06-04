@@ -32,6 +32,7 @@ module.exports = {
         '/api': {
             //target: 'http://localhost:8080',
             target: 'http://192.168.22.224:8080',
+			//target:'http://dev.vuerequire.com',
             changeOrigin: true,
             pathRewrite: {
               '^/api': '/'

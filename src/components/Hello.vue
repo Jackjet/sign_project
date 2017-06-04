@@ -1,5 +1,34 @@
 <template>
 	<div class="right_col">
+		<ul>
+			<li class="clf" v-for="(item,index) in fileList2" @click="selectFileHandle(index)">
+				<span :title="item.docName"><i :class="item.selectItem ? 'icon-check2-default' : 'icon-square'"></i>{{item.docName}}{{item.selectItem}}</span>
+				<span :title="item.signators">{{item.signators}}</span>
+				<span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
+			</li>{{fileList}}
+			<li>
+				<p>共{{addFile.total}}条记录</p>
+				<div><pagination :total="addFile.total" :currentpage="addFile.params.pageIndex" :display="addFile.params.pageLength"  @pagechange="pageHandelAlert"></pagination></div>
+			</li>
+		</ul>
+		
+		<div class="selectList">
+			<h3>已选文件<span>(单击移除)</span><!-- <b>6/244</b> --></h3>
+			<div class="table-list select-list mCustomScrollbar">
+			<ul>
+				<li class="clf">
+					<span>名称</span>
+					<span>签署方</span>
+					<span>发起时间</span>
+				</li>
+				<li class="clf" @click="delFileHandle(item)" v-for="(item,val) in selectFileList">
+					<span :title="item.docName">{{item.docName}}</span>
+					<span :title="item.signators">{{item.signators}}</span>
+					<span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
+				</li>
+			</ul>
+		</div>
+		</div>
 	<!--mCustomScrollbar-->
 		<div class="content" id="content-1" style="height:100px;background:black;color:#fff">
 			<p>{{msg}}</p>
@@ -25,13 +54,58 @@ export default {
 	name: 'hello',
 	data () {
 		return {
-		  showState:true,
-		  showState2:true,
-		  list:["g","d","c","a"],
-		  msg: 'Welcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js'
+		    showState:false,
+		    showState2:false,
+			currentPage:1,
+		    addFile:{
+				fileList:[],
+				total:10,
+				params:{
+					pageIndex:1,
+					pageLength:5
+				}
+			},
+			fileList:[],
+			fileList2:[],
+			selectFileList:[],
+		    list:["g","d","c","a"],
+		    msg: 'Welcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js'
 		}
 	},
 	methods:{
+		addFileHandle(){
+			var _this = this;
+			this.$http.get('/api/js/test.json').then(function(res){
+				console.log(res);
+					if(_this.currentPage == 1){
+							_this.fileList = res.data[0].list;
+					}
+					if(_this.currentPage == 2){
+							_this.fileList = res.data[1].list;
+					}
+					
+					for(var i = 0; i < _this.fileList.length;i++){
+						_this.fileList[i]['selectItem'] = false;
+						//_this.addFile.fileList[i] = $.extend({}, _this.addFile.fileList[i], {selectItem: false});
+					}
+							_this.fileList2 = _this.fileList;
+console.log(_this.fileList2)
+			}).catch(function(err){		
+				alert(err)
+			})	
+			
+		},		
+		selectFileHandle(index){		
+			this.fileList2[index]['selectItem'] = !this.fileList2[index]['selectItem'];
+			//this.fileList[item].selectItem = true;
+			//this.addFile.fileList[item].signators = 'sfsdfsdf';
+			//console.log(this.addFile.fileList[item].selectItem);
+		},
+		pageHandelAlert(currentNum){
+			this.addFile.params.pageIndex = currentNum;
+			this.currentPage = currentNum;
+			this.addFileHandle();
+		},
 		sureDele(){
 			console.log("点击了确定删除文件夹")
 			this.showState=false;
@@ -48,7 +122,7 @@ export default {
 		}
 	},
 	mounted(){
-	
+		this.addFileHandle();
 	}
 }
 </script>
