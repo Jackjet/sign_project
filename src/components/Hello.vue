@@ -1,7 +1,7 @@
 <template>
 	<div class="right_col">
 		<ul>
-			<li class="clf" v-for="(item,index) in fileList2" @click="selectFileHandle(index)">
+			<li class="clf" v-for="(item,index) in fileList" @click="selectFileHandle(item)">
 				<span :title="item.docName"><i :class="item.selectItem ? 'icon-check2-default' : 'icon-square'"></i>{{item.docName}}{{item.selectItem}}</span>
 				<span :title="item.signators">{{item.signators}}</span>
 				<span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
@@ -72,34 +72,58 @@ export default {
 		    msg: 'Welcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js AppWelcome to Your Vue.js'
 		}
 	},
+	/*watch:{
+		fileList:{
+			handler(curVal,oldVal){
+　　　　　　　　conosle.log(curVal,oldVal)
+　　　　　　},
+　　　　　　deep:true
+		}
+	},*/
 	methods:{
 		addFileHandle(){
 			var _this = this;
-			this.$http.get('/api/js/test.json').then(function(res){
-				console.log(res);
+			this.$http.get('/api/test.json').then(function(res){
+				//console.log(res);
 					if(_this.currentPage == 1){
 							_this.fileList = res.data[0].list;
 					}
 					if(_this.currentPage == 2){
 							_this.fileList = res.data[1].list;
-					}
+					}					
 					
-					for(var i = 0; i < _this.fileList.length;i++){
-						_this.fileList[i]['selectItem'] = false;
-						//_this.addFile.fileList[i] = $.extend({}, _this.addFile.fileList[i], {selectItem: false});
+					//console.log(_this.fileList)
+					for(var i = 0 ; i<_this.fileList.length;i++){
+						for(var j=0;j<_this.selectFileList.length;j++){
+							if(_this.selectFileList[j].docName == _this.fileList[i].docName){
+								_this.fileList[i].selectItem = true;
+							}
+						}
 					}
-							_this.fileList2 = _this.fileList;
-console.log(_this.fileList2)
+					//_this.selectFileList = _this.fileList;
 			}).catch(function(err){		
 				alert(err)
 			})	
 			
 		},		
-		selectFileHandle(index){		
-			this.fileList2[index]['selectItem'] = !this.fileList2[index]['selectItem'];
-			//this.fileList[item].selectItem = true;
-			//this.addFile.fileList[item].signators = 'sfsdfsdf';
-			//console.log(this.addFile.fileList[item].selectItem);
+		selectFileHandle(item2){		
+			//this.fileList[index]['selectItem'] = !this.fileList[index]['selectItem'];
+
+			var state2 = item2.selectItem;	       
+	       if(state2){	            
+	       		//console.log(this.selectFileList)
+	            /*this.removeArr(this.selectFileList,item2);*/
+	            
+	            for(var i = 0 ; i < this.selectFileList.length;i++){
+	            	if(item2.docName == this.selectFileList[i].docName){
+	            		this.selectFileList.splice(i,1);
+	            	}
+	            }
+	            item2.selectItem = false;
+	        }else{
+	            this.selectFileList.unshift(item2);
+	            item2.selectItem = true;
+	        } 
 		},
 		pageHandelAlert(currentNum){
 			this.addFile.params.pageIndex = currentNum;

@@ -12,7 +12,7 @@ Vue.use(Vuex)
 Vue.prototype.$http = axios;
 import MyPlugin from './assets/js/common.js'
 Vue.use(MyPlugin)
-import 'babel-polyfill'
+import 'babel-polyfill';
 
 //页码公共组件
 import pagination from './components/common/pagination/index.js';
@@ -47,10 +47,10 @@ Vue.prototype.removeLSData=function(key){
 };
 
 Vue.prototype.removeArr = function(arr,val) {
-  // console.log("开始数组")
-  //  console.log(arr)
-  //  console.log("比较数组")
-  //  console.log(val)
+   console.log("开始数组")
+   console.log(arr)
+   console.log("比较数组")
+   console.log(val)
     var index = arr.indexOf(val);
     if (index > -1) {
         arr.splice(index, 1);

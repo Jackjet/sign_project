@@ -114,7 +114,10 @@ export default {
           That.msg = result.data;
           That.userStateNum = result.data.accType;
           That.$store.dispatch('changeState',result.data.accType);          
+        }else{
+            That.alertCommonTip(result.meta.message)
         }
+        
       },function(response){
         console.log(response);
       })

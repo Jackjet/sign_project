@@ -80,6 +80,8 @@ export default {
         if(result.meta.success){
           That.statisticsList = result.data.list;
           That.pageData.total = result.data.totalCount;
+        }else{
+            That.alertCommonTip(result.meta.message)
         }
       },function(response){
         console.log(response);

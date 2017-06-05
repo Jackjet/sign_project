@@ -3,7 +3,7 @@
         <div class='input-wrapper' v-show='showInput'>
             <!--<i class='date-icon' :style='setIconUrl'></i>-->
             <div class='input' v-text='value' :style='{width: inputWidth}' @click='togglePanel = !togglePanel'></div>
-            <span class='input-clear' v-show="value" @click='clearValue'></span>
+            <span class='input-clear icon-close' v-show="value" @click='clearValue'></span>
             <!-- <span class='input-icon icon-calendar' v-show="!value" @click='togglePanel = !togglePanel'></span> -->
             <span class='input-icon icon-calendar'  v-show="!value" @click='togglePanel = !togglePanel'></span>
         </div>
@@ -609,10 +609,14 @@ label {
 }
 .calendar .input-clear {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 16px;
-  height: 16px;
+  top: 0px;
+  right: 0px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 25px;
+  color: #aaaaaa;
 }
 .calendar .input-icon{
 	position: absolute;
@@ -620,7 +624,7 @@ label {
     right: 6px;
 	color:#ccc;
 }
-.calendar .input-clear:before,
+/*.calendar .input-clear:before,
 .calendar .input-clear:after {
   position: absolute;
   top: 50%;
@@ -643,7 +647,7 @@ label {
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
-}
+}*/
 .calendar .pannel-wrapper {
   position: absolute;
   top: 35px;

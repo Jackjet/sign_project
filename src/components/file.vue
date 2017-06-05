@@ -9,7 +9,7 @@
 					<span class="icon-add-folders-kong" @click.stop="addDir = true" :class="[addDir ? 'active' : '']" v-if="userState != 2">
                         <div class="add-folder-box" v-show="addDir">
                            <i></i>
-                           <input type="text" placeholder="输入文件夹名称" name="" v-model="addFolderName" @keyup.enter="sureAddHandle()">
+                           <input type="text" placeholder="输入文件夹名称" name="" @click="inputInit(addFolderName)" v-model="addFolderName" @keyup.enter="sureAddHandle()">
                            <div class="btn-box clf">
                                <a href="javascript:;" class="btn-default" @click.stop="cancelAddHandle()" >取消</a>
                                <a href="javascript:;" class="btn-default btn-pink" @click.stop="sureAddHandle()">确认</a>
@@ -27,11 +27,11 @@
 			<div class="contract-list mCustomScrollbar">
 				<ul>
 					<li v-show="dirList != 0"  @click="selectLi(index)" v-for="(item,index) in dirList"  :class="[index == selectIndex ? 'active' : '',index == editorIndex ? 'editActive':'']">
-                        <i class="icon-del" @click.stop="delFolderHandle(item,index)"></i>
-                        <i class="icon-editor" @click.stop="editHandle(index)"></i>
+                        <i class="icon-del" @click.stop="delFolderHandle(item,index)" v-if="userState != 2"></i>
+                        <i class="icon-editor" @click.stop="editHandle(index)" v-if="userState != 2"></i>
                         <span class="icon-folder"></span>
                         <p v-show="index != editorIndex"> <b :title="item.dirName" class="shengl" >{{item.dirName}}</b><span>({{item.num}})</span></p>
-                        <input @keyup.enter="resetFolderName(item.dirName,item.dirId,index)" v-show="index == editorIndex" type="text" name=""   v-model="item.dirName" />
+                        <input @keyup.enter="resetFolderName(item.dirName,item.dirId,index)" v-show="index == editorIndex" type="text" name=""   v-model="item.dirName"  @blur="resetFolderName(item.dirName,item.dirId,index)"/>
                         
                     </li>
                     <li v-if="dirList.length == 0">
@@ -126,7 +126,7 @@
                             <span>发起时间</span>
                         </li>
                         <li class="clf" v-for="(item,index) in addFile.fileList" @click="selectFileHandle(item)">
-                            <span :title="item.docName"><i :class="[item.selectItem ? 'icon-check2-default' : 'icon-square']"></i>{{item.docName}}</span>
+                            <span :title="item.docName"><i :class="[item.keepValue.checkItem ? 'icon-check2-default' : 'icon-square']"></i>{{item.docName}}</span>
                             <span :title="item.signators">{{item.signators}}</span>
                             <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
                         </li>
@@ -233,7 +233,7 @@ export default {
             type:2
         },
         addDir:false,           //添加弹框是否显示
-        addFolderName:"",       //添加文件的文件夹名称
+        addFolderName:"输入文件夹名称",       //添加文件的文件夹名称
         seFolderName:"",        //搜索的文件夹名称
         seFolderNameTem:"",     //搜索的文件夹名称临时变量
         againFileState:false,   //重新归档状态
@@ -285,21 +285,13 @@ export default {
       return this.$store.state.userState
     }
   },
-  watch:{
-    selectFileList:{
-        handler: function (val, oldVal) {
-
-        },
-        deep: true
-    }
-  },
   methods:{
     deleteHandle(){    //清空
         this.getReParms.searchKeyword = "";
     },
     getdirListData(){       //获取文件夹数据
         var That = this;
-        console.log("dirName:"+That.seFolderName)
+        //console.log("dirName:"+That.seFolderName)
         this.httpGet('doc/archiveDir/searchArchiveDirList',{
             'dirName':That.seFolderName
         },function(response){
@@ -309,32 +301,21 @@ export default {
             That.getReParms.dirId = That.dirList[That.selectIndex].dirId;
             That.selectTitle = That.dirList[That.selectIndex].dirName; 
             for(var i = 0 ; i < That.dirList.length; i++){  
-               // console.log(That.dirList[i]);
-
                 (function(i){
-                    console.log("dirId:"+That.dirList[i].dirId)
+                    //console.log("dirId:"+That.dirList[i].dirId)
                     That.httpGet('doc/archiveRecord/getArchiveRecordCount',{
                         'dirId':That.dirList[i].dirId
                     },function(res){
                         var result2 = res.data;
-                       // console.log(result2.meta.success)
                         if(result2.meta.success){
                             That.dirList[i].num = result2.data;
-                           // alert(That.dirList[i].num)
                         }
                     },function(){})
-                })(i)
-
-            }            
-            /*if(That.selectIndex == 0){
-                That.againFileListData();
-            } */ 
+                })(i);
+            }      
             That.againFileListData();          
         }else{
-            That.showAlertData = {
-                showAlert:true,
-                context:result.meta.message
-            }
+            That.alertCommonTip(result.meta.message)
         }
       },function(response){
         console.log(response);
@@ -356,10 +337,7 @@ export default {
             That.againFolderList = result.data;     
             That.getReParms.dirId = That.dirList[That.selectIndex].dirId;            
         }else{
-            That.showAlertData = {
-                showAlert:true,
-                context:result.meta.message
-            }
+            That.alertCommonTip(result.meta.message)
         }
       },function(response){
         console.log(response);
@@ -393,10 +371,7 @@ export default {
             That.pageData.total = result.data.totalCount;  
             That.selectTitle = That.dirList[That.selectIndex].dirName;      
         }else{
-            That.showAlertData = {
-                showAlert:true,
-                context:result.meta.message
-            }
+            That.alertCommonTip(result.meta.message)
         }
       },function(response){
         console.log(response);
@@ -421,10 +396,7 @@ export default {
             That.againNowIndexTem = That.againNowIndex = -1; 
             That.getdirListData();
         }else{
-            That.showAlertData = {
-                showAlert:true,
-                context:result.meta.message
-            }
+            That.alertCommonTip(result.meta.message)
         }
       },function(response){
         console.log(response);
@@ -449,10 +421,7 @@ export default {
             That.againFileListData();
             That.getdirListData();
         }else{
-            That.showAlertData = {
-                showAlert:true,
-                context:result.meta.message
-            }
+            That.alertCommonTip(result.meta.message)
         }
       },function(response){
         console.log(response);
@@ -464,11 +433,6 @@ export default {
         this.addFile.fileList = [];
     },
     batchaddArchiveRecords(){  
-       /*this.httpPost('doc/archiveRecord/addArchiveRecords',{
-            archiveRecordsJsonStr: 123
-        },function(response){
-            console.log(response)                      
-        });*/
         //批量添加归档文件
         var batchAddLength = this.selectFileList.length;
         if(batchAddLength == 0) return;
@@ -482,6 +446,7 @@ export default {
         }
 
         var dirId = this.dirList[this.selectIndex].dirId;
+        this.batchAdd = [];
         for(var i = 0; i<this.selectFileList.length;i++){
             this.batchAdd.push({
                 "dirId":dirId,
@@ -508,31 +473,10 @@ export default {
                         context:"批量归档成功！"
                     }    
                 }else{
-                    That.showAlertData = {
-                        showAlert:true,
-                        context:result.meta.message
-                    }
-                } 
+                    That.alertCommonTip(response.meta.message);
+                }
             }
         });
-
-       /* this.httpGet('doc/archiveRecord/addArchiveRecords',{
-            "archiveRecordsJsonStr":That.batchAdd
-        },function(response){
-            if(result.meta.success){
-                That.showAlertData = {
-                    showAlert:true,
-                    context:"批量归档成功！"
-                }    
-            }else{
-                That.showAlertData = {
-                    showAlert:true,
-                    context:result.meta.message
-                }
-            }                       
-        },function(response){
-            console.log(response)
-        })*/
     },
     addFileHandle(){              //添加归档文件列表
         this.addFile.addFileState = true;
@@ -553,20 +497,16 @@ export default {
         if(result.meta.success){            
             That.addFile.fileList = result.data.list;     
             for(var i = 0 ; i< That.addFile.fileList.length; i++){
-                That.addFile.fileList[i].selectItem = false;
+                That.addFile.fileList[i].keepValue.checkItem = false;
                 for(var j = 0;j<That.selectFileList.length;j++){
-                    That.selectFileList[j].selectItem = true;
                     if(That.selectFileList[j].docId == That.addFile.fileList[i].docId){
-                        That.addFile.fileList[i].selectItem = true;
+                        That.addFile.fileList[i].keepValue.checkItem = true;
                     }
                 }
             }
             That.addFile.total = result.data.totalCount;     
         }else{
-            That.showAlertData = {
-                showAlert:true,
-                context:result.meta.message
-            }
+            That.alertCommonTip(result.meta.message)
         }
      },function(response){
         console.log(response);
@@ -579,17 +519,18 @@ export default {
         this.addFile.searchTitleTem = val;
     },
     selectFileHandle(item2){      //添加归档文件
-        var state2 = item2.selectItem;
-        console.log(item2)
-        console.log("状态"+state2)
-       
+        var state2 = item2.keepValue.checkItem;
        if(state2){
-            item2.select = true;
-            this.removeArr(this.selectFileList,item2);
-            item2.selectItem = false;
+            //this.removeArr(this.selectFileList,item2);
+            for(var i = 0 ; i < this.selectFileList.length;i++){
+                if(item2.docId == this.selectFileList[i].docId){
+                    this.selectFileList.splice(i,1);
+                }
+            }
+            item2.keepValue.checkItem = false;
         }else{
             this.selectFileList.unshift(item2);
-            item2.selectItem = true;
+            item2.keepValue.checkItem = true;
         } 
     },
     delFileHandle(item){   //取消归档文件
@@ -597,7 +538,6 @@ export default {
         this.removeArr(this.selectFileList,item);
     },
     searchFileHandle(val){
-        //this.getReParms.searchKeyword = this.searchTitle;
         if(this.timeSelect){
             this.againFileListData();
             this.timeSelect = false;
@@ -609,7 +549,7 @@ export default {
     },
     cancelAddHandle(){          //取消新增文件夹
         this.addDir = false;
-        this.addFolderName = "";
+        this.addFolderName = "输入文件夹名称";
     },
     sureAddHandle(){            //确认新增文件夹
         this.addDir = false;
@@ -623,6 +563,8 @@ export default {
                 That.addDir = false;
                 That.addFolderName = "";
                 That.getdirListData();
+            }else{
+                That.alertCommonTip(result.meta.message)
             }
         },function(response){
             console.log(response);
@@ -631,7 +573,6 @@ export default {
     selectLi(num){             //选中文件夹
         this.selectIndex = num;
         this.getReParms.dirId = this.dirList[this.selectIndex].dirId;
-        //if(num == 0) return;
         this.getReParms.searchKeyword = "";
         this.againFileListData();
     },
@@ -650,6 +591,8 @@ export default {
                 That.selectIndex = index;
                 That.selectTitle = value;
                 That.editorIndex = -1;
+            }else{
+                That.alertCommonTip(result.meta.message)
             }
         },function(response){
             console.log(response);
@@ -766,6 +709,8 @@ export default {
                 That.deleteIndex = -1;
                 That.againFileListData();
                 That.getdirListData();
+            }else{
+                That.alertCommonTip(result.meta.message)
             }
         },function(response){
             console.log(response);
@@ -781,7 +726,6 @@ export default {
         this.againFileState = !this.againFileState;
         var tagX = event.target.offsetLeft;
         var tagY = event.target.offsetTop;
-        //console.log(document.getElementById("againAlert"))
         var objHtml = document.getElementById("againAlert");
         objHtml.style.left=tagX-382+'px';
         objHtml.style.top=tagY+40+'px';
@@ -804,6 +748,10 @@ export default {
         if(value == '关键字：合同名称'){
             this.addFile.params.condition = "";
         }
+
+        if(value == '输入文件夹名称'){
+            this.addFolderName = "";
+        }
     },
     selectFile(num){   //选中归档文件
         //console.log(num)
@@ -815,9 +763,6 @@ export default {
             this.againSeNameCenter = this.againSeName;
             this.againNowIndex = -1;
            // console.log("请求获取归档接口");
-            //请求获取归档接口
-            //this.getdirListData();
-            //this.seFolderName = this.againSeName;
             this.getdirListDataRight()
             return false;
         }
@@ -829,11 +774,6 @@ export default {
                  this.modifyParams.dirId = this.againFolderList[this.againNowIndex].dirId;
                  //console.log("提交重新归档接口");
                  this.modifyArchiveRecordDir();
-                 
-                 // this.againSeName="关键字：文件夹名称";
-                 // this.againSeNameCenter = "";
-                 // this.againFileState = false;
-                 // this.againNowIndexTem = this.againNowIndex = -1;
             }
             
             return false;
@@ -860,11 +800,6 @@ export default {
     sureAgainFolder(){        //点击确认归档
         if(this.againNowIndex != -1){
             if(this.againNowIndexTem != this.againNowIndex){
-                 /*console.log("提交重新归档接口");
-                 this.againSeName="关键字：文件夹名称";
-                 this.againSeNameCenter = "";
-                 this.againFileState = false;
-                 this.againNowIndexTem = this.againNowIndex = -1;*/
                  this.modifyParams.dirId = this.againFolderList[this.againNowIndex].dirId;
                  //console.log("提交重新归档接口");
                  this.modifyArchiveRecordDir()

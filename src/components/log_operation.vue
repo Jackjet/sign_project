@@ -189,6 +189,8 @@ export default {
         if(result.meta.success){
             _this.statisticsList = result.data.list;
             _this.pageData.total = result.data.totalCount;
+        }else{
+            _this.alertCommonTip(result.meta.message)
         }
       },function(response){
         console.log(response);
