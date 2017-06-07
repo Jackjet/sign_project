@@ -17,17 +17,19 @@
           <h3>验签结果</h3>
           <div class="panel-contain panel-success clf">
               <div class="panel-true" v-show="uploadSuccess">
-                  <p><i class="icon-check-default"></i></p>
+                  <!-- <p><i class="icon-check-default"></i></p> -->
+                  <p><img src="../assets/images/yq_success.png"></p>
                   <h4>验证成功</h4>
               </div>
               <div class="panel-false" v-show="uploadFail">
-                  <p><i class=" icon-close2"></i></p>
+                  <!-- p><i class=" icon-close2"></i></p> -->
+                  <p><img src="../assets/images/yq_fail.png"></p>
                   <h4>验证失败</h4>
                   <p class="warn"><i class="icon-warn"></i>{{lostorgMsg.message}}</p>
               </div>
               <div class="panel-square clf col-lg-10 col-lg-offset-1 mt50 col-md-12 col-md-offset-0" v-show="uploadSuccess">
                   <div class="float-box">
-                      <p><span>1</span>改文档的签名/签章有效 &nbsp;&nbsp;&nbsp;<span>2</span>改文档未被篡改</p>
+                      <p><span>1</span>该文档的签名/签章有效 &nbsp;&nbsp;&nbsp;<span>2</span>该文档未被篡改</p>
                   </div>
                   <ul class="clf">
                       <li class="row clf" v-for="(item,index) in list">

@@ -282,7 +282,10 @@ export default {
   },
   computed:{
     userState(){
-      return this.$store.state.userState
+        return this.$store.state.userState
+    },
+    roleState(){
+        return this.$store.state.roleState
     }
   },
   methods:{
@@ -487,7 +490,15 @@ export default {
         }else{
             searchTitle = this.addFile.params.condition;
         }
-        this.httpGet('doc/documentList/searchDocumentList',{
+        var srcUrl = null;
+        if(this.roleState == null || this.roleState == 0){   //非主管
+            srcUrl = 'doc/documentList/searchDocumentList';
+        }
+        if(this.roleState == 1){
+            srcUrl = 'doc/documentList/searchStructDocumentList';   //主管
+        }
+
+        this.httpGet(srcUrl,{
             'condition':searchTitle,
             'signStatus':300,
             'pageIndex':That.addFile.params.pageIndex,

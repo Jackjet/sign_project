@@ -18,24 +18,27 @@
                                 </a>
                             </li>
                             <li name="menuLiAdmin" v-if="userStateNum == 0"><a><i class="icon-group"></i> 企业管理 <span
-                                    class="fa fa-chevron-left"></span></a>
+                                    class="icon-left-open-big"></span></a>
 
                                 <ul class="child_menu">
                                     <li>
                                         <a :href="url+'/sys/largeCompany/toLargeCompanyPage'">企业账户管理</a>
                                     </li>
+                                     <li>
+                                        <a :href="url+'/sys/largeCompany/toLoginUserManage'">账户管控</a>
+                                    </li>
                                 </ul>
 
                             </li>
                             <li name="menuLiAdmin" v-if="userStateNum == 0"><a><i class="icon-mail-list"></i> 系统管理 <span
-                                    class="fa fa-chevron-left"></span></a>
+                                    class="icon-left-open-big"></span></a>
                                 <ul class="child_menu" style="display:none">
                                     <li><a :href="url+'/sys/function/functionPage'">功能管理</a></li>
                                     <li><a :href="url+'/sys/function/roleFunctionPage'">权限管理</a></li>
                                 </ul>
                             </li>
                             <li name="menuLiAdmin" :class="[{ active: activeTj}]" v-if="userStateNum == 0" class="active">
-                                <a><i class="icon-file"></i> 统计 <span class="fa fa-chevron-left"></span></a>
+                                <a><i class="icon-file"></i> 统计 <span class="icon-left-open-big"></span></a>
                                 <ul class="child_menu" style="display:block">
                                     <li><router-link to="/statistics_count">签署次数</router-link></li>
                                     <li><router-link to="/log/user_operation/1">日志</router-link></li>
@@ -44,7 +47,7 @@
                             </li>
                             <li v-if="userStateNum != 0" name="menuLiUser" ><a :href="url+'/cus/account/accountIndex'"><i
                                     class="icon-home"></i> 首页 </a></li>
-                            <li v-if="userStateNum != 0" :class="[{ active: activeFile}]" name="menuLiUser" ><a><i class="icon-file"></i> 我的文档<span class="fa fa-chevron-left"></span></a>
+                            <li v-if="userStateNum != 0" :class="[{ active: activeFile}]" name="menuLiUser" ><a><i class="icon-file"></i> 我的文档<span class="icon-left-open-big"></span></a>
                                 <ul class="child_menu">
                                     <li><a :href="url+'/doc/documentList/sign'">文档列表</a></li>
                                     <li id="aDraft" v-if="userStateNum == 2 || userStateNum == 3"><a :href="url+'/doc/documentList/draft'">草稿箱</a> </li>
@@ -52,14 +55,14 @@
                                     <li><router-link to="/sign_check">验签</router-link></li>
                                 </ul>
                             </li>
-                            <li v-if="userStateNum != 0" name="menuLiUser"><a><i class="icon-user"></i> 我的账户 <span class="fa fa-chevron-left"></span></a>
+                            <li v-if="userStateNum != 0" name="menuLiUser"><a><i class="icon-user"></i> 我的账户 <span class="icon-left-open-big"></span></a>
                                 <ul class="child_menu">
                                     <li><a :href="url+'/cus/account/security'">安全设置</a></li>
                                     <li><a :href="url+'/cus/account/basicInfo'">基本信息</a></li>
                                     <li><a :href="url+'/doc/stamp/stampList'">签章样式</a></li>
                                 </ul>
                             </li>
-                            <li v-if="userStateNum != 0" name="menuLiUser"><a><i class="icon-mail-list"></i> 通讯录 <span class="fa fa-chevron-left"></span></a>
+                            <li v-if="userStateNum != 0" name="menuLiUser"><a><i class="icon-mail-list"></i> 通讯录 <span class="icon-left-open-big"></span></a>
                                 <ul class="child_menu">
                                     <li class="hideMenuLi adminPartners" v-if="userStateNum == 1"><a
                                             :href="url+'/cus/companyPartners/toCompanyPartnersManagement'">合作伙伴</a>
@@ -114,6 +117,7 @@ export default {
           That.msg = result.data;
           That.userStateNum = result.data.accType;
           That.$store.dispatch('changeState',result.data.accType);          
+          That.$store.dispatch('changeRolState',result.data.role);          
         }else{
             That.alertCommonTip(result.meta.message)
         }
@@ -239,14 +243,14 @@ export default {
         cursor: pointer;
         display: block;
         font-size:14px;
-        .fa{
+        position:relative;
+        span{
           float: right;
           text-align: center;
-          margin-top: 5px;
           font-size: 10px;
           min-width: inherit;
           position: absolute;
-          top: 14px;
+          top: 0px;
           right: 25px;
         }
       }
@@ -282,7 +286,7 @@ export default {
             background: $pink;
           }
         }
-        .fa{
+        .icon-left-open-big{
           //@include prefixer(transform,rotate(-90deg));
           transform:rotate(-90deg);
         }

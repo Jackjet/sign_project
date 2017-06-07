@@ -45,7 +45,7 @@
       position: fixed;
       top: 50%;
       left: 50%;
-      margin-left: -125px;
+      margin-left: -45px;
       margin-top: -125px;
       z-index: 1000;
 

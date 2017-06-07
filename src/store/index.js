@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const state = {
   top_title:"",
   userState:null,
+  roleState:null,
   uploadData:{},
   uploadMessage:{}
 }
@@ -13,6 +14,9 @@ const state = {
 const Actions = {
     changeState({commit},num){
       commit('changeState',num)
+    },
+    changeRolState({commit},num){
+      commit('changeRolState',num)
     },
     changeStorageData({commit},jsonData){
       commit('changeStorageData',jsonData)
@@ -28,6 +32,9 @@ const Mutations = {
   changeState (state,num) {
       state.userState = num;
   },
+  changeRolState(state,num){
+      state.roleState = num;
+  },
   changeStorageData(state,jsonData){
       state.uploadData = jsonData;
   },
@@ -42,6 +49,9 @@ const Mutations = {
 const Getters = {
   userState(state) {    
       return state.userState;
+  },
+  roleState(state){
+      return state.roleState;
   },
   uploadData(state){
       return state.uploadData;

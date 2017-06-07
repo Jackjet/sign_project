@@ -6,6 +6,7 @@
           <h3>文件验签</h3>
           <div class="panel-upload">
               <img src="../assets/images/sign_icon.png" alt="">
+              <p class="tip">温馨提示：上传文件不超过10M</p>
               <!--<a class="upload-btn" href="javascript:;">上传PDF文件</a>-->
               <!-- <div class="upload-btn">上传PDF文件
                 <input type="file" accept="pdf" name="file" value="上传PDF文件" id="fileInput" @click="upLoadHandle()">
@@ -15,7 +16,7 @@
                      <p class="uploadFileName">{{uploadFileName}}</p>
                       <div class="upload-btn"  @click="selectFile()">{{tipName}}
                           
-                          <input type="file" id="file" name="uploadFile" >
+                          <input type="file" id="file" name="uploadFile">
                       </div>
                       <!-- <button type="submit" class="btn btn-primary">下一步</button> -->
                        <p class="warn" v-show="uploadWarn" ><i class="icon-warn"></i>不支持该格式文档，请上传<span>PDF</span>文件</p>
@@ -47,7 +48,8 @@ export default {
     selectFile(){
       var _this = this;
       $("#file").on('change',function(){
-        _this.uploadFileName = this.value;
+        var arrTem = this.value.split("\\");
+        _this.uploadFileName = arrTem[arrTem.length-1];
 
         $('#uploadForm').ajaxSubmit({  
           url : _this.apiPath+'doc/docVerify/verify',  
@@ -75,6 +77,8 @@ export default {
               
               _this.uploadWarn = false;
               _this.submitStatus = true;
+
+              $("#file").attr('disabled','disabled');
           },
           success: function(res){
                  _this.setLSData("uploadData",res.data);
