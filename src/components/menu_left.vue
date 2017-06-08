@@ -11,8 +11,9 @@
                             <li class="menuUserHeadIcon">
                                 <img src="/cus/account/getHeadIcon">
                                 
-                                <h3 id="menuDisplayNameText " class="shengl">{{msg.displayName}}</h3>
-                                <p id="menuCompanyNameText" class="shengl">{{msg.companyName}}</p>
+                                <h3 v-if="userStateNum != 3" id="menuDisplayNameText " class="shengl">{{msg.memName}}</h3>
+                                <p v-if="userStateNum != 3" id="menuCompanyNameText" class="shengl">{{msg.companyName}}</p>
+                                <h3 v-if="userStateNum == 3" id="menuDisplayNameText " class="shengl">{{msg.displayName}}</h3>
                                 <a id="indLogoutIcon" href="/logout">
                                     <i class=" icon-sign-out-1" title="退出"></i>
                                 </a>

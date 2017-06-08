@@ -28,7 +28,7 @@ export default {
   methods:{
   },
   mounted(){
-     
+    document.title = "签吧-日志"; 
   }
 }
 </script>

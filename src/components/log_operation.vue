@@ -245,8 +245,7 @@ export default {
     this.getNowDate();    
     this.paramsId = this.$route.params.id;
     this.getData(this.paramsId);
-    this.$store.dispatch('changeTitle','统计>日志');  
-    document.title = "统计>日志";
+    this.$store.dispatch('changeTitle','统计>日志');      
   }
 }
 </script>

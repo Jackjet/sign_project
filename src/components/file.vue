@@ -58,7 +58,7 @@
 				  </div>
 			  </div>
 		  </div>
-          <div class="panel-box panel-white">
+          <div class="panel-box panel-white" style="min-height: 662px;">
             <div class="table">
               <li class="title">
                 <span>名称</span>
@@ -71,8 +71,8 @@
               <li  v-show="againFileList.length > 0" class="li-class clf" v-for="(item,index) in againFileList">
                 <span :title="item.docName">{{item.docName}}<i class="line"></i></span>
                 <span :title="item.signators">{{item.signators}}</span>
-                <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
-                <span :title="item.efectTime">{{item.efectTime | filterdata}}</span>
+                <span :title="item.sendTime | filterdata">{{item.sendTime | filterdata}}</span>
+                <span :title="item.efectTime | filterdata">{{item.efectTime | filterdata}}</span>
                 <span :title="item.cycle">{{item.cycle == 300 ? '已完成':'&nbsp;'}}</span>
                 <span><a @click="againFile($event,index)">重新归档</a><a href="javascript:;" @click="cancelFile(item)">撤销归档</a></span>     
               </li>
@@ -770,7 +770,7 @@ export default {
     },
     keyUpDown(event){       //重新归档选择
         //console.log(event.keyCode || event.button)
-        if(event.keyCode == 13 &&　this.againSeName != "" && this.againSeNameCenter != this.againSeName){
+        if(event.keyCode == 13 && this.againSeNameCenter != this.againSeName){
             this.againSeNameCenter = this.againSeName;
             this.againNowIndex = -1;
            // console.log("请求获取归档接口");
@@ -874,8 +874,7 @@ export default {
     this.getdirListData();
     this.getdirListDataRight();
     this.getNowDate();
-    this.$store.dispatch('changeTitle','我的文档>归档');    
-    document.title = "我的文档>归档"         
+    this.$store.dispatch('changeTitle','我的文档>归档');          
   }
 }
 </script>

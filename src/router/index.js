@@ -6,7 +6,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const Hello = resolve => require(['@/components/Hello'], resolve)
+//const Hello = resolve => require(['@/components/Hello'], resolve)
 const sign_state = resolve => require(['@/components/sign_state'], resolve)   //验签成功失败页面
 const sign_check = resolve => require(['@/components/sign_check'], resolve)   //验签页面
 const file = resolve => require(['@/components/file'], resolve)         //归档页面
@@ -19,11 +19,11 @@ const log_operation = resolve => require(['@/components/log_operation'], resolve
 export default new Router({
   //mode: 'history',
   routes: [
-    {
-      path: '/hello',
-      name: 'Hello',
-      component: Hello
-    },
+    // {
+    //   path: '/hello',
+    //   name: 'Hello',
+    //   component: Hello
+    // },
     {
       path: '/sign_check',
       name: 'sign_check',
@@ -64,7 +64,7 @@ export default new Router({
     },
     {
       path:"/",
-      redirect: '' 
+      redirect: '/file' 
     },
     {
       path:"*",

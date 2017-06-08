@@ -86,16 +86,19 @@ Vue.filter('filterdata', function (value) {//value为13位的时间戳
 
 router.beforeEach((to, from, next) => {
   if(to.name == "file"){
-    document.title="我的文档>归档"
+    document.title="签吧-归档"
   }
   if(to.name == "sign_check"){
-    document.title="我的文档>验签"
+    document.title="签吧-验签"
   }
   if(to.name == "statistics_count"){
-    document.title="统计>签署次数"
+    document.title="签吧-签署次数"
+  }
+  if(to.name == "statistics_detail"){
+    document.title="签吧-签署次数详情"
   }
   if(to.name == "log"){
-    document.title="统计>日志"
+    document.title="签吧-日志"
   }
   if(to.name != 'sign_state'){   
     localStorage.removeItem('uploadData');

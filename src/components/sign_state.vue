@@ -95,7 +95,7 @@ export default {
     this.lostorgMsg = this.getLSData('uploadMessage');
     this.init();
     this.$store.dispatch('changeTitle','我的文档>验签');  
-    document.title = "我的文档>验签";
+    document.title = "签吧-验签";
   }
 }
 </script>
