@@ -5,14 +5,14 @@ exports.install = function (Vue, options) {
   var localHost = window.location.host;
 
   /*开发环境*/
-  // const apiPath = "/api/";
-  // Vue.prototype.apiPath = "/api/";
+  const apiPath = "/api/";
+  Vue.prototype.apiPath = "/api/";
 
   
 
   /*线上环境*/
-   const apiPath = localHost+'/';
-   Vue.prototype.apiPath = 'http://'+localHost+'/';
+   //const apiPath = localHost+'/';
+   //Vue.prototype.apiPath = 'http://'+localHost+'/';
 
 
   //Vue.prototype.url = localHost;
@@ -20,10 +20,10 @@ exports.install = function (Vue, options) {
   Vue.prototype.httpGet=function(url,data,success,fail){
 
       /*开发*/
-      //this.$http.get(apiPath+url+"?data="+new Date().getTime(),
+      this.$http.get(apiPath+url+"?data="+new Date().getTime(),
 
       /*线上*/
-      this.$http.get(url+"?data="+new Date().getTime(),
+      //this.$http.get(url+"?data="+new Date().getTime(),
      	{
      		params:data,
      		headers: {'X-Requested-With':'XMLHttpRequest'}

@@ -46,7 +46,7 @@
 			  <div class="search clf">
 				  <div class="search-box clf">
 					<div class="row clf">
-					  <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">签约时间</div>
+					  <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">归档时间</div>
 					  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 						<span class="input"><calendar @changeDate="changeStartDate" :val="'1'"></calendar></span>
 						<span class="txt">至</span>

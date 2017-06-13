@@ -93,6 +93,7 @@ export default {
   mounted(){
     this.lostorgData = this.getLSData('uploadData');
     this.lostorgMsg = this.getLSData('uploadMessage');
+    console.log(typeof this.lostorgData)
     this.init();
     this.$store.dispatch('changeTitle','我的文档>验签');  
     document.title = "签吧-验签";

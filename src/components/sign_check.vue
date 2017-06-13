@@ -65,7 +65,6 @@ export default {
               var val = $(':file').fieldValue();
               var arr = val[0].split('.');
               var Suffix = arr[arr.length-1];
-              console.log(Suffix)
               if (val == "") {
                   return false;
               }
@@ -73,8 +72,7 @@ export default {
                 _this.uploadWarn = true;
                 _this.tipName = "重新上传";
                 return false;
-              }
-              
+              }              
               _this.uploadWarn = false;
               _this.submitStatus = true;
 
@@ -83,16 +81,9 @@ export default {
           success: function(res){
                  _this.setLSData("uploadData",res.data);
                  _this.setLSData("uploadMessage",res.meta);
-
-                 /*_this.$store.dispatch('changeStorageData',res.data);
-                 _this.$store.dispatch('changeStorageMsg',res.meta);*/
                  _this.$router.push({
                     name: 'sign_state'
                   });
-              /*if (res.meta.success) {
-              } else {
-                 _this.submitCallback(res);
-              }*/
           }
           //timeout:   3000  
       });

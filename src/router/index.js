@@ -63,12 +63,8 @@ export default new Router({
       ]
     },
     {
-      path:"/",
-      redirect: '/file' 
-    },
-    {
       path:"*",
-      redirect: '' 
+      redirect: '/file',
     }
   ]
 })

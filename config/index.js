@@ -31,7 +31,7 @@ module.exports = {
     proxyTable: {
         '/api': {
             //target: 'http://localhost:8080',
-            target: 'http://192.168.22.224:8080',
+            target: 'http://192.168.22.212:8080',
 			//target:'http://dev.vuerequire.com',
             changeOrigin: true,
             pathRewrite: {
