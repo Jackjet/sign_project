@@ -2,10 +2,10 @@
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
     <div class="main_container">
-      <menuBar></menuBar>
-      <menuTop></menuTop>
+      <menuBar v-show="comNav"></menuBar>
+      <menuTop v-show="comNav"></menuTop>
       <router-view></router-view>	  
-      <div class="footer">
+      <div class="footer"  v-show="comNav">
         <p>Copyright © 2017 广东信鉴信息科技有限公司 All Rights Reserved.</p>
       </div>
     </div>
@@ -20,6 +20,11 @@ export default {
   data(){
   	return{
   	}
+  },
+  computed:{
+    comNav(){
+      return this.$store.state.comNav;
+    }
   },
   components:{
       menuBar:menuBar,

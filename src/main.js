@@ -4,7 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/index.js'
+
+/*var Promise = require('es6-promise').Promise;*/
+import 'babel-polyfill'
+/*require('es6-promise').polyfill()*/
 import axios from 'axios'
+
+
 axios.defaults.withCredentials = true;
 import Vuex from 'vuex'
 Vue.use(Vuex)
@@ -12,7 +18,7 @@ Vue.use(Vuex)
 Vue.prototype.$http = axios;
 import MyPlugin from './assets/js/common.js'
 Vue.use(MyPlugin)
-import 'babel-polyfill';
+
 
 //页码公共组件
 import pagination from './components/common/pagination/index.js';
@@ -104,12 +110,18 @@ router.beforeEach((to, from, next) => {
     localStorage.removeItem('uploadData');
     localStorage.removeItem('uploadMessage');    
   }
+
+  if(to.name == 'noallow'){
+    store.dispatch('changeComNav',false)
+  }else{
+     store.dispatch('changeComNav',true)
+  }
   next();
 })     
 
 
 Vue.config.productionTip = false;
-
+Vue.prototype.Event2=new Vue();
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

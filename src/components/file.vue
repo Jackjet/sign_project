@@ -58,15 +58,15 @@
 				  </div>
 			  </div>
 		  </div>
-          <div class="panel-box panel-white" style="min-height: 662px;">
-            <div class="table">
+          <div class="panel-box panel-white" style="min-height: 662px;" >
+            <div class="table" :class="[userState == 1 ? 'table-five' : '']" >
               <li class="title">
                 <span>名称</span>
                 <span>签署方</span>
                 <span>发送时间</span>
                 <span>完成时间</span>
                 <span>状态</span>
-                <span>操作</span>                
+                <span v-show="userState != 1">操作</span>                
               </li>
               <li  v-show="againFileList.length > 0" class="li-class clf" v-for="(item,index) in againFileList">
                 <span :title="item.docName">{{item.docName}}<i class="line"></i></span>
@@ -74,7 +74,7 @@
                 <span :title="item.sendTime | filterdata">{{item.sendTime | filterdata}}</span>
                 <span :title="item.efectTime | filterdata">{{item.efectTime | filterdata}}</span>
                 <span :title="item.cycle">{{item.cycle == 300 ? '已完成':'&nbsp;'}}</span>
-                <span><a @click="againFile($event,index)">重新归档</a><a href="javascript:;" @click="cancelFile(item)">撤销归档</a></span>     
+                <span  v-show="userState != 1"><a @click="againFile($event,index)">重新归档</a><a href="javascript:;" @click="cancelFile(item)">撤销归档</a></span>     
               </li>
               <li class="no-message" v-show="loadingState">加载中，请稍后</li>
               <li class="no-message" v-show="againFileList.length == 0" v-text="'暂无数据'"></li>
@@ -290,7 +290,11 @@ export default {
   },
   methods:{
     deleteHandle(){    //清空
-        this.getReParms.searchKeyword = "";
+         this.getReParms.searchKeyword = "";
+         this.Event2.$emit('tip','change');
+         this.getReParms.signStartDate = "";
+         this.getReParms.signEndDate = "";
+         this.searchFileHandle();
     },
     getdirListData(){       //获取文件夹数据
         var That = this;
@@ -646,66 +650,6 @@ export default {
             }
             
         }
-        /*if(this.userState == 1){
-            var That = this;
-            this.httpGet("doc/archiveRecord/getArchiveRecordCount",{
-                "dirId":item.dirId
-            },function(response){
-                var result = response.data;
-                if(result.meta.success){
-                    if(result.data > 0){
-                        That.showAlertData = {
-                            showAlert:true,
-                            title:"删除归档文件夹",
-                            context:"该文件夹已有用户归档的文件，无法删除。如需删除文件夹，请联系用户重新归档或撤销归档。",
-                            type:1  
-                        }
-                    }else{
-                        That.deleteIndex = index;
-                        That.showAdminAlert = {
-                            showAlert:true,
-                            title:"删除归档文件夹",
-                            context:"  确定要删除该文件夹？",
-                            type:2
-                        }
-                    }
-                }
-            },function(response){
-                console.log(response);
-            })
-        }else{
-            this.deleteIndex = index;
-            this.showDelAlter = {
-                showAlert:true,
-                title:"删除归档文件夹",
-                type:2  
-            }
-        }*/
-
-        /*if(this.userState == 1 && this.pageData.total > 0){
-            this.showAlertData = {
-                showAlert:true,
-                title:"删除归档文件夹",
-                context:"该文件夹已有用户归档的文件，无法删除。如需删除文件夹，请联系用户重新归档或撤销归档。",
-                type:1  
-            }
-        }else if(this.userState == 1 && this.pageData.total == 0){
-            
-            this.deleteIndex = index;
-            this.showAdminAlert = {
-                showAlert:true,
-                title:"删除归档文件夹",
-                context:"  确定要删除该文件夹？",
-                type:2
-            }
-        }else{
-            this.deleteIndex = index;
-            this.showDelAlter = {
-                showAlert:true,
-                title:"删除归档文件夹",
-                type:2  
-            }
-        }*/
         
     },
     sureDelHandle(){             //确认删除文件夹列表

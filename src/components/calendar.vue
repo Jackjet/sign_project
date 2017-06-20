@@ -291,7 +291,7 @@
                 //是否修改月份
                 item.isPrevMonth ? (this.tmpMonth === 0 ? (--this.tmpYear,this.tmpMonth = 11) : --this.tmpMonth) : (item.isNextMonth ? (this.tmpMonth === 11 ? (++this.tmpYear, this.tmpMonth = 0) : ++this.tmpMonth) : (this.tmpYear, this.tmpMonth));
                 switch(this.type) {
-                    case 'single':  console.log(123)
+                    case 'single':  //console.log(123)
                     case 'time':
                         this.startDate = this.endDate = item.value;
                         this.startMonth = this.endMonth = this.tmpMonth;
@@ -344,15 +344,31 @@
                 switch(this.type) {
                     case 'single':
                         //this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
+
+                        var month = null;
+                        var datatime = null ;
+
+                        if((this.startMonth+1) < 10){
+                             month = '0'+ (this.startMonth+1)
+                        }else{
+                            month = (this.startMonth+1)
+                        }
+                        if(this.startDate < 10){
+                            datatime = '0'+ (this.startDate);
+                        }else{
+                            datatime = this.startDate;
+                        }
+
+
                         if(this.clickOne){
                             if(this.val == 1){
                                 this.value = this.getDataFn().formatwdate;
                                 this.clickOne = false;
-                            }else{
-                                this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
+                            }else{       
+                                this.value = `${this.startYear}${this.format}${month}${this.format}${datatime}`;
                             }
                         }else{
-                            this.value = `${this.startYear}${this.format}${this.startMonth + 1}${this.format}${this.startDate}`;
+                            this.value = `${this.startYear}${this.format}${month}${this.format}${datatime}`;
                         }
                        /* if(this.val == 1 && clickOne){
                             this.value = this.getDataFn().formatwdate;
@@ -554,6 +570,11 @@
                     backgroundColor: this.themebtncanbg ? this.themebtncanbg : this.theme
                 }
             }
+        },
+        mounted(){
+            this.Event2.$on('tip',function(a){
+                this.clearValue();
+            }.bind(this));
         }
 
     }

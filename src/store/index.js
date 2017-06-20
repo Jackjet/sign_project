@@ -8,7 +8,8 @@ const state = {
   userState:null,
   roleState:null,
   uploadData:{},
-  uploadMessage:{}
+  uploadMessage:{},
+  comNav:true
 }
 
 const Actions = {
@@ -26,6 +27,9 @@ const Actions = {
     },
     changeTitle({commit},stringData){
       commit('changeTitle',stringData)
+    },
+    changeComNav({commit},state2){
+      commit('changeComNav',state2)
     }
   }
 const Mutations = {
@@ -43,6 +47,9 @@ const Mutations = {
   },
   changeTitle(state,stringData){
       state.top_title = stringData;
+  },
+  changeComNav(state,state2){
+    state.comNav = state2;
   }
 }
 
@@ -62,6 +69,9 @@ const Getters = {
   top_title(state){
 
       return state.top_title;
+  },
+  comNav(state){
+    return state.comNav;
   }
 }
 

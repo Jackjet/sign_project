@@ -11,11 +11,10 @@ exports.install = function (Vue, options) {
   
 
   /*线上环境*/
-   //const apiPath = localHost+'/';
-   //Vue.prototype.apiPath = 'http://'+localHost+'/';
+  //const apiPath = localHost+'/';
+  //Vue.prototype.apiPath = 'http://'+localHost+'/';
 
 
-  //Vue.prototype.url = localHost;
 
   Vue.prototype.httpGet=function(url,data,success,fail){
 
@@ -42,6 +41,9 @@ exports.install = function (Vue, options) {
       }
       if(msg == "not.allow"){
          msg = "不允许操作";
+      }
+      if(msg == "not.allow.record.existed"){
+         msg = "这个标识记录已经存在，不允许再添加";
       }
       this.showAlertData = {
           showAlert:true,

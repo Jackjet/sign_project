@@ -7,6 +7,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 //const Hello = resolve => require(['@/components/Hello'], resolve)
+const Index = resolve => require(['@/components/index'], resolve)             //登录页面
 const sign_state = resolve => require(['@/components/sign_state'], resolve)   //验签成功失败页面
 const sign_check = resolve => require(['@/components/sign_check'], resolve)   //验签页面
 const file = resolve => require(['@/components/file'], resolve)         //归档页面
@@ -14,6 +15,7 @@ const statistics_count = resolve => require(['@/components/statistics_count'], r
 const statistics_detail = resolve => require(['@/components/statistics_detail'], resolve)         //统计详情页
 const log = resolve => require(['@/components/log'], resolve)         //日志页面
 const log_operation = resolve => require(['@/components/log_operation'], resolve)         //日志页面
+const noallow = resolve => require(['@/components/noallow'], resolve)         //日志页面
 
 
 export default new Router({
@@ -24,6 +26,11 @@ export default new Router({
     //   name: 'Hello',
     //   component: Hello
     // },
+    {
+      path: '/index',
+      name: 'Index',
+      component: Index
+    },
     {
       path: '/sign_check',
       name: 'sign_check',
@@ -50,6 +57,11 @@ export default new Router({
       component: statistics_detail
     },
     {
+      path: '/404',
+      name: 'noallow',
+      component: noallow
+    },
+    {
       path: '/log',
       name: 'log',
       component: log,
@@ -63,8 +75,8 @@ export default new Router({
       ]
     },
     {
-      path:"*",
-      redirect: '/file',
+      path:'*',
+      redirect:'/404'
     }
   ]
 })

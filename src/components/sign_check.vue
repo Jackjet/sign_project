@@ -55,11 +55,11 @@ export default {
           url : _this.apiPath+'doc/docVerify/verify',  
           //url : 'http://apioa.cuxiaoke.cn/pc/Jackay',  
 
-          dataType: 'json',  
+          /*dataType: 'json', */
           xhrFields: {
                 withCredentials: true
           },
-          type:'post',    
+          type:'post',
           beforeSubmit: function() {
 
               var val = $(':file').fieldValue();
@@ -79,11 +79,12 @@ export default {
               $("#file").attr('disabled','disabled');
           },
           success: function(res){
-                 _this.setLSData("uploadData",res.data);
-                 _this.setLSData("uploadMessage",res.meta);
+                var backData = JSON.parse(res)
+                 _this.setLSData("uploadData",backData.data);
+                 _this.setLSData("uploadMessage",backData.meta);
                  _this.$router.push({
                     name: 'sign_state'
-                  });
+                });
           }
           //timeout:   3000  
       });

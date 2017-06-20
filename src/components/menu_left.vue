@@ -14,7 +14,7 @@
                                 <h3 v-if="userStateNum != 3" id="menuDisplayNameText " class="shengl">{{msg.memName}}</h3>
                                 <p v-if="userStateNum != 3" id="menuCompanyNameText" class="shengl">{{msg.companyName}}</p>
                                 <h3 v-if="userStateNum == 3" id="menuDisplayNameText " class="shengl">{{msg.displayName}}</h3>
-                                <a id="indLogoutIcon" href="/logout">
+                                <a id="indLogoutIcon" @click="signout">
                                     <i class=" icon-sign-out-1" title="退出"></i>
                                 </a>
                             </li>
@@ -88,6 +88,10 @@
                     </div>
                 </div>
             </div>
+
+            <alertModel title="退出" context="确定要退出当前用户吗？"  :showState="showState"  v-show="showState"  :type="type"    @cancelHandle="showState = false" @sureHandle="sureDele">
+            </alertModel>
+
         </div>
 </template>
 
@@ -101,7 +105,9 @@ export default {
       msg:{},
       userStateNum:null,
       activeFile:true,
-      activeTj:true
+      activeTj:true,
+      showState:false,
+      type:2
     }
   },
   computed:{
@@ -126,6 +132,12 @@ export default {
       },function(response){
         console.log(response);
       })
+    },
+    signout(){
+      this.showState = true;      
+    },
+    sureDele(){
+      window.location.href=this.apiPath.substring(0,this.apiPath.length-1)+"/logout";
     }
   },
   mounted(){    
@@ -136,10 +148,7 @@ export default {
           $(this).siblings('li').removeClass('active');
           $(this).siblings('li').children('.child_menu').slideUp();
         })
-        //this.getData();
         $("#sidebar-menu ul>li.active").find('.child_menu').slideDown();
-       // this.url = this.url;
-       // console.log(this.url)
   },
   watch: {
     // 如果路由有变化，会再次执行该方法

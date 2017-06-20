@@ -30,9 +30,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/api': {
-            //target: 'http://localhost:8080',
-            target: 'http://192.168.22.212:8080',
-			//target:'http://dev.vuerequire.com',
+            target:'http://192.168.22.212:8080',
             changeOrigin: true,
             pathRewrite: {
               '^/api': '/'
