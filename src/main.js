@@ -35,6 +35,8 @@ Vue.use(Loading)
 
 const JQ = require('./assets/js/jquery-1.12.2.min.js');
 const JQ2 = require('./assets/js/jquery.mCustomScrollbar.concat.min.js');
+require('./assets/js/jquery.share.js');
+require('./assets/js/jquery.qrcode.min.js');
 
 Vue.prototype.setLSData=function(key, value){
  localStorage.setItem(key, JSON.stringify(value));
@@ -91,6 +93,7 @@ Vue.filter('filterdata', function (value) {//value为13位的时间戳
 
 
 router.beforeEach((to, from, next) => {
+  document.body.scrollTop = 0;
   if(to.name == "file"){
     document.title="签吧-归档"
   }
@@ -106,13 +109,22 @@ router.beforeEach((to, from, next) => {
   if(to.name == "log"){
     document.title="签吧-日志"
   }
-  if(to.name != 'sign_state'){   
+  if(to.name == "Welcome"){
+    document.title="签吧-首页"
+  }
+  if(to.name == "Product"){
+    document.title="签吧-产品介绍"
+  }
+  if(to.name == "onlineSign" || to.name == "onlineSignState"){
+    document.title="签吧-在线验签"
+  }
+  if(to.name != 'sign_state' && to.name != 'onlineSignState'){   
     localStorage.removeItem('uploadData');
     localStorage.removeItem('uploadMessage');    
   }
 
-  if(to.name == 'noallow'){
-    store.dispatch('changeComNav',false)
+  if(to.name == 'noallow' || to.name=="Welcome" || to.name == "Product" || to.name== "onlineSign" || to.name == "onlineSignState"){
+    store.dispatch('changeComNav',false) 
   }else{
      store.dispatch('changeComNav',true)
   }

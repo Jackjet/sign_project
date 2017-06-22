@@ -4,17 +4,21 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  top_title:"",
-  userState:null,
-  roleState:null,
-  uploadData:{},
+  top_title:"",         //页面顶部导航文字
+  userState:null,       //登录用户的状态  0 1 2 3
+  userName:null,        //用户名称
+  roleState:null,       //用户的角色（是否为主管） 0 1
+  uploadData:{},        //
   uploadMessage:{},
-  comNav:true
+  comNav:true,           //控制公共导航的显示隐藏   menu_left.vue  nav_top.vue  footer 
 }
 
 const Actions = {
     changeState({commit},num){
       commit('changeState',num)
+    },
+    changeUserName({commit},name){
+      commit('changeUserName',name)
     },
     changeRolState({commit},num){
       commit('changeRolState',num)
@@ -36,6 +40,9 @@ const Mutations = {
   changeState (state,num) {
       state.userState = num;
   },
+  changeUserName(state,name){
+      state.userName = name;
+  },
   changeRolState(state,num){
       state.roleState = num;
   },
@@ -56,6 +63,9 @@ const Mutations = {
 const Getters = {
   userState(state) {    
       return state.userState;
+  },
+  userName(state){
+      return state.userName;
   },
   roleState(state){
       return state.roleState;

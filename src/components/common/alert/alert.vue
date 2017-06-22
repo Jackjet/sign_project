@@ -32,7 +32,7 @@ export default {
   props: {
 		title: {			// 数据总条数
 			type: String,
-			default: "警告框"
+			default: "提示框"
 		},
 		context:{
 			type:String,

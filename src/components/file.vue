@@ -48,9 +48,9 @@
 					<div class="row clf">
 					  <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">归档时间</div>
 					  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-						<span class="input"><calendar @changeDate="changeStartDate" :val="'1'"></calendar></span>
+						<span class="input"><calendar @changeDate="changeStartDate" :val="'1'" :msg="msg"></calendar></span>
 						<span class="txt">至</span>
-						<span class="input"><calendar @changeDate="changeEndDate"></calendar></span>
+						<span class="input"><calendar @changeDate="changeEndDate" :msg="messge"></calendar></span>
 					  </div>
 					  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" name="" placeholder="关键字：企业名称" v-model="getReParms.searchKeyword"  @keyup.enter="searchFileHandle(getReParms.searchKeyword)"></div>
 					  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 btn-box"><a href="javascript:;" class="search-btn" @click="searchFileHandle(getReParms.searchKeyword)">查询</a><a href="javascript:;" @click="deleteHandle()">清空</a></div>
@@ -202,6 +202,8 @@ export default {
   },
   data () {
     return {
+        msg:{"number":1},
+        messge:{"number":2},
         pageData:{           //翻页配置
             total: 0,          //总条数 
         },
@@ -814,11 +816,31 @@ export default {
         this.getReParms.signEndDate = this.getDataFn().currentdate;
     }
   },
+  watch:{    
+    'msg.number':{
+        handler:function(val,oldVal){
+            this.getReParms.signStartDate = "";
+            this.timeSelect = true;        
+        },
+        // 深度观察
+        deep:true
+    },
+    'messge.number':{
+        handler:function(val,oldVal){
+            this.getReParms.signEndDate = "";
+            this.timeSelect = true;   
+            
+        },
+        // 深度观察
+        deep:true
+    }
+  },
   mounted(){
     this.getdirListData();
     this.getdirListDataRight();
     this.getNowDate();
-    this.$store.dispatch('changeTitle','我的文档>归档');          
+    this.$store.dispatch('changeTitle','我的文档>归档');    
+    console.log(this.msg.number)      
   }
 }
 </script>

@@ -11,8 +11,8 @@ exports.install = function (Vue, options) {
   
 
   /*线上环境*/
-  //const apiPath = localHost+'/';
-  //Vue.prototype.apiPath = 'http://'+localHost+'/';
+//   const apiPath = localHost+'/';
+//   Vue.prototype.apiPath = 'http://'+localHost+'/';
 
 
 

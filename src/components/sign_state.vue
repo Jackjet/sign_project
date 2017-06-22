@@ -76,9 +76,15 @@ export default {
     againSign(){      
       this.removeLSData('uploadData');
       this.removeLSData('uploadMessage');
-      this.$router.push({
-        name: 'sign_check'
-      });
+      if(this.$route.name == "sign_state"){
+        this.$router.push({         //用户验签
+          name: 'sign_check'
+        });
+      }else{
+        this.$router.push({         //在线验签
+          name: 'onlineSign'
+        });
+      }
     },
     init(){
       if(this.lostorgMsg.success){
@@ -93,7 +99,6 @@ export default {
   mounted(){
     this.lostorgData = this.getLSData('uploadData');
     this.lostorgMsg = this.getLSData('uploadMessage');
-    console.log(typeof this.lostorgData)
     this.init();
     this.$store.dispatch('changeTitle','我的文档>验签');  
     document.title = "签吧-验签";

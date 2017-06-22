@@ -41,6 +41,8 @@
                 </div>
             </div>
         </transition>
+        <alertModel :title="'提示'" :context="'请选择一个日期'" :type="1"  :showState="showAlertState"  v-show="showAlertState"  @cancelHandle="showAlertState = false" >
+    </alertModel>
     </div>
 </template>
 
@@ -77,6 +79,7 @@
              * param {Boolean} check: type 为 'range' 时，检查输入时间是否合法
             */
             return {
+                showAlertState:false,
                 value: '',
                 togglePanel: false,
                 pannelType: 'date',
@@ -103,13 +106,18 @@
                 monthList: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
                 flag: true,
                 check: '',
-                clickOne:true
+                clickOne:true,
+                closeNum:0
             }
         },
         props: {
             val:{          //默认显示值
                 type:String,
                 default:"2"
+            },
+            msg:{
+                type:Object,
+                default:Object
             },
             type: {
                 type: String,
@@ -398,7 +406,10 @@
             },
             clearValue() {
                 this.value = '';
-                this.startYear = this.startMonth = this.startDate = this.endYear = this.endMonth = this.endDate = '';
+                this.startYear = this.startMonth = this.startDate = this.endYear = this.endMonth = this.endDate = '';  
+                if(this.msg.number){
+                    this.msg.number = Math.random();
+                }          
             },
             confirmSelect() {			
                 if(this.pannelType === 'year') {
@@ -412,7 +423,10 @@
                     }else if(this.endHour == this.startHour && this.endMin < this.startMin) {
                         this.endMin = this.startMin;
                     }
-					
+					if(this.startYear == ""){
+                        this.showAlertState = true;
+                        return false;
+                    }
                     this.changeValue();
                     this.togglePanel = !this.togglePanel;
                 }

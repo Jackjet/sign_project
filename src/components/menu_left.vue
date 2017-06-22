@@ -103,7 +103,7 @@ export default {
     return {
       url: '',
       msg:{},
-      userStateNum:null,
+      userStateNum:null,  
       activeFile:true,
       activeTj:true,
       showState:false,
@@ -124,7 +124,13 @@ export default {
           That.msg = result.data;
           That.userStateNum = result.data.accType;
           That.$store.dispatch('changeState',result.data.accType);          
-          That.$store.dispatch('changeRolState',result.data.role);          
+          That.$store.dispatch('changeRolState',result.data.role);    
+          if(result.data.accType == 3){ //小B
+            That.$store.dispatch('changeUserName',result.data.displayName);  
+          }else{
+            That.$store.dispatch('changeUserName',result.data.memName)
+          } 
+                  
         }else{
             That.alertCommonTip(result.meta.message)
         }

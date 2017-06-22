@@ -7,18 +7,12 @@
           <div class="panel-upload">
               <img src="../assets/images/sign_icon.png" alt="">
               <p class="tip">温馨提示：上传文件不超过10M</p>
-              <!--<a class="upload-btn" href="javascript:;">上传PDF文件</a>-->
-              <!-- <div class="upload-btn">上传PDF文件
-                <input type="file" accept="pdf" name="file" value="上传PDF文件" id="fileInput" @click="upLoadHandle()">
-              </div> -->
-              <form id="uploadForm" method="post" enctype="multipart/form-data"  style="padding-bottom:100px;"> 
-                     <!--  <a class="upload-btn" href="javascript:;">上传PDF文件</a>            -->       
+              <form id="uploadForm" method="post" enctype="multipart/form-data"  style="padding-bottom:100px;">     
                      <p class="uploadFileName">{{uploadFileName}}</p>
                       <div class="upload-btn"  @click="selectFile()">{{tipName}}
                           
                           <input type="file" id="file" name="uploadFile">
                       </div>
-                      <!-- <button type="submit" class="btn btn-primary">下一步</button> -->
                        <p class="warn" v-show="uploadWarn" ><i class="icon-warn"></i>不支持该格式文档，请上传<span>PDF</span>文件</p>
               </form>
              
@@ -28,6 +22,7 @@
           </div>
       </div>
     </div>
+    <alertModel :title="'提示'" :context="'服务器正忙，请稍后再试'" :type="1"  :showState="showAlertState"  v-show="showAlertState"  @cancelHandle="showAlertState = false" ></alertModel>
   </div>
 </template>
 
@@ -41,14 +36,17 @@ export default {
       uploadFileName:"",
       tipName:"上传PDF文件",
       clickStatus:true,
-      submitStatus:false
+      submitStatus:false,
+      showAlertState:false,
+      routerName:null
     }
   },
   methods:{
     selectFile(){
       var _this = this;
       $("#file").on('change',function(){
-        var arrTem = this.value.split("\\");
+        var arrTem = [];
+        arrTem = this.value.split("\\");
         _this.uploadFileName = arrTem[arrTem.length-1];
 
         $('#uploadForm').ajaxSubmit({  
@@ -61,8 +59,10 @@ export default {
           },
           type:'post',
           beforeSubmit: function() {
-
-              var val = $(':file').fieldValue();
+              var val = $(':file').fieldValue();              
+              if(val.length == 0){
+                val=["+Math.random()+"]
+              }
               var arr = val[0].split('.');
               var Suffix = arr[arr.length-1];
               if (val == "") {
@@ -82,11 +82,29 @@ export default {
                 var backData = JSON.parse(res)
                  _this.setLSData("uploadData",backData.data);
                  _this.setLSData("uploadMessage",backData.meta);
-                 _this.$router.push({
-                    name: 'sign_state'
-                });
-          }
-          //timeout:   3000  
+                 if(_this.$route.name == "onlineSign"){  //在线验签
+                     _this.$router.push({
+                        name:"onlineSignState"
+                    });
+                 }
+                 if(_this.$route.name == "sign_check"){   //用户文件验签
+                     _this.$router.push({
+                        name: 'sign_state'
+                    });
+                 }
+                
+          },
+          error:function(res){
+            if(res.statusText == "timeout"){
+              _this.submitStatus = false;
+              _this.showAlertState = true;
+               $("#file").val("");
+              _this.uploadFileName = "";
+              $("#file").removeAttr('disabled');
+            }
+            
+          },
+          timeout:30000
       });
 
       })
@@ -95,7 +113,8 @@ export default {
   },
 
   mounted(){
-    this.$store.dispatch('changeTitle','我的文档>验签');  
+    this.$store.dispatch('changeTitle','我的文档>验签'); 
+    
     //document.title = "我的文档>验签";
   }
 }
