@@ -72,13 +72,13 @@
                                             :href="url+'/cus/orgStructure/toOrgStructurePage'">组织架构</a>
                                     </li>
                                     <li class="hideMenuLi cusPartners" v-if="userStateNum == 2 "><a
-                                            :href="url+'/cus/companyPartners/toCompanyPartnersManagement'">合作伙伴</a>
+                                            :href="url+'/cus/companyPartners/toCompanyPartnersList'">合作伙伴</a>
                                     </li>
                                     <li class="hideMenuLi cusPartners" v-if="userStateNum == 2"><a
                                             :href="url+'/cus/orgStructure/toOrgStructurePage'">组织架构</a>
                                     </li>
                                     <li class="hideMenuLi comPartners" v-if="userStateNum == 3"><a
-                                            :href="url+'/cus/companyPartners/toCompanyPartnersManagement'">合作伙伴</a>
+                                            :href="url+'/cus/ordinaryPartners/toOrdinaryPartnersList'">合作伙伴</a>
                                     </li>
                                 </ul>
                             </li>
@@ -279,6 +279,7 @@ export default {
       }
       .child_menu{
         display: none;
+        background: #000;
         li{
           padding-left:25px;
         }
