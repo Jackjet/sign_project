@@ -1,7 +1,5 @@
 exports.install = function (Vue, options) { 
   
-  //
-  
   var localHost = window.location.host;
 
   /*开发环境*/
@@ -22,7 +20,7 @@ exports.install = function (Vue, options) {
     this.$http.get(apiPath+url+"?data="+new Date().getTime(),
 
     /*线上*/
-    //this.$http.get(url+"?data="+new Date().getTime(),
+    // this.$http.get(url+"?data="+new Date().getTime(),
      	{
      		params:data,
      		headers: {'X-Requested-With':'XMLHttpRequest'}

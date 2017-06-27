@@ -84,37 +84,41 @@
       </div>
       <div class="page page3">
         <h3>典型用户</h3>
-        <div class="container">
+        <div class="container por">
           <div class="scroll-wrap" id="scroll-wrap">
             <div class="scroll-box clf" id="scroll-box">
-              <ul style="opacity:1">
-                <li class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <ul class="row" style="opacity:1">
+                <li>
                   <img src="../assets/images/welcome/logo1.png" alt="">
                 </li>
-                <li class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <li>
                   <img src="../assets/images/welcome/logo2.png" alt="">
                 </li>
-                <li class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <li>
                   <img src="../assets/images/welcome/logo3.png" alt="">
                 </li>
-                <li class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <li>
                   <img src="../assets/images/welcome/logo4.png" alt="">
                 </li>
               </ul>
-              <ul>
-                <li class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <ul class="row">
+                <li>
                   <img src="../assets/images/welcome/logo5.png" alt="">
                 </li>
-                <li class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <li>
                   <img src="../assets/images/welcome/logo6.png" alt="">
                 </li>
-                <li class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <li>
                   <img src="../assets/images/welcome/logo7.png" alt="">
                 </li>
-                <li class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <li>
                   <img src="../assets/images/welcome/logo8.png" alt="">
                 </li>
               </ul>
+            </div>
+            <div class="icons">
+              <a class="btn active" href="javascript:;"></a>
+              <a class="btn" href="javascript:;"></a>
             </div>
           </div>
         </div>
@@ -127,6 +131,8 @@ export default {
   name: 'welcome',
   data () {
     return {
+      leftShow:false,
+      rightShow:true
     }
   },
   methods:{
@@ -137,34 +143,87 @@ export default {
       $(event.target).find('.img-cover').fadeOut()
     }
   },  
-  mounted(){     
+  mounted(){   
+    var That = this;  
     $(window).scroll(function(event){
        if($(window).scrollTop() > 500){
           $('#changjing').find('.item').addClass('animated zoomIn');
        }
     })
     $(function(){
+      var width = null;   //一个ul的宽度
+      viewResize();       //重新计算
+      function viewResize(){				 		
+        var viewWidth = document.documentElement.clientWidth;				 		
+        width = $('#scroll-wrap').width();
+        $('#scroll-wrap').find('ul').width(width);
+        $("#scroll-box").width(width*2);
+      }
+      window.onresize=function(){
+        viewResize()
+      }
+
       banScroll();
-      function banScroll(){
+      function banScroll(){      
+
         $("#imgfirst").load(function(){
             var iNow = 0;
-            var oUl = $('#scroll-wrap').find('ul');
-            var width = $('#scroll-box ul').width();
+            var iNow2 = 0;
+            var aUl = $('#scroll-wrap').find('ul');
+            var clickState = true;
+            width = $('#scroll-wrap').width();
+            $('#scroll-wrap').find('ul').width(width);
             $("#scroll-box").width(width*2);
-            var timer = setInterval(toRun,2000);
+            var timer = setInterval(toRun,4000);
+            var Timer2 = null;
+            $('.btn').on('click',function(){  
+              clearInterval(Timer2); 
+              clearInterval(timer);           
+              if(clickState){
+                clickState = false;
+                $('.icons .btn').removeClass('active');
+                $(this).addClass('active');
+                var index = $(this).index();
+                $("#scroll-box").animate({
+                  left:-index*width+'px'
+                },1000,function(){
+                  clickState = true;
+                  var i = 0;
+                  Timer2 = setInterval(function(){
+                    i++;
+                    if(i>4){
+                      iNow = index;
+                      iNow2 = index;
+                      timer = setInterval(toRun,4000);
+                      clearInterval(Timer2);
+                    }
+
+                  },1000)
+                })
+              }
+            })           
             
             function toRun(){
-              iNow++;
+              if(iNow == aUl.length-1){
+                $(aUl[0]).css({"position":"relative","left":aUl.length*width+'px'});            
+                iNow = 0;
+				 		  }else{
+				 		  	iNow++;
+				 	  	}
+              iNow2++;
+              $('.icons .btn').removeClass('active');
+              $('.icons').find('.btn').eq(iNow).addClass('active');
               $("#scroll-box").animate({
-                left:-iNow*width+'px'
-              },1000)
-              if(iNow == 1){
-                iNow = -1;
-              }
+                left:-iNow2*width+'px'
+              },1000,function(){
+                if(iNow == 0){
+                    $(aUl[0]).css({"position":"static"});
+                    $('#scroll-box').css({"left":0+'px'})
+                    iNow2 = 0;
+                }
+              })              
             }
-
-        })
-        
+        })        
       }
     })
   }

@@ -80,6 +80,9 @@ export default {
 		top:50%;
 		left:50%;
 		transform:translate(-50%,-50%);
+		/*margin-left:-199px;
+		margin-top: -150px;*/
+		-ms-transform: translate(-50%,-50%);
 		background:#fff;
 		border-radius:12px;
 		padding:0 0 20px;

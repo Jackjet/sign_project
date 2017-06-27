@@ -587,6 +587,7 @@
         },
         mounted(){
             this.Event2.$on('tip',function(a){
+                console.log(a)
                 this.clearValue();
             }.bind(this));
         }
@@ -804,6 +805,7 @@ label {
   -ms-box-sizing: border-box;
   -o-box-sizing: border-box;
   box-sizing: border-box;
+  font-family: "Microsoft YaHei", tahoma, arial, "Hiragino Sans GB", "\5B8B\4F53", sans-serif;
 }
 .calendar .btn-cancle{
 	border:1px #dedede solid !important;

@@ -4,7 +4,9 @@
   </div>
 </template>
 <script>
-import signar from './sign_check.vue';
+/*import '../assets/css/font2/font.css'
+import '../assets/css/sign_check.scss'*/
+import signar from './sign_check.vue'
 export default {
   name: 'online_sign',
   components:{
@@ -27,7 +29,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped lang="scss">
- @import '../assets/css/font2/font.css';
- @import '../assets/css/base.scss';
- @import '../assets/css/sign_check.scss';
+@import '../assets/css/font2/font.css';
+@import '../assets/css/base.scss';
+@import '../assets/css/sign_check.scss';
 </style>

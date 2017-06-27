@@ -960,6 +960,7 @@ $gray2: #ebecf2;
 $black:#4b4b4b;
 $white:#fff;
 $pink:#FF503F;
+$pink_opa:rgba(255,80,63,0.7);
 $gray3:#f6f6f6;
 $border:#ccc;
  
@@ -978,6 +979,9 @@ $border:#ccc;
 .clf:after{clear:both;}
 .clf{*zoom:1;}
 
+.por{
+  position: relative;
+}
 .shengl{
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */

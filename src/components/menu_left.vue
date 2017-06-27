@@ -1,6 +1,6 @@
 <template>
   <div id="divSidebarMenu" class="left_col" >
-            <div class="scroll-view mCustomScrollbar" style="height:700px;" >
+            <div class="scroll-view mCustomScrollbar" style="height:650px;" >
                 <div class="navbar nav_title">
                     <a href="/jsp/cus/account/accountIndex" class="site_title"><i></i></a>
                 </div>
@@ -14,9 +14,10 @@
                                 <h3 v-if="userStateNum != 3" id="menuDisplayNameText " class="shengl">{{msg.memName}}</h3>
                                 <p v-if="userStateNum != 3" id="menuCompanyNameText" class="shengl">{{msg.companyName}}</p>
                                 <h3 v-if="userStateNum == 3" id="menuDisplayNameText " class="shengl">{{msg.displayName}}</h3>
-                                <a id="indLogoutIcon" @click="signout">
-                                    <i class=" icon-sign-out-1" title="退出"></i>
-                                </a>
+                                <!--<a id="indLogoutIcon" @click="signout">
+                                    <i class="icon-sign-out-1" title="退出"></i>
+                                </a>-->
+                                <div style="height:25px;"></div>
                             </li>
                             <li name="menuLiAdmin" v-if="userStateNum == 0"><a><i class="icon-group"></i> 企业管理 <span
                                     class="icon-left-open-big"></span></a>
@@ -91,7 +92,10 @@
 
             <alertModel title="退出" context="确定要退出当前用户吗？"  :showState="showState"  v-show="showState"  :type="type"    @cancelHandle="showState = false" @sureHandle="sureDele">
             </alertModel>
-
+            <div class="bottom-btn">
+              <a href="/index.html#/index/welcome">返回官网</a>
+              <a href="javascript:;" @click="signout">退出</a>
+            </div>
         </div>
 </template>
 
@@ -127,12 +131,16 @@ export default {
           That.$store.dispatch('changeRolState',result.data.role);    
           if(result.data.accType == 3){ //小B
             That.$store.dispatch('changeUserName',result.data.displayName);  
-          }else{
+          }
+          else if(result.data.accType == 1){  //大B管理员
+            That.$store.dispatch('changeUserName',result.data.companyName);  
+          }
+          else{  //大B用户 
             That.$store.dispatch('changeUserName',result.data.memName)
           } 
                   
         }else{
-            That.alertCommonTip(result.meta.message)
+            That.alertCommonTip(result.meta.message);
         }
         
       },function(response){
@@ -321,6 +329,38 @@ export default {
       }
       &.active>a:hover{
         background: $pink !important;
+      }
+    }
+  }
+  .bottom-btn{
+    width: 100%;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    max-width: 170px;
+    a{
+      width: 72px;
+      text-align: center;
+      display: block;
+      float: left;
+      position: relative;
+      color: $white;
+      &:nth-child(1){
+        width: 98px;
+        &:after{
+          content: ".";
+          position: absolute;
+          font-size: 0;
+          height: 12px;
+          width: 1px;
+          color: #fff;
+          right: 0px;
+          background: #fff;
+          top: 5px;
+        }
+      }
+      &:hover{
+        color: #FF503F;
       }
     }
   }

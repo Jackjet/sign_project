@@ -55,16 +55,10 @@ Vue.prototype.removeLSData=function(key){
 };
 
 Vue.prototype.removeArr = function(arr,val) {
-   console.log("开始数组")
-   console.log(arr)
-   console.log("比较数组")
-   console.log(val)
     var index = arr.indexOf(val);
     if (index > -1) {
         arr.splice(index, 1);
     }
-    // console.log("结果数组")
-    // console.log(arr)
     return arr;
 };
 

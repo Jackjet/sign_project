@@ -7,11 +7,11 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 //const Hello = resolve => require(['@/components/Hello'], resolve)
-/*const Index = resolve => require(['@/components/index'], resolve)                      //首页
+const Index = resolve => require(['@/components/index'], resolve)                      //首页
 const Welcome = resolve => require(['@/components/welcome'], resolve)                  //欢迎页
 const Product = resolve => require(['@/components/product_info'], resolve)             //产品介绍
 const onlineSign = resolve => require(['@/components/online_check'], resolve)             //在线验签页
-const onlineSignState = resolve => require(['@/components/online_state'], resolve)             //在线验签结果页*/
+const onlineSignState = resolve => require(['@/components/online_state'], resolve)             //在线验签结果页
 const sign_state = resolve => require(['@/components/sign_state'], resolve)   //验签成功失败页面
 const sign_check = resolve => require(['@/components/sign_check'], resolve)   //验签页面
 const file = resolve => require(['@/components/file'], resolve)         //归档页面
@@ -33,7 +33,7 @@ export default new Router({
     //   name: 'Hello',
     //   component: Hello
     // },
-    /*{
+    {
       path: '/index',
       name: 'Index',
       component: Index,
@@ -59,7 +59,7 @@ export default new Router({
           component:onlineSignState
         }
       ]
-    },*/
+    },
     {
       path: '/sign_check',
       name: 'sign_check',
@@ -105,7 +105,7 @@ export default new Router({
     },
     {
       path:'/',
-      redirect:'/file'
+      redirect:'/index/welcome'
     },
     {
       path:'*',

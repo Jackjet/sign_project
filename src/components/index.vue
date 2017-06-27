@@ -9,8 +9,9 @@
                 <router-link to="/index/product_info" class="nav-a">产品介绍</router-link>
                 <router-link to="/index/onlinesign" class="nav-a">在线验签</router-link>
                 <a class="userName" v-show="userName">当前用户：{{userName ? userName : ""}}</a>
-                <a v-show="!userName" href="/logout" class="login">登录</a>
-                <a v-show="!userName" href="/register" class="register">注册</a>
+                <a v-show="userName" href="/cus/account/accountIndex" class="register" target="_blank">个人中心</a>
+                <a v-show="!userName" href="/logout" class="login" target="_blank">登录</a>
+                <a v-show="!userName" href="/register" class="register" target="_blank">注册</a>
               </div>                      
           </div>
       </div>
@@ -20,9 +21,9 @@
           <i class="icon-service"></i>
           <ul class="hover-box">
             <li><img src="../assets/images/welcome/phone.png"><span>95105813</span></li>
-            <li><img src="../assets/images/welcome/qq.png"><a href="tencent://message/?uin=2075217613&amp;Site=www.xxx.com&amp;Menu=yes">销售一交谈</a></li>
-            <li><img src="../assets/images/welcome/qq.png"><a href="tencent://message/?uin=2075217613&amp;Site=www.xxx.com&amp;Menu=yes">销售二交谈</a></li>
-            <li><img src="../assets/images/welcome/mail.png"><span>sslsales@gdca.com.cn</span></li>
+            <li><img src="../assets/images/welcome/qq.png"><a target="_blank" href="http://crm2.qq.com/page/portalpage/wpa.php?uin=8008301560&aty=2&a=2&curl=&ty=1">销售一交谈</a></li>
+            <!--<li><img src="../assets/images/welcome/qq.png"><a href="tencent://message/?uin=2075217613&amp;Site=www.xxx.com&amp;Menu=yes">销售二交谈</a></li>-->
+            <li><img src="../assets/images/welcome/mail.png"><span>sales@gdca.com.cn</span></li>
             <li><img src="../assets/images/welcome/time.png"><span>周一至周五 9:00-18:00 节假日休息</span></li>
           </ul>
           
@@ -30,7 +31,7 @@
         <div class="fixed-icon share">
           <i class="icon-share"></i>
           <div class="hover-box">
-             <div id="share-1"></div>
+             
              <ul>
                <li><img src="../assets/images/welcome/wenxin.png">微信</li>
                <li><img src="../assets/images/welcome/qq.png">QQ</li>
@@ -39,6 +40,7 @@
                <li><img src="../assets/images/welcome/tengxunweibo.png">腾讯微博</li>
                <li><img src="../assets/images/welcome/douban.png">豆瓣</li>
              </ul>
+             <div id="share-1"></div>
           </div>
         </div>
         <div class="fixed-icon ewm-box">
@@ -113,6 +115,7 @@ export default {
     }
   },
   mounted(){
+    //alert(this.$store.state.userName )
     if(this.$route.name == "Welcome"){
       this.fixed(true);
     }else{

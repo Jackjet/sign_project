@@ -43,8 +43,10 @@ export default {
     left: 0px;
     width: 100%;
     background: #fff;
+    font-family: "Microsoft YaHei", tahoma, arial, "Hiragino Sans GB", "\5B8B\4F53", sans-serif;
     p{
       font-size: 14px;
+      padding-left: 170px;
     }
   }
 </style>

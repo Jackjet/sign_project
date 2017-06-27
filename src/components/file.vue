@@ -26,7 +26,7 @@
 			</div>
 			<div class="contract-list mCustomScrollbar">
 				<ul>
-					<li v-show="dirList != 0"  @click="selectLi(index)" v-for="(item,index) in dirList"  :class="[index == selectIndex ? 'active' : '',index == editorIndex ? 'editActive':'']">
+					<li v-show="dirList != 0"  @click="selectLi(index)" v-for="(item,index) in dirList"  :class="[index == selectIndex ? 'active' : '',index == editorIndex ? 'editActive':'']" :key="index"> 
                         <i class="icon-del" @click.stop="delFolderHandle(item,index)" v-if="userState != 2"></i>
                         <i class="icon-editor" @click.stop="editHandle(index)" v-if="userState != 2"></i>
                         <span class="icon-folder"></span>
@@ -52,7 +52,7 @@
 						<span class="txt">至</span>
 						<span class="input"><calendar @changeDate="changeEndDate" :msg="messge"></calendar></span>
 					  </div>
-					  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" name="" placeholder="关键字：企业名称" v-model="getReParms.searchKeyword"  @keyup.enter="searchFileHandle(getReParms.searchKeyword)"></div>
+					  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" name="" placeholder="关键字：文档名称" v-model="getReParms.searchKeyword"  @keyup.enter="searchFileHandle(getReParms.searchKeyword)"></div>
 					  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 btn-box"><a href="javascript:;" class="search-btn" @click="searchFileHandle(getReParms.searchKeyword)">查询</a><a href="javascript:;" @click="deleteHandle()">清空</a></div>
 					</div>
 				  </div>
@@ -68,13 +68,13 @@
                 <span>状态</span>
                 <span v-show="userState != 1">操作</span>                
               </li>
-              <li  v-show="againFileList.length > 0" class="li-class clf" v-for="(item,index) in againFileList">
+              <li @click="linkToDetail(item.docId)"  v-show="againFileList.length > 0" class="li-class clf" v-for="(item,index) in againFileList" :key="index">
                 <span :title="item.docName">{{item.docName}}<i class="line"></i></span>
                 <span :title="item.signators">{{item.signators}}</span>
                 <span :title="item.sendTime | filterdata">{{item.sendTime | filterdata}}</span>
                 <span :title="item.efectTime | filterdata">{{item.efectTime | filterdata}}</span>
                 <span :title="item.cycle">{{item.cycle == 300 ? '已完成':'&nbsp;'}}</span>
-                <span  v-show="userState != 1"><a @click="againFile($event,index)">重新归档</a><a href="javascript:;" @click="cancelFile(item)">撤销归档</a></span>     
+                <span  v-show="userState != 1"><a @click.stop="againFile($event,index)">重新归档</a><a href="javascript:;" @click.stop="cancelFile(item)">撤销归档</a></span>     
               </li>
               <li class="no-message" v-show="loadingState">加载中，请稍后</li>
               <li class="no-message" v-show="againFileList.length == 0" v-text="'暂无数据'"></li>
@@ -92,7 +92,7 @@
                   </div>
                   <ul class="fileList">
 
-                      <li v-for="(val,index) in againFolderList" :class="[againNowIndex == index ? 'active' : '']" @click="selectFile(index)">
+                      <li v-for="(val,index) in againFolderList" :class="[againNowIndex == index ? 'active' : '']" @click="selectFile(index)" :key="index">
                         <b  :class="[againNowIndex == index ? 'icon-check-default' : 'icon-circle']"></b>{{val.dirName}}
                       </li>
                       <li class="no-message" v-show="againFolderList.length == 0" v-text="'暂无数据'"></li>
@@ -125,7 +125,7 @@
                             <span>签署方</span>
                             <span>发起时间</span>
                         </li>
-                        <li class="clf" v-for="(item,index) in addFile.fileList" @click="selectFileHandle(item)">
+                        <li class="clf" v-for="(item,index) in addFile.fileList" @click="selectFileHandle(item)" :key="index">
                             <span :title="item.docName"><i :class="[item.keepValue.checkItem ? 'icon-check2-default' : 'icon-square']"></i>{{item.docName}}</span>
                             <span :title="item.signators">{{item.signators}}</span>
                             <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
@@ -147,7 +147,7 @@
                             <span>签署方</span>
                             <span>发起时间</span>
                         </li>
-                        <li class="clf" @click="delFileHandle(item)" v-for="(item,val) in selectFileList">
+                        <li class="clf" :key="index"  @click="delFileHandle(item)" v-for="(item,index) in selectFileList" >
                             <span :title="item.docName">{{item.docName}}</span>
                             <span :title="item.signators">{{item.signators}}</span>
                             <span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
@@ -243,6 +243,7 @@ export default {
         againSeNameCenter:"",
         againFileList:[],         //重新归档文件列表
         againFolderList:[],       //重新归档文件夹列表
+        againFolderListTem:[],       //重新归档文件夹列表中间变量
         getReParms:{
             signStartDate:'',
             signEndDate:'',
@@ -291,6 +292,9 @@ export default {
     }
   },
   methods:{
+    linkToDetail(id){
+        window.location.href="/doc/documentInfo/toDocDetail?docId="+id;
+    },
     deleteHandle(){    //清空
          this.getReParms.searchKeyword = "";
          this.Event2.$emit('tip','change');
@@ -343,7 +347,8 @@ export default {
         },function(response){
         var result = response.data;
         if(result.meta.success){
-            That.againFolderList = result.data;     
+            //That.againFolderList = result.data;
+            That.againFolderListTem = result.data;     
             That.getReParms.dirId = That.dirList[That.selectIndex].dirId;            
         }else{
             That.alertCommonTip(result.meta.message)
@@ -530,10 +535,10 @@ export default {
      })
     },
     searchFileList(val){        //查询归档文件列表
-        if(val  == this.addFile.searchTitleTem) return
-
+        if(val  == this.addFile.searchTitleTem) return;
         this.addFileHandle();
         this.addFile.searchTitleTem = val;
+        this.Event2.$emit('tip2',1);
     },
     selectFileHandle(item2){      //添加归档文件
         var state2 = item2.keepValue.checkItem;
@@ -550,9 +555,21 @@ export default {
             item2.keepValue.checkItem = true;
         } 
     },
-    delFileHandle(item){   //取消归档文件
+    delFileHandle(item2){   //取消归档文件
+        /*console.log(item)
         item.selectItem = false;
-        this.removeArr(this.selectFileList,item);
+        this.removeArr(this.selectFileList,item);*/
+        for(var i = 0 ; i < this.selectFileList.length;i++){
+            if(item2.docId == this.selectFileList[i].docId){
+                this.selectFileList.splice(i,1);
+            }
+        }
+        for(var j = 0 ; j < this.addFile.fileList.length;j++){
+            if(item2.docId == this.addFile.fileList[j].docId){
+                this.addFile.fileList[j].keepValue.checkItem = false;
+            }
+        }
+        //item2.keepValue.checkItem = false;
     },
     searchFileHandle(val){
         if(this.timeSelect){
@@ -680,6 +697,12 @@ export default {
         
     },
     againFile(event,index){         //重新归档弹框显示
+        this.againFolderList = [];
+        for(var i =0; i< this.againFolderListTem.length;i++){
+            if(this.againFolderListTem[i].dirId != this.dirList[this.selectIndex].dirId){
+                this.againFolderList.push(this.againFolderListTem[i]);
+            }
+        }
         this.againFileState = !this.againFileState;
         var tagX = event.target.offsetLeft;
         var tagY = event.target.offsetTop;
@@ -828,8 +851,7 @@ export default {
     'messge.number':{
         handler:function(val,oldVal){
             this.getReParms.signEndDate = "";
-            this.timeSelect = true;   
-            
+            this.timeSelect = true;               
         },
         // 深度观察
         deep:true
@@ -840,7 +862,6 @@ export default {
     this.getdirListDataRight();
     this.getNowDate();
     this.$store.dispatch('changeTitle','我的文档>归档');    
-    console.log(this.msg.number)      
   }
 }
 </script>
