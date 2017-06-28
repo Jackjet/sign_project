@@ -1,34 +1,6 @@
 <template>
 	<div class="right_col">
-		<ul>
-			<li class="clf" v-for="(item,index) in fileList" @click="selectFileHandle(item)">
-				<span :title="item.docName"><i :class="item.selectItem ? 'icon-check2-default' : 'icon-square'"></i>{{item.docName}}{{item.selectItem}}</span>
-				<span :title="item.signators">{{item.signators}}</span>
-				<span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
-			</li>{{fileList}}
-			<li>
-				<p>共{{addFile.total}}条记录</p>
-				<div><pagination :total="addFile.total" :currentpage="addFile.params.pageIndex" :display="addFile.params.pageLength"  @pagechange="pageHandelAlert"></pagination></div>
-			</li>
-		</ul>
 		
-		<div class="selectList">
-			<h3>已选文件<span>(单击移除)</span><!-- <b>6/244</b> --></h3>
-			<div class="table-list select-list mCustomScrollbar">
-			<ul>
-				<li class="clf">
-					<span>名称</span>
-					<span>签署方</span>
-					<span>发起时间</span>
-				</li>
-				<li class="clf" @click="delFileHandle(item)" v-for="(item,val) in selectFileList">
-					<span :title="item.docName">{{item.docName}}</span>
-					<span :title="item.signators">{{item.signators}}</span>
-					<span :title="item.sendTime">{{item.sendTime | filterdata}}</span>
-				</li>
-			</ul>
-		</div>
-		</div>
 	<!--mCustomScrollbar-->
 		<div class="content" id="content-1" style="height:100px;background:black;color:#fff">
 			<p>{{msg}}</p>

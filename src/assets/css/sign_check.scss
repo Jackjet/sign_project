@@ -898,14 +898,31 @@ $border2:#dedede;
               }
             }
       }
+      &.table-ts{
+        li{
+          span{
+            &:nth-child(4){
+              width: 12%;
+            }
+            &:nth-child(5){
+              width: 8%;
+            }
+            &:nth-child(6){
+              width: 25%;
+              text-align: center;
+            }
+          }
+        }
+      }
       &.table-five{
           li{
             span{
-            width: 18%;
+            width: 18% !important;
             padding-left:2%;
           }
           }
       }
+      
     }
 	}
   .del-alter{
@@ -1647,7 +1664,23 @@ $border2:#dedede;
 
 
 
-
+/*加载中*/
+.loadSource{
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+  background: #fff;
+  position: absolute;
+  top:30%;
+  left: 50%;
+  margin-left: -75px;
+  z-index: 100;
+  border: 1px #ccc solid;
+  p{
+    line-height: 40px;
+    text-align: center;
+  }
+}
 
 
 

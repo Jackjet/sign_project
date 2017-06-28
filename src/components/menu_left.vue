@@ -1,6 +1,7 @@
 <template>
   <div id="divSidebarMenu" class="left_col" >
-            <div class="scroll-view mCustomScrollbar" style="height:650px;" >
+            <!--不自动滚动条添加class 去掉content-1   mCustomScrollbar-->
+            <div class="scroll-view " id="content-1" >
                 <div class="navbar nav_title">
                     <a href="/jsp/cus/account/accountIndex" class="site_title"><i></i></a>
                 </div>
@@ -163,6 +164,10 @@ export default {
           $(this).siblings('li').children('.child_menu').slideUp();
         })
         $("#sidebar-menu ul>li.active").find('.child_menu').slideDown();
+
+        $("#content-1").mCustomScrollbar({
+					theme:"minimal"
+				});
   },
   watch: {
     // 如果路由有变化，会再次执行该方法
@@ -191,6 +196,9 @@ export default {
   left:0;
   position: fixed;
   z-index: 10;
+  .scroll-view{
+    height: 650px;
+  }
   .nav_title{
     background: #2A3137;
     width: 170px;
@@ -365,9 +373,26 @@ export default {
     }
   }
 }
+
 @media (max-width:992px) {
   .main_container #divSidebarMenu{
     display: none !important;
   }
 }
+
+@media (max-height:750px) {
+  #divSidebarMenu{
+    .scroll-view{
+      height: 650px;
+    }
+  }
+}
+@media (max-height:700px) {
+  #divSidebarMenu{
+    .scroll-view{
+      height: 560px;
+    }
+  }
+}
+
 </style>

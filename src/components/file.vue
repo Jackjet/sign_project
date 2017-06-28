@@ -59,7 +59,10 @@
 			  </div>
 		  </div>
           <div class="panel-box panel-white" style="min-height: 662px;" >
-            <div class="table" :class="[userState == 1 ? 'table-five' : '']" >
+            <div class="table table-ts" :class="[userState == 1 ? 'table-five' : '']" >
+                <div class="loadSource" v-show="loadingState">
+                    <p>数据加载中...</p>
+                </div>
               <li class="title">
                 <span>名称</span>
                 <span>签署方</span>
@@ -76,7 +79,7 @@
                 <span :title="item.cycle">{{item.cycle == 300 ? '已完成':'&nbsp;'}}</span>
                 <span  v-show="userState != 1"><a @click.stop="againFile($event,index)">重新归档</a><a href="javascript:;" @click.stop="cancelFile(item)">撤销归档</a></span>     
               </li>
-              <li class="no-message" v-show="loadingState">加载中，请稍后</li>
+              <!--<li class="no-message" v-show="loadingState">加载中，请稍后</li>-->
               <li class="no-message" v-show="againFileList.length == 0" v-text="'暂无数据'"></li>
               <li class="pr">
                 <b>共{{pageData.total}}条记录/当前为第{{getReParms.pageIndex}}页</b>
@@ -349,7 +352,13 @@ export default {
         if(result.meta.success){
             //That.againFolderList = result.data;
             That.againFolderListTem = result.data;     
-            That.getReParms.dirId = That.dirList[That.selectIndex].dirId;            
+            That.getReParms.dirId = That.dirList[That.selectIndex].dirId;   
+            That.againFolderList = [];
+            for(var i =0; i< That.againFolderListTem.length;i++){
+                if(That.againFolderListTem[i].dirId != That.dirList[That.selectIndex].dirId){
+                    That.againFolderList.push(That.againFolderListTem[i]);
+                }
+            }         
         }else{
             That.alertCommonTip(result.meta.message)
         }
@@ -370,6 +379,7 @@ export default {
             return;
         }
         var That = this;
+        this.loadingState = true;
         this.httpGet('doc/archiveRecord/searchArchiveRecordList',{
             signStartDate:That.getReParms.signStartDate,
             signEndDate:That.getReParms.signEndDate,
@@ -380,7 +390,7 @@ export default {
         },function(response){
         var result = response.data;
         if(result.meta.success){
-           // That.loadingState = false;
+           That.loadingState = false;
             That.againFileList = result.data.list;   
             That.pageData.total = result.data.totalCount;  
             That.selectTitle = That.dirList[That.selectIndex].dirName;      

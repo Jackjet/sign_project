@@ -26,7 +26,7 @@
                 </div>
                 <div class='date-list' v-show='pannelType === "date"'>
                     <ul class='week'>
-                        <li v-for='item in weekList' :style='themeWeekColor'>{{week(item, lang)}}</li>
+                        <li v-for='item in weekList' :style='themeWeekColor' >{{week(item, lang)}}</li>
                     </ul>
                     <ul class='date'>
                         <li v-for='item in dateList' :class="{selected: isSelected(item, 'date'), 'notCurMonth': !item.isCurMonth, unvalid: !validDate(item), unvalidBig: !validDateBig(item)}" @click='selectDate(item)' :style='setSeltheme(item, "date")'>{{item.value}}</li>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class='group-btn'>
-                    <button type='button' class='btn btn-confirm' @click='confirmSelect' :style='themeBtnCon'>确认</button>
+                    <!--<button type='button' class='btn btn-confirm' @click='confirmSelect' :style='themeBtnCon'>确认</button>-->
                     <button type='button' class='btn btn-cancle' @click='cancleSelect' :style='themeBtnCan'>取消</button>
                 </div>
             </div>
@@ -287,11 +287,33 @@
                 }
                 return true;
             },
+            confirmSelectHandle(){
+                if(this.pannelType === 'year') {
+                    this.pannelType = 'month';
+                }else if(this.pannelType === 'month'){
+                    this.pannelType = 'date';
+                    this.startYear = this.startMonth = this.startDate = this.endYear = this.endMonth = this.endDate = '';
+                }else {
+                    if(this.endHour < this.startHour) {
+                        this.endHour = this.startHour;
+                    }else if(this.endHour == this.startHour && this.endMin < this.startMin) {
+                        this.endMin = this.startMin;
+                    }
+					if(this.startYear == ""){
+                        this.showAlertState = true;
+                        return false;
+                    }
+                    this.changeValue();
+                    this.togglePanel = !this.togglePanel;
+                }
+            },
             selectYear(item) {
                 this.tmpYear = item;
+                this.confirmSelectHandle();
             },
             selectMonth(item) {
                 this.tmpMonth = item;
+                this.confirmSelectHandle();
             },
             selectDate(item){
                 if(!this.validDate(item)) return;
@@ -333,6 +355,8 @@
                     default:
                         this.value = '';
                 }
+                /*不需要点击确定*/
+                this.confirmSelectHandle();
             },
             prevMonth() {
                 if(this.pannelType === 'date') {
@@ -785,10 +809,10 @@ label {
   border-radius: 20px;
 }
 .calendar .group-btn {
-  margin: 10px 0 0;
+  /*margin: 10px 0 0;*/
   text-align: center;
   background:#efefef;
-  padding:10px 0;
+  /*padding:10px 0;*/
 }
 .calendar .btn {
   padding: 5px 15px;
@@ -808,7 +832,7 @@ label {
   font-family: "Microsoft YaHei", tahoma, arial, "Hiragino Sans GB", "\5B8B\4F53", sans-serif;
 }
 .calendar .btn-cancle{
-	border:1px #dedede solid !important;
+	/*border:1px #dedede solid !important;*/
 }
 .calendar .btn-confirm {
   color: #fff;
@@ -816,7 +840,15 @@ label {
 }
 .calendar .btn-cancle {
   color: #000;
-  background: #fff;
+  /*background: #fff;*/
+  background: none !important;
+  border:0 !important;
+  cursor: pointer;
+  line-height: 45px;
+  height: 45px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 .calendar .toggle-enter-active,
 .calendar .toggle-leave-active {
