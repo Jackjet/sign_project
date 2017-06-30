@@ -124,8 +124,8 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import '../assets/css/base.scss';
-@import '../assets/css/sign_check.scss';
+// @import '../assets/css/base.scss';
+// @import '../assets/css/sign_check.scss';
 @import '../assets/css/jquery.mCustomScrollbar.min.css';
   
 </style>

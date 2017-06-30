@@ -45,7 +45,7 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
-.icon-left-open-big:before { content: '\e800'; } /* '' */
+.icon-left-open-big:before { content: '\e800';font-weight: bold; } /* '' */
 .icon-close2:before { content: '\e801'; } /* '' */
 .icon-fa:before { content: '\e802'; } /* '' */
 .icon-circle2:before { content: '\e803'; } /* '' */
@@ -104,5 +104,5 @@
 .icon-square:before { content: '\e838'; } /* '' */
 .icon-del:before { content: '\e839'; } /* '' */
 .icon-add-signer2:before { content: '\e83a'; } /* '' */
-.icon-up-open-big:before { content: '\e83b'; } /* '' */
-.icon-right-open-big:before { content: '\e83c'; } /* '' */
+.icon-up-open-big:before { content: '\e83b';font-weight: bold; } /* '' */
+.icon-right-open-big:before { content: '\e83c'; font-weight: bold;} /* '' */

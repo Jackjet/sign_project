@@ -80,7 +80,7 @@
                 <span  v-show="userState != 1"><a @click.stop="againFile($event,index)">重新归档</a><a href="javascript:;" @click.stop="cancelFile(item)">撤销归档</a></span>     
               </li>
               <!--<li class="no-message" v-show="loadingState">加载中，请稍后</li>-->
-              <li class="no-message" v-show="againFileList.length == 0" v-text="'暂无数据'"></li>
+              <li class="no-message" v-show="againFileList.length == 0 && !loadingState" v-text="'暂无数据'"></li>
               <li class="pr">
                 <b>共{{pageData.total}}条记录/当前为第{{getReParms.pageIndex}}页</b>
                 <div class="page-box" >
@@ -708,11 +708,12 @@ export default {
     },
     againFile(event,index){         //重新归档弹框显示
         this.againFolderList = [];
-        for(var i =0; i< this.againFolderListTem.length;i++){
+        /*for(var i =0; i< this.againFolderListTem.length;i++){
             if(this.againFolderListTem[i].dirId != this.dirList[this.selectIndex].dirId){
                 this.againFolderList.push(this.againFolderListTem[i]);
             }
-        }
+        }*/
+        this.getdirListDataRight();
         this.againFileState = !this.againFileState;
         var tagX = event.target.offsetLeft;
         var tagY = event.target.offsetTop;
@@ -879,9 +880,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped lang="scss">
- @import '../assets/css/font2/font.css';
- @import '../assets/css/base.scss';
- @import '../assets/css/sign_check.scss';
+//  @import '../assets/css/font2/font.css';
+//  @import '../assets/css/base.scss';
+//  @import '../assets/css/sign_check.scss';
+@import '../assets/css/jquery.mCustomScrollbar.min.css';
  html,body{
     min-width: 1200px !important;
  }

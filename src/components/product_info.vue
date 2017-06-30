@@ -61,7 +61,7 @@
       <div class="page5 page">
         <div class="container">          
           <h3>集成服务</h3>
-          <p>提供标准化API与业务系统集成，签署人可在业务系统中完成文件签署。支持公有云和私有云两种部署方式。<br>企业不须熟悉PKI、P7、公钥、SHA256、SM2等专业技术</p>
+          <p>提供标准化API与业务系统集成，签署人可在业务系统中完成文件签署。<br>企业不须熟悉PKI、P7、公钥、SHA256、SM2等专业技术</p>
           <div>
             <img src="../assets/images/welcome/product_8.png">
           </div>
@@ -89,9 +89,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import '../assets/css/font2/font.css';
-@import '../assets/css/base.scss';
-@import '../assets/css/sign_check.scss';
+// @import '../assets/css/font2/font.css';
+// @import '../assets/css/base.scss';
+// @import '../assets/css/sign_check.scss';
 @import '../assets/css/animate.min.css';
 
 

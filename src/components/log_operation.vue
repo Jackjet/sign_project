@@ -27,6 +27,9 @@
           <!-- <a class="btn-default btn-pink" href="javascript:;" @click="exportData()">导出Excel</a> -->
         </h3>
         <div class="table table-seven">
+          <div class="loadSource" v-show="loadingState">
+              <p>数据加载中...</p>
+          </div>
           <li class="title">
             <span>日志ID</span>
             <span>账户ID</span>
@@ -36,7 +39,7 @@
             <span>结果</span>
             <span>备注</span>
           </li>
-          <li v-for="item in statisticsList" class="li-class">
+          <li v-for="(item,index) in statisticsList" class="li-class" :key="index">
             <span :title="item.auditId">{{item.auditId}}</span>
             <span :title="item.accId">{{item.accId}}</span>
             <span :title="item.beforeStatus">{{item.beforeStatus = item.beforeStatus != null ?  item.beforeStatus : "&nbsp;" }}</span>
@@ -63,6 +66,9 @@
           <!-- <a class="btn-default btn-pink" href="javascript:;" @click="exportData()">导出Excel</a> -->
         </h3>
         <div class="table table-elven">
+          <div class="loadSource" v-show="loadingState">
+              <p>数据加载中...</p>
+          </div>
           <li class="title">
             <span>操作ID</span>
             <span>文档（登陆）ID</span>
@@ -75,7 +81,7 @@
             <span>操作时间戳</span>
             <span>备注</span>
           </li>
-          <li v-for="item in statisticsList" class="li-class">
+          <li v-for="(item,index) in statisticsList" class="li-class" :key="index">
             <span :title="item.operId">{{item.operId = item.operId != null ? item.operId : "&nbsp;" }}</span>
             <span :title="item.conId">{{item.conId = item.conId != null ? item.conId : "&nbsp;" }}</span>
             <span :title="item.operType">{{item.operType = item.operType != null ? item.operType : "&nbsp;" }}</span>
@@ -103,6 +109,9 @@
           <!-- <a class="btn-default btn-pink" href="javascript:;" @click="exportData()">导出Excel</a> -->
         </h3>
         <div class="table table-six">
+          <div class="loadSource" v-show="loadingState">
+              <p>数据加载中...</p>
+          </div>
           <li class="title">
             <span>记录ID</span>
             <span>文档ID</span>
@@ -111,7 +120,7 @@
             <span>操作后合同生命周期</span>
             <span>操作时间</span>
           </li>
-          <li v-for="item in statisticsList" class="li-class">
+          <li v-for="(item,index) in statisticsList" class="li-class" :key="index">
             <span :title="item.recordId">{{item.recordId = item.recordId != null ? item.recordId : "&nbsp;" }}</span>
             <span :title="item.docId">{{item.docId = item.docId != null ? item.docId : "&nbsp;" }}</span>
             <span :title="item.accId">{{item.accId = item.accId != null ? item.accId : "&nbsp;" }}</span>
@@ -120,7 +129,7 @@
             <span :title="item.operTime">{{(item.operTime = item.operTime != null ? item.operTime : "&nbsp;") | filterdata }}</span>            
             <i></i>
           </li>
-          <li class="no-message" v-show="statisticsList.length == 0" v-text="'暂无数据'">
+          <li class="no-message" v-show="statisticsList.length == 0 && !loadingState" v-text="'暂无数据'">
           </li>
           <li class="pr">
             <span class="widthAuto">共{{pageData.total}}条记录/当前页为第{{statisticsParms.pageIndex}}页</span>
@@ -142,6 +151,7 @@ export default {
   },
   data () {
     return {
+      loadingState:true,
   		pageData:{           //翻页配置
   			total: 0,          //总条数
   			//display: 1,      //每页条数
@@ -178,6 +188,7 @@ export default {
         url = "doc/operdata/getProcessRecord"
       }
       var _this = this;
+      _this.loadingState = true;
       this.httpGet(url,{
         "startDate":_this.statisticsParms.startTime,
         "endDate":_this.statisticsParms.endTime,
@@ -186,6 +197,7 @@ export default {
         "pageLength":_this.statisticsParms.pageLength
       },function(response){
         var result = response.data;
+        _this.loadingState = false;
         if(result.meta.success){
             _this.statisticsList = result.data.list;
             _this.pageData.total = result.data.totalCount;
@@ -253,7 +265,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped lang="scss">
- @import '../assets/css/font2/font.css';
- @import '../assets/css/base.scss';
- @import '../assets/css/sign_check.scss';
+//  @import '../assets/css/font2/font.css';
+//  @import '../assets/css/base.scss';
+//  @import '../assets/css/sign_check.scss';
 </style>

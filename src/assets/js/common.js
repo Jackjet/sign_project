@@ -16,11 +16,11 @@ exports.install = function (Vue, options) {
 
   Vue.prototype.httpGet=function(url,data,success,fail){
 
-      /*开发*/
+    /*开发*/
     this.$http.get(apiPath+url+"?data="+new Date().getTime(),
 
     /*线上*/
-    // this.$http.get(url+"?data="+new Date().getTime(),
+    //  this.$http.get(url+"?data="+new Date().getTime(),
      	{
      		params:data,
      		headers: {'X-Requested-With':'XMLHttpRequest'}

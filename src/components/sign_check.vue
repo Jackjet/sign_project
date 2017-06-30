@@ -22,7 +22,7 @@
           </div>
       </div>
     </div>
-    <alertModel :title="'提示'" :context="'服务器正忙，请稍后再试'" :type="1"  :showState="showAlertState"  v-show="showAlertState"  @cancelHandle="showAlertState = false" ></alertModel>
+    <alertModel :title="'提示'" :context="showAlertTxt" :type="1"  :showState="showAlertState"  v-show="showAlertState"  @cancelHandle="showAlertState = false" ></alertModel>
   </div>
 </template>
 
@@ -38,6 +38,7 @@ export default {
       clickStatus:true,
       submitStatus:false,
       showAlertState:false,
+      showAlertTxt:'',
       routerName:null
     }
   },
@@ -72,14 +73,28 @@ export default {
                 _this.uploadWarn = true;
                 _this.tipName = "重新上传";
                 return false;
-              }              
+              }   
+              
+              var oMyFile = document.getElementById('file');
+              var fileName = oMyFile.files[0].size / 1048576 ;
+              if(fileName > 10 ){
+                  _this.showAlertState = true;
+                  _this.showAlertTxt = '文件大小不能大于10M';
+                   $("#file").val("");
+                  _this.uploadFileName = "";
+                  $("#file").removeAttr('disabled');
+                  return false;
+              } 
+
               _this.uploadWarn = false;
               _this.submitStatus = true;
 
               $("#file").attr('disabled','disabled');
+
+                           
           },
           success: function(res){
-                var backData = JSON.parse(res)
+               var backData = JSON.parse(res)
                  _this.setLSData("uploadData",backData.data);
                  _this.setLSData("uploadMessage",backData.meta);
                  if(_this.$route.name == "onlineSign"){  //在线验签
@@ -98,6 +113,7 @@ export default {
             if(res.statusText == "timeout"){
               _this.submitStatus = false;
               _this.showAlertState = true;
+              _this.showAlertTxt = '服务器繁忙，请稍后再试';
                $("#file").val("");
               _this.uploadFileName = "";
               $("#file").removeAttr('disabled');
@@ -123,7 +139,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped lang="scss">
- @import '../assets/css/font2/font.css';
- @import '../assets/css/base.scss';
- @import '../assets/css/sign_check.scss';
+//  @import '../assets/css/font2/font.css';
+//  @import '../assets/css/base.scss';
+//  @import '../assets/css/sign_check.scss';
 </style>

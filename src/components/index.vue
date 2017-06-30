@@ -9,7 +9,8 @@
                 <router-link to="/index/product_info" class="nav-a">产品介绍</router-link>
                 <router-link to="/index/onlinesign" class="nav-a">在线验签</router-link>
                 <a class="userName" v-show="userName">当前用户：{{userName ? userName : ""}}</a>
-                <a v-show="userName" href="/cus/account/accountIndex" class="register" target="_blank">个人中心</a>
+                <a v-show="userName && userState != 0" href="/cus/account/accountIndex" class="register" target="_blank">个人中心</a>
+                <a v-show="userName && userState==0" href="/sys/largeCompany/toLargeCompanyPage" class="register" target="_blank">个人中心</a>
                 <a v-show="!userName" href="/logout" class="login" target="_blank">登录</a>
                 <a v-show="!userName" href="/register" class="register" target="_blank">注册</a>
               </div>                      
@@ -80,6 +81,9 @@ export default {
     userName(){
       return this.$store.state.userName;
     },
+    userState(){
+      return this.$store.state.userState;
+    }
   },
   methods:{
     toTop(){
@@ -157,12 +161,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import '../assets/css/font2/font.css';
+/*@import '../assets/css/font2/font.css';
 @import '../assets/css/base.scss';
 @import '../assets/css/sign_check.scss';
-@import '../assets/css/share.min.css';
-.router-link-active{
+@import '../assets/css/share.min.css';*/
+/*.router-link-active{
   color: $pink !important;
-}
+}*/
 
 </style>

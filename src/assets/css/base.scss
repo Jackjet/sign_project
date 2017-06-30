@@ -946,7 +946,8 @@ $prefixNo:                    true !default;
 $flexOld:                     true !default; //09版本 用于兼容移动端，-webkit前缀
 $flexMid:                     true !default; //用于ie10 -ms前缀
 //全局变量
-$URL:"../assets/images/";//url路径前缀
+$URL:"../images/";//url路径前缀
+$URL2:'../assets/images/'; 
 $REM:            24;//rem unit
 $COLOR:          #000000;//font color
 $BGCOLOR:        #ffffff;//bg color
@@ -964,12 +965,7 @@ $pink_opa:rgba(255,80,63,0.7);
 $gray3:#f6f6f6;
 $border:#ccc;
  
-@function REM($n){
-      @return $n/$REM*(64/75)*1rem;
-}
-@function REMTWO($n){
-      @return $n/$REMTWO*1rem;
-}
+
 
 @mixin pm-no {
   padding:0;

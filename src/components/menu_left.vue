@@ -130,16 +130,18 @@ export default {
           That.userStateNum = result.data.accType;
           That.$store.dispatch('changeState',result.data.accType);          
           That.$store.dispatch('changeRolState',result.data.role);    
-          if(result.data.accType == 3){ //小B
+          if(result.data.accType == 0){ //系统管理员
             That.$store.dispatch('changeUserName',result.data.displayName);  
-          }
-          else if(result.data.accType == 1){  //大B管理员
+          }          
+          if(result.data.accType == 1){  //大B管理员
             That.$store.dispatch('changeUserName',result.data.companyName);  
           }
-          else{  //大B用户 
+          if(result.data.accType == 2){  //大B用户 
             That.$store.dispatch('changeUserName',result.data.memName)
           } 
-                  
+          if(result.data.accType == 3){ //小B
+            That.$store.dispatch('changeUserName',result.data.displayName);  
+          }      
         }else{
             That.alertCommonTip(result.meta.message);
         }
@@ -183,9 +185,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import '../assets/css/font2/font.css';
+/*@import '../assets/css/font2/font.css';
+
+@import '../assets/css/jquery.mCustomScrollbar.min.css';*/
 @import '../assets/css/base.scss';
-@import '../assets/css/jquery.mCustomScrollbar.min.css';
 .router-link-active{
   color: $pink !important;
 }
@@ -221,7 +224,7 @@ export default {
         display: block;
         width:79px;
         height:39px;
-        background: url($URL+'logo.svg') left no-repeat;
+        background: url($URL2+'logo.svg') left no-repeat;
         -webkit-background-size:90% 90%;
         background-size:90% 90%;
         -webkit-border-radius:0px;
@@ -270,7 +273,7 @@ export default {
         @include pm-no;
         height:48px;
         line-height:48px;
-        padding-left: 25px;
+        padding-left: 15px;
         color: $gray;
         cursor: pointer;
         display: block;
@@ -295,9 +298,9 @@ export default {
       }
       .child_menu{
         display: none;
-        background: #000;
+        background: #171C1F;
         li{
-          padding-left:25px;
+          padding-left:23px;
         }
         a:hover{
           background: none;

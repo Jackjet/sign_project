@@ -1,4 +1,5 @@
-//@import './base.scss';
+@import './base.scss';
+
 /* Scss Document */
 [v-cloak] {
   display: none;
@@ -26,7 +27,7 @@ a:active{text-decoration: none;}
 //a:active {background: none !important;} /* 被选择的链接 */
 .main_container{
   height:100%;
-  background: $pink ;
+  /*background: $pink ;*/
 }
 
 .router-link-active{
@@ -258,6 +259,7 @@ a:active{text-decoration: none;}
           left:50%;
           //@include prefixer(transform,translatex(-50%));
           transform: translatex(-50%);
+          -ms-transform: translateX(-50%);
           span{
            // @include prefixer(border-radius,100%);
            border-radius:100%;
@@ -297,6 +299,7 @@ $border2:#dedede;
 //签署次数
 .statistics_count{
   .panel-box{
+    position: relative;
     .search{
       padding:10px;
       .search-box{
@@ -1132,16 +1135,7 @@ $border2:#dedede;
     }
   }
 }
-@media (max-width:992px) {
-  .statistics_count .panel-box .search .search-box{
-    div{
-          margin-bottom:10px;
-        }
-  }
-  .main_container .right_col{
-    margin-left:0;
-  }
-}
+
 
 .pr{
   position:relative;
@@ -1671,7 +1665,7 @@ $border2:#dedede;
   line-height: 40px;
   background: #fff;
   position: absolute;
-  top:30%;
+  top:33%;
   left: 50%;
   margin-left: -75px;
   z-index: 100;
@@ -1683,7 +1677,11 @@ $border2:#dedede;
 }
 
 
-
+@media (max-height:700px) {
+  .file .addFileAlert .addFileContent{
+    margin-top:-320px;
+  }
+}
 
 
 

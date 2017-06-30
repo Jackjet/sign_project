@@ -32,7 +32,7 @@
                       <p><span>1</span>该文档的签名/签章有效 &nbsp;&nbsp;&nbsp;<span>2</span>该文档未被篡改</p>
                   </div>
                   <ul class="clf">
-                      <li class="row clf" v-for="(item,index) in list">
+                      <li class="row clf" v-for="(item,index) in list" :key="index">
                           <span class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >签署方：{{item.signCertName}}</span>
                           <span class="col-lg-4 col-md-4 col-sm-4 col-xs-4">颁发机构：{{item.auth}}</span>
                           <span class="col-lg-4 col-md-4 col-sm-4 col-xs-4">签约时间：{{item.signTime}}</span>
@@ -99,6 +99,21 @@ export default {
   mounted(){
     this.lostorgData = this.getLSData('uploadData');
     this.lostorgMsg = this.getLSData('uploadMessage');
+    //alert(this.lostorgMsg)
+    var That = this;
+    setTimeout(function(){
+      if(!That.lostorgMsg){
+        if(That.$route.name == "sign_state"){
+          That.$router.push({         //用户验签
+            name: 'sign_check'
+          });
+        }else{
+          That.$router.push({         //在线验签
+            name: 'onlineSign'
+          });
+        }
+      }
+    },100)
     this.init();
     this.$store.dispatch('changeTitle','我的文档>验签');  
     document.title = "签吧-验签";
@@ -109,7 +124,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped lang="scss">
- @import '../assets/css/font2/font.css';
- @import '../assets/css/base.scss';
- @import '../assets/css/sign_check.scss';
+//  @import '../assets/css/font2/font.css';
+//  @import '../assets/css/base.scss';
+//  @import '../assets/css/sign_check.scss';
 </style>

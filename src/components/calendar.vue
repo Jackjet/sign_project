@@ -721,8 +721,6 @@ label {
 }
 .calendar .pannel-header {
   position: relative;
-  ((null)): 0;
-  ((null)): 0;
   padding: 3px;
   margin-bottom: 10px;
   color: #fff;
@@ -732,7 +730,14 @@ label {
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
+  height: 30px;
+  line-height: 30px;
+  
 }
+.calendar .pannel-header span{
+      float:none !important;
+      display: inline-block !important;
+  }
 .calendar .year,
 .calendar .month {
   display: inline-block;
@@ -743,7 +748,6 @@ label {
 .calendar .next {
   position: absolute;
   top: 2px;
-  ((null)): 0;
   cursor: pointer;
 }
 .calendar .prev {

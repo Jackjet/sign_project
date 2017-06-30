@@ -26,16 +26,19 @@
       <div class="panel-box panel-white"  v-cloak>
         <h3 class="title">统计时间：{{statisticsParms.startTime}} 至 {{statisticsParms.endTime}} <a class="btn-default btn-pink" href="javascript:;" @click="exportData()">导出Excel</a></h3>
         <div class="table">
+          <div class="loadSource" v-show="loadingState">
+              <p>数据加载中...</p>
+          </div>
           <li class="title">
             <span>企业名称</span>
             <span>签约次数（次/企业）</span>
           </li>
-          <li v-for="item in statisticsList" class="li-class">
+          <li v-for="(item,index) in statisticsList" class="li-class" :key="index">
             <span>{{item.displayName}}</span>
             <span @click="jumpTo(item.companyId)">{{item.signCount}}</span>
             <i></i>
           </li>
-          <li class="no-message" v-show="statisticsList.length == 0" v-text="'暂无数据'">
+          <li class="no-message" v-show="statisticsList.length == 0  && !loadingState" v-text="'暂无数据'">
           </li>
           <li class="pr">
             <span>共{{pageData.total}}条记录/当前页为第{{statisticsParms.pageIndex}}页</span>
@@ -60,6 +63,7 @@ export default {
   },
   data () {
     return {
+      loadingState:false,
   		pageData:{           //翻页配置
   			total: 0,          //总条数
   			//display: 1,      //每页条数
@@ -81,6 +85,7 @@ export default {
   methods:{
     getData(){
       var _this = this;
+      _this.loadingState = true;
       this.httpGet('doc/documentInfo/signStatistics',{
         signStartDate:_this.statisticsParms.startTime,
         signEndDate:_this.statisticsParms.endTime,
@@ -89,6 +94,7 @@ export default {
         pageLength:_this.statisticsParms.pageLength
       },function(response){
         var result = response.data;
+        _this.loadingState = false;
         if(result.meta.success){
             _this.statisticsList = result.data.list;
             _this.pageData.total = result.data.totalCount;
@@ -158,7 +164,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped lang="scss">
- @import '../assets/css/font2/font.css';
- @import '../assets/css/base.scss';
- @import '../assets/css/sign_check.scss';
+//  @import '../assets/css/font2/font.css';
+//  @import '../assets/css/base.scss';
+//  @import '../assets/css/sign_check.scss';
 </style>

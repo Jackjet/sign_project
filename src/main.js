@@ -10,6 +10,9 @@ import 'babel-polyfill'
 /*require('es6-promise').polyfill()*/
 import axios from 'axios'
 
+import './assets/css/font2/font.css';
+import '@/assets/css/share.min.css';
+import '@/assets/css/sign_check.scss';
 
 axios.defaults.withCredentials = true;
 import Vuex from 'vuex'
