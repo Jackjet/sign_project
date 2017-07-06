@@ -116,6 +116,7 @@ export default {
 			h3{
 				font-weight: normal;
 				line-height:35px;
+				font-size: 16px;
 			}
 		}
 		.alert-footer{

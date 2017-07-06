@@ -8,7 +8,7 @@
                 <router-link to="/index/welcome" class="nav-a">首页</router-link>
                 <router-link to="/index/product_info" class="nav-a">产品介绍</router-link>
                 <router-link to="/index/onlinesign" class="nav-a">在线验签</router-link>
-                <a class="userName" v-show="userName">当前用户：{{userName ? userName : ""}}</a>
+                <!--<a class="userName" v-show="userName">当前用户：{{userName ? userName : ""}}</a>-->
                 <a v-show="userName && userState != 0" href="/cus/account/accountIndex" class="register" target="_blank">个人中心</a>
                 <a v-show="userName && userState==0" href="/sys/largeCompany/toLargeCompanyPage" class="register" target="_blank">个人中心</a>
                 <a v-show="!userName" href="/logout" class="login" target="_blank">登录</a>
@@ -113,7 +113,6 @@ export default {
         if(to.name == 'Welcome'){          
           this.fixed(true);
         }else{
-          console.log("addclass")
           this.fixed(false);          
         }
     }

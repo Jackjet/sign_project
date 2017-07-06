@@ -48,9 +48,9 @@
 					<div class="row clf">
 					  <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">归档时间</div>
 					  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-						<span class="input"><calendar @changeDate="changeStartDate" :val="'1'" :msg="msg"></calendar></span>
+						<span class="input calendarBox1" @click="clickCalendar"><calendar @changeDate="changeStartDate" :val="'1'" :msg="msg"></calendar><b></b></span>
 						<span class="txt">至</span>
-						<span class="input"><calendar @changeDate="changeEndDate" :msg="messge"></calendar></span>
+						<span class="input calendarBox2" @click="clickCalendar"><calendar @changeDate="changeEndDate" :msg="messge"></calendar></span>
 					  </div>
 					  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" name="" placeholder="关键字：文档名称" v-model="getReParms.searchKeyword"  @keyup.enter="searchFileHandle(getReParms.searchKeyword)"></div>
 					  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 btn-box"><a href="javascript:;" class="search-btn" @click="searchFileHandle(getReParms.searchKeyword)">查询</a><a href="javascript:;" @click="deleteHandle()">清空</a></div>
@@ -80,7 +80,10 @@
                 <span  v-show="userState != 1"><a @click.stop="againFile($event,index)">重新归档</a><a href="javascript:;" @click.stop="cancelFile(item)">撤销归档</a></span>     
               </li>
               <!--<li class="no-message" v-show="loadingState">加载中，请稍后</li>-->
-              <li class="no-message" v-show="againFileList.length == 0 && !loadingState" v-text="'暂无数据'"></li>
+              <li class="no-message" v-show="againFileList.length == 0 && !loadingState" >
+                  <p><img src="../assets/images/noAnyThing.png" alt=""></p>
+                  <p v-text="'暂无数据'"></p>
+              </li>
               <li class="pr">
                 <b>共{{pageData.total}}条记录/当前为第{{getReParms.pageIndex}}页</b>
                 <div class="page-box" >
@@ -282,7 +285,9 @@ export default {
         },
         selectFileList:[],
         batchAdd:[],      //批量添加归档文件数据
-        selectTitle:""
+        selectTitle:"",
+        documentState:false,
+        calendarState:false
 
     }
   },
@@ -706,22 +711,31 @@ export default {
         this.seFolderNameTem = val;
         
     },
+    defaultHandle(event){
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
+        else if (window.event) {
+            window.event.cancelBubble = true;
+        }
+    },
     againFile(event,index){         //重新归档弹框显示
-        this.againFolderList = [];
-        /*for(var i =0; i< this.againFolderListTem.length;i++){
-            if(this.againFolderListTem[i].dirId != this.dirList[this.selectIndex].dirId){
-                this.againFolderList.push(this.againFolderListTem[i]);
-            }
-        }*/
-        this.getdirListDataRight();
-        this.againFileState = !this.againFileState;
-        var tagX = event.target.offsetLeft;
-        var tagY = event.target.offsetTop;
-        var objHtml = document.getElementById("againAlert");
-        objHtml.style.left=tagX-382+'px';
-        objHtml.style.top=tagY+40+'px';
-        this.modifyParams.recordId = this.againFileList[index].recordId;
-        this.modifyParams.docId = this.againFileList[index].docId;
+        this.defaultHandle(event);
+        this.documentState = false;
+        if(!this.documentState){
+            this.documentState = true;
+            this.againFolderList = [];
+            this.getdirListDataRight();
+            //this.againFileState = !this.againFileState;
+            this.againFileState = true;
+            var tagX = event.target.offsetLeft;
+            var tagY = event.target.offsetTop;
+            var objHtml = document.getElementById("againAlert");
+            objHtml.style.left=tagX-382+'px';
+            objHtml.style.top=tagY+40+'px';
+            this.modifyParams.recordId = this.againFileList[index].recordId;
+            this.modifyParams.docId = this.againFileList[index].docId;
+        }
     },
     cancelFile(item){   //撤销归档
         this.cancelParams.dirId = item.dirId;
@@ -729,8 +743,7 @@ export default {
         this.showCancelAlert = {
             showAlert:true,
             type:2
-        }
-        
+        }        
     },
     inputInit(value){
         if(value == '关键字：文件夹名称'){
@@ -812,42 +825,45 @@ export default {
         this.addFile.params.pageIndex = currentNum;
         this.addFileHandle();
     },
+    clickCalendar(event){
+        this.defaultHandle(event);
+        this.calendarState = true;
+        console.log(123)
+        /*console.log($(event.target).find('.calendar').html())*/
+
+       // $(event.target).siblings('.input').find('.pannel-wrapper').hide();
+    },
 	changeStartDate(value){
-      //console.log(new Date(value).getTime())
-      /*var startTime = new Date(value).getTime();
-      var endTime = new Date(this.getReParms.signEndDate).getTime();
-      if(startTime > endTime){
-        this.showAlertData = {
-            showAlert:true,
-            context:"开始日期大于结束日期不合法"
-        }
-      }else{
-        this.getReParms.signStartDate=value;
-        this.timeSelect = true;
-      }*/
       this.getReParms.signStartDate=value;
       this.timeSelect = true;
       
     },
     changeEndDate(value){
-       // console.log(new Date(value).getTime())
-      /*var startTime = new Date(this.getReParms.signStartDate).getTime();
-      var endTime = new Date(value).getTime();
-      if(startTime > endTime){
-        this.showAlertData = {
-            showAlert:true,
-            context:"开始日期大于结束日期不合法"
-        }
-      }else{
-        this.getReParms.signEndDate=value;
-        this.timeSelect = true;
-      }*/
       this.getReParms.signEndDate=value;
       this.timeSelect = true;
     },
     getNowDate(){
         this.getReParms.signStartDate = this.getDataFn().formatwdate;
         this.getReParms.signEndDate = this.getDataFn().currentdate;
+    },
+    init(){
+        var That = this;    
+        $(document).on('click',function(){
+            console.log(That.calendarState)
+            if(That.documentState){
+                That.againFileState = false;
+                console.log(That.documentState)
+            }
+
+            if(That.calendarState){
+                That.Event2.$emit('hideCalendar','1');
+                That.calendarState = false;
+            }
+        })
+
+        $('#againAlert').on('click',function(event){
+            That.defaultHandle(event);
+        })
     }
   },
   watch:{    
@@ -872,7 +888,11 @@ export default {
     this.getdirListData();
     this.getdirListDataRight();
     this.getNowDate();
-    this.$store.dispatch('changeTitle','我的文档>归档');    
+    this.init();
+    this.$store.dispatch('changeTitle','我的文档>归档');
+    //$('')
+    //$('.calendarBox1').children('.input').trigger('click');
+    
   }
 }
 </script>

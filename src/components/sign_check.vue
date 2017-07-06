@@ -45,11 +45,10 @@ export default {
   methods:{
     selectFile(){
       var _this = this;
-      $("#file").on('change',function(){
+      $("#file").unbind().on('change',function(){
         var arrTem = [];
         arrTem = this.value.split("\\");
         _this.uploadFileName = arrTem[arrTem.length-1];
-
         $('#uploadForm').ajaxSubmit({  
           url : _this.apiPath+'doc/docVerify/verify',  
           //url : 'http://apioa.cuxiaoke.cn/pc/Jackay',  
@@ -60,11 +59,8 @@ export default {
           },
           type:'post',
           beforeSubmit: function() {
-              var val = $(':file').fieldValue();              
-              if(val.length == 0){
-                val=["+Math.random()+"]
-              }
-              var arr = val[0].split('.');
+              var val = $(':file').fieldValue();  
+              var arr = val[0].split('.');              
               var Suffix = arr[arr.length-1];
               if (val == "") {
                   return false;
@@ -80,7 +76,7 @@ export default {
               if(fileName > 10 ){
                   _this.showAlertState = true;
                   _this.showAlertTxt = '文件大小不能大于10M';
-                   $("#file").val("");
+                  $("#file").val("");
                   _this.uploadFileName = "";
                   $("#file").removeAttr('disabled');
                   return false;
@@ -90,6 +86,7 @@ export default {
               _this.submitStatus = true;
 
               $("#file").attr('disabled','disabled');
+              
 
                            
           },

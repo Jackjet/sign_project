@@ -3,7 +3,7 @@
             <!--不自动滚动条添加class 去掉content-1   mCustomScrollbar-->
             <div class="scroll-view " id="content-1" >
                 <div class="navbar nav_title">
-                    <a href="/jsp/cus/account/accountIndex" class="site_title"><i></i></a>
+                    <a href="/cus/account/accountIndex" class="site_title"><i></i></a>
                 </div>
                 <div class="clearfix"></div>
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
@@ -165,8 +165,8 @@ export default {
           $(this).siblings('li').removeClass('active');
           $(this).siblings('li').children('.child_menu').slideUp();
         })
-        $("#sidebar-menu ul>li.active").find('.child_menu').slideDown();
-
+       // $("#sidebar-menu ul>li.active").find('.child_menu').slideDown();
+        $("#sidebar-menu ul>li.active").find('.child_menu').css("display","block");
         $("#content-1").mCustomScrollbar({
 					theme:"minimal"
 				});

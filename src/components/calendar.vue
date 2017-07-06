@@ -2,7 +2,8 @@
     <div class='calendar'>
         <div class='input-wrapper' v-show='showInput'>
             <!--<i class='date-icon' :style='setIconUrl'></i>-->
-            <div class='input' v-text='value' :style='{width: inputWidth}' @click='togglePanel = !togglePanel'></div>
+            <!--@click='togglePanel = !togglePanel'-->
+            <div class='input' id="clickInput" v-text='value' :style='{width: inputWidth}' @click="togglePanel =!togglePanel"></div>
             <span class='input-clear icon-close' v-show="value" @click='clearValue'></span>
             <!-- <span class='input-icon icon-calendar' v-show="!value" @click='togglePanel = !togglePanel'></span> -->
             <span class='input-icon icon-calendar'  v-show="!value" @click='togglePanel = !togglePanel'></span>
@@ -16,20 +17,20 @@
                 </div>
                 <div class='year-list' v-show='pannelType === "year"'>
                     <ul class='month-wrapper'>
-                        <li v-for='item in yearList' :class="{selected: isSelected(item, 'year')}" @click='selectYear(item)'>{{item}}</li>
+                        <li v-for='(item,index) in yearList' :class="{selected: isSelected(item, 'year')}" @click='selectYear(item)' :key="index">{{item}}</li>
                     </ul>
                 </div>
                 <div class='month-list' v-show='pannelType === "month"'>
                     <ul class='month-wrapper'>
-                        <li v-for='item in monthList' :class="{selected: isSelected(item, 'month')}" @click='selectMonth(item)'>{{month(item, lang)}}</li>
+                        <li v-for='(item,index) in monthList' :key="index" :class="{selected: isSelected(item, 'month')}" @click='selectMonth(item)'>{{month(item, lang)}}</li>
                     </ul>
                 </div>
                 <div class='date-list' v-show='pannelType === "date"'>
                     <ul class='week'>
-                        <li v-for='item in weekList' :style='themeWeekColor' >{{week(item, lang)}}</li>
+                        <li v-for='(item,index) in weekList' :key="index" :style='themeWeekColor' >{{week(item, lang)}}</li>
                     </ul>
                     <ul class='date'>
-                        <li v-for='item in dateList' :class="{selected: isSelected(item, 'date'), 'notCurMonth': !item.isCurMonth, unvalid: !validDate(item), unvalidBig: !validDateBig(item)}" @click='selectDate(item)' :style='setSeltheme(item, "date")'>{{item.value}}</li>
+                        <li v-for='(item,index) in dateList' :key="index" :class="{selected: isSelected(item, 'date'), 'notCurMonth': !item.isCurMonth, unvalid: !validDate(item), unvalidBig: !validDateBig(item)}" @click='selectDate(item)' :style='setSeltheme(item, "date")'>{{item.value}}</li>
                     </ul>
                     <div class='time' v-show='type === "time"'>
                         <input type='text' v-model='startHour' @focus='checkTime("startHour")' @blur='clearCheck'/> : <input type='text' v-model='startMin'  @focus='checkTime("startMin")' @blur='clearCheck'/> - <input type='text' v-model='endHour'  @focus='checkTime("endHour")' @blur='clearCheck'/> : <input type='text' v-model='endMin'  @focus='checkTime("endMin")' @blur='clearCheck'/>
@@ -611,9 +612,19 @@
         },
         mounted(){
             this.Event2.$on('tip',function(a){
-                console.log(a)
                 this.clearValue();
             }.bind(this));
+
+            this.Event2.$on('hideCalendar',function(n){
+                this.togglePanel = false;
+            }.bind(this));
+            var That = this;
+           $('#clickInput').bind('myclick',function(){
+                That.togglePanel = !That.togglePanel;
+                 console.log(456)
+            })
+            
+            $('#clickInput').trigger('myclick');
         }
 
     }
