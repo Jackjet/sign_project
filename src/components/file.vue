@@ -48,9 +48,9 @@
 					<div class="row clf">
 					  <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">归档时间</div>
 					  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-						<span class="input calendarBox1" @click="clickCalendar"><calendar @changeDate="changeStartDate" :val="'1'" :msg="msg"></calendar><b></b></span>
+						<span class="input calendarBox" ><calendar @changeDate="changeStartDate" :val="'1'" :msg="msg"  ></calendar><b></b></span>
 						<span class="txt">至</span>
-						<span class="input calendarBox2" @click="clickCalendar"><calendar @changeDate="changeEndDate" :msg="messge"></calendar></span>
+						<span class="input calendarBox" ><calendar @changeDate="changeEndDate" :msg="messge"></calendar></span>
 					  </div>
 					  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" name="" placeholder="关键字：文档名称" v-model="getReParms.searchKeyword"  @keyup.enter="searchFileHandle(getReParms.searchKeyword)"></div>
 					  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 btn-box"><a href="javascript:;" class="search-btn" @click="searchFileHandle(getReParms.searchKeyword)">查询</a><a href="javascript:;" @click="deleteHandle()">清空</a></div>
@@ -286,8 +286,7 @@ export default {
         selectFileList:[],
         batchAdd:[],      //批量添加归档文件数据
         selectTitle:"",
-        documentState:false,
-        calendarState:false
+        documentState:false
 
     }
   },
@@ -825,14 +824,6 @@ export default {
         this.addFile.params.pageIndex = currentNum;
         this.addFileHandle();
     },
-    clickCalendar(event){
-        this.defaultHandle(event);
-        this.calendarState = true;
-        console.log(123)
-        /*console.log($(event.target).find('.calendar').html())*/
-
-       // $(event.target).siblings('.input').find('.pannel-wrapper').hide();
-    },
 	changeStartDate(value){
       this.getReParms.signStartDate=value;
       this.timeSelect = true;
@@ -849,20 +840,15 @@ export default {
     init(){
         var That = this;    
         $(document).on('click',function(){
-            console.log(That.calendarState)
             if(That.documentState){
                 That.againFileState = false;
                 console.log(That.documentState)
-            }
-
-            if(That.calendarState){
-                That.Event2.$emit('hideCalendar','1');
-                That.calendarState = false;
             }
         })
 
         $('#againAlert').on('click',function(event){
             That.defaultHandle(event);
+
         })
     }
   },
@@ -890,8 +876,6 @@ export default {
     this.getNowDate();
     this.init();
     this.$store.dispatch('changeTitle','我的文档>归档');
-    //$('')
-    //$('.calendarBox1').children('.input').trigger('click');
     
   }
 }

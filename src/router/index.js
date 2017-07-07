@@ -6,7 +6,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const Hello = resolve => require(['@/components/Hello'], resolve)
+// const Hello = resolve => require(['@/components/Hello'], resolve)
 const Index = resolve => require(['@/components/index'], resolve)                      //首页
 const Welcome = resolve => require(['@/components/welcome'], resolve)                  //欢迎页
 const Product = resolve => require(['@/components/product_info'], resolve)             //产品介绍
@@ -28,11 +28,11 @@ export default new Router({
   
   //mode: 'history',
   routes: [
-    {
-      path: '/hello',
-      name: 'Hello',
-      component: Hello
-    },
+    // {
+    //   path: '/hello',
+    //   name: 'Hello',
+    //   component: Hello
+    // },
     {
       path: '/index',
       name: 'Index',

@@ -12,21 +12,16 @@
 		
 	    <alertModel title="删除归档文件夹3" context="确认删除归档文件夹3？"  :showState="showState2"  v-show="showState2"  		@cancelHandle="showState2 = false" @sureHandle="sureDele2">
 			<ul slot="alert-content">
-				<li v-for="(item,index) in list" :key="index">{{item}}</li>
+				<li v-for="item in list">{{item}}</li>
 			</ul>
 		</alertModel>
-		<input size="16" type="text" id="datetimeStart" readonly class="form_datetime">
-		--
-		<input size="16" type="text" id="datetimeEnd" readonly class="form_datetime">
+	  
 	</div>
 	
 	
 </template>
 
 <script>
-import '@/assets/js/bootstrap.min.js';
-import dataPicker from '@/assets/js/bootstrap-datetimepicker.js';
-// import '@/assets/js/bootstrap-datepicker.zh-CN';
 export default {
 	name: 'hello',
 	data () {
@@ -58,30 +53,49 @@ export default {
 		}
 	},*/
 	methods:{
-		dataPackerTime(){
-			console.log(123)
+		addFileHandle(){
+			var _this = this;
+		/*	this.$http.get('/api/test.json').then(function(res){
+				//console.log(res);
+					if(_this.currentPage == 1){
+							_this.fileList = res.data[0].list;
+					}
+					if(_this.currentPage == 2){
+							_this.fileList = res.data[1].list;
+					}					
+					
+					//console.log(_this.fileList)
+					for(var i = 0 ; i<_this.fileList.length;i++){
+						for(var j=0;j<_this.selectFileList.length;j++){
+							if(_this.selectFileList[j].docName == _this.fileList[i].docName){
+								_this.fileList[i].selectItem = true;
+							}
+						}
+					}
+					//_this.selectFileList = _this.fileList;
+			}).catch(function(err){		
+				alert(err)
+			})	*/
 			
-		
-			 $("#datetimeStart").datetimepicker({
-				format: 'yyyy-mm-dd',
-				minView:'month',
-				language: 'zh-CN',
-				autoclose:true,
-				startDate:new Date()
-			}).on("click",function(){
-				console.log($("#datetimeEnd").val())
-				$("#datetimeStart").datetimepicker("setEndDate",$("#datetimeEnd").val())
-			});
-			$("#datetimeEnd").datetimepicker({
-				format: 'yyyy-mm-dd',
-				minView:'month',
-				language: 'zh-CN',
-				autoclose:true,
-				startDate:new Date()
-			}).on("click",function(){
-			
-				//$("#datetimeEnd").datetimepicker("setStartDate",$("#datetimeStart".val()))
-			});
+		},		
+		selectFileHandle(item2){		
+			//this.fileList[index]['selectItem'] = !this.fileList[index]['selectItem'];
+
+			var state2 = item2.selectItem;	       
+	       if(state2){	            
+	       		//console.log(this.selectFileList)
+	            /*this.removeArr(this.selectFileList,item2);*/
+	            
+	            for(var i = 0 ; i < this.selectFileList.length;i++){
+	            	if(item2.docName == this.selectFileList[i].docName){
+	            		this.selectFileList.splice(i,1);
+	            	}
+	            }
+	            item2.selectItem = false;
+	        }else{
+	            this.selectFileList.unshift(item2);
+	            item2.selectItem = true;
+	        } 
 		},
 		pageHandelAlert(currentNum){
 			this.addFile.params.pageIndex = currentNum;
@@ -104,7 +118,10 @@ export default {
 		}
 	},
 	mounted(){
-		this.dataPackerTime();
+		this.addFileHandle();
+		$("#content-2").mCustomScrollbar({
+					theme:"minimal"
+				});
 	}
 }
 </script>
@@ -113,7 +130,5 @@ export default {
 /*@import '../assets/css/base.scss';
 @import '../assets/css/sign_check.scss';*/
 @import '../assets/css/jquery.mCustomScrollbar.min.css';
-@import '../assets/css/bootstrap-datetimepicker.css';
-@import '../assets/css/bootstrap.css';
   
 </style>

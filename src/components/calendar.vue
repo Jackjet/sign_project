@@ -1,12 +1,11 @@
 <template>
     <div class='calendar'>
-        <div class='input-wrapper' v-show='showInput'>
+        <div class='input-wrapper' v-show='showInput' @click='toggle($event)'>
             <!--<i class='date-icon' :style='setIconUrl'></i>-->
-            <!--@click='togglePanel = !togglePanel'-->
-            <div class='input' id="clickInput" v-text='value' :style='{width: inputWidth}' @click="togglePanel =!togglePanel"></div>
-            <span class='input-clear icon-close' v-show="value" @click='clearValue'></span>
+            <div class='input' v-text='value' :style='{width: inputWidth}' ></div>
+            <span class='input-clear icon-close' v-show="value" @click='clearValue($event)'></span>
             <!-- <span class='input-icon icon-calendar' v-show="!value" @click='togglePanel = !togglePanel'></span> -->
-            <span class='input-icon icon-calendar'  v-show="!value" @click='togglePanel = !togglePanel'></span>
+            <span class='input-icon icon-calendar'  v-show="!value" ></span>
         </div>
         <transition name='toggle'>
             <div class='pannel-wrapper' :style='themePannelBg' v-show='togglePanel'>
@@ -48,6 +47,25 @@
 </template>
 
 <script>
+    let contains = document.compareDocumentPosition ?
+        function( a, b ) {
+            return !!( a.compareDocumentPosition( b ) & 16 );
+        } :
+        document.contains ?
+        function( a, b ) {
+            let adown = a.nodeType === 9 ? a.documentElement : a,
+                bup = b.parentNode;
+            return a === bup || !!( bup && bup.nodeType === 1 && adown.contains && adown.contains(bup) );
+        } :
+        function( a, b ) {
+            while ( (b = b.parentNode) ) {
+                if ( b === a ) {
+                    return true;
+                }
+            }
+            return false;
+    };
+
     export default {
         data() {
             let curDate = new Date();
@@ -233,6 +251,11 @@
             this.changeValue();            
         },
         methods: {
+
+            toggle(e) {
+                this.togglePanel = !this.togglePanel
+            },
+
             showYearPannel() {
                 this.pannelType = 'year';
             },
@@ -429,12 +452,14 @@
 				//console.log(this.value);
 				this.$emit("changeDate",this.value);  //告知父级我的日期变更了
             },
-            clearValue() {
+            clearValue(e) {
+                e && e.stopPropagation();
                 this.value = '';
                 this.startYear = this.startMonth = this.startDate = this.endYear = this.endMonth = this.endDate = '';  
                 if(this.msg.number){
                     this.msg.number = Math.random();
-                }          
+                }
+
             },
             confirmSelect() {			
                 if(this.pannelType === 'year') {
@@ -615,16 +640,12 @@
                 this.clearValue();
             }.bind(this));
 
-            this.Event2.$on('hideCalendar',function(n){
-                this.togglePanel = false;
-            }.bind(this));
-            var That = this;
-           $('#clickInput').bind('myclick',function(){
-                That.togglePanel = !That.togglePanel;
-                 console.log(456)
-            })
-            
-            $('#clickInput').trigger('myclick');
+            $(document).on('click', (e) => {
+                let is = contains(this.$el, e.target);
+                if(!is){
+                    this.togglePanel = false;
+                }
+            });
         }
 
     }
