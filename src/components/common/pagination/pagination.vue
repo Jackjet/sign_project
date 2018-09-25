@@ -2,11 +2,11 @@
 	<div class="pagination-box" v-show="page > 1">
 		<ul class="pagination">
 			<li :class="{'disabled': current == 1}"><a href="javascript:;" @click="setCurrent(1)"> 首页 </a></li>
-			<li :class="{'disabled': current == 1}"><a href="javascript:;" @click="setCurrent(current - 1)"> 上一页 </a></li> 
+			<li :class="{'disabled': current == 1 }" v-show="isShowPreNex == 0"><a href="javascript:;" @click="setCurrent(current - 1)"> 上一页 </a></li> 
 			<li v-for="(p,index) in grouplist" :class="{'active': current == p.val}" :key="index">
 				<a href="javascript:;" @click="setCurrent(p.val)"> {{ p.text }} </a>
 			</li>
-			<li :class="{'disabled': current == page}"><a href="javascript:;" @click="setCurrent(current + 1)"> 下一页</a></li>
+			<li :class="{'disabled': current == page }" v-show="isShowPreNex == 0"><a href="javascript:;" @click="setCurrent(current + 1)"> 下一页</a></li>
 			<li :class="{'disabled': current == page}"><a href="javascript:;" @click="setCurrent(page)"> 尾页 </a></li>
 		</ul>
 		<!--<ul class="pagination pull-right">
@@ -42,6 +42,11 @@ export default {
 				v = v > 0 ? v : 5;
 				return v % 2 === 1 ? v : v + 1;
 			}
+		},
+		//add
+		isShowPreNex:{
+			type:Number,
+			default:0
 		}
 	},
 	data() {
@@ -80,25 +85,25 @@ export default {
 	},
 	methods: {
 		setCurrent: function(idx) {
-				
 			if( this.current != idx && idx > 0 && idx < this.page + 1) {
 				this.current = idx;
 				this.$emit('pagechange',idx);               	
-			}                
+			}else{
+					this.current = idx;
+			}          
 		}
 	},
 	mounted(){
 		this.Event2.$on('tip2',function(a){
-			console.log(a)
       this.setCurrent(a)
     }.bind(this));
 	}
 }
 </script>
 <style scoped lang="scss">
-.pagination-box{height:34px;}
+.pagination-box{height:30px;margin-top:3px;}
 .pagination {
-  display: inline-block;
+  display: block;
   padding-left: 0;
   border-radius: 4px;
 }
@@ -109,13 +114,14 @@ export default {
 .pagination > li > span {
   position: relative;
   float: left;
-  padding: 6px 12px;
-  margin-left: -1px;
+	padding: 3px 8px !important;
+	margin: 0 5px;
   line-height: 1.42857143;
   color: #3F9CDB;
   text-decoration: none;
   background-color: #fff;
-  border: 1px solid #ddd;
+	border: 1px solid #ddd;
+	border-radius: 4px;
 }
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
@@ -129,9 +135,10 @@ export default {
   border-bottom-right-radius: 4px;
 }
 .pagination > li > a:hover,
-.pagination > li > span:hover,
-.pagination > li > a:focus,
-.pagination > li > span:focus {
+.pagination > li > span:hover
+// .pagination > li > a:focus,
+// .pagination > li > span:focus 
+{
   z-index: 2;
   color: #23527c;
   background-color: #eee;
@@ -140,22 +147,24 @@ export default {
 .pagination > .active > a,
 .pagination > .active > span,
 .pagination > .active > a:hover,
-.pagination > .active > span:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus {
+.pagination > .active > span:hover
+// .pagination > .active > a:focus,
+// .pagination > .active > span:focus 
+{
   z-index: 3;
   color: #fff;
   cursor: default;
   background-color: #fff;
   border-color: #ddd;
-  color:#FF503F;
+  color:#FF503F !important;
 }
 .pagination > .disabled > span,
 .pagination > .disabled > span:hover,
-.pagination > .disabled > span:focus,
+// .pagination > .disabled > span:focus,
 .pagination > .disabled > a,
-.pagination > .disabled > a:hover,
-.pagination > .disabled > a:focus {
+.pagination > .disabled > a:hover
+// .pagination > .disabled > a:focus 
+{
   color: #777;
   cursor: not-allowed;
   background-color: #fff;

@@ -1,0 +1,173 @@
+
+.tree{
+	width: 100%;
+	background: #fff;
+}
+/*变量*/
+$URL:'../images/tree/';
+
+.treeview, .treeview ul { 
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.treeview li{
+	position: relative;	
+	span{  //一级
+		line-height: 35px;
+		display: block;
+		padding-left: 12px;
+		position: relative;
+		cursor: pointer;
+		word-break:keep-all;/* 不换行 */
+		white-space:nowrap;/* 不换行 */
+		overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+		text-overflow:ellipsis;	
+		padding-right: 20px;
+		text-align: left;
+		b{
+			width: 30px;
+			height: 30px;
+			display: block;
+			float: left;
+			background:url($URL+'treeRootIcon.png') no-repeat 0px 3px;
+			&.icon-man{
+				background: none;
+			}
+			&.icon-square{
+				background: none;
+			}
+			&.icon-check2-default{
+				background: none;
+				color: #ff503f;
+			}
+		}
+		&:hover{
+			background: #EAF2FF;
+		}
+		&.on{
+			background: #EAF2FF;
+		}
+		&.onactive{
+			strong{
+				display: block;
+			}
+		}
+		.count{
+			font-style:normal;
+			margin-left: 5px;
+		}
+		strong{
+			width: 50px;
+			float: right;
+			position: absolute;
+			right: 0;
+			top: 0;
+			display: none;
+			i{
+				color: rgba(255,80,63,0.6);
+				&.active{
+					color: rgba(217,22,3,1);
+				}
+			}
+		}
+	}
+	ul li{  //二级
+		&::before{
+			background: url($URL+'line.png') repeat-y rgba(0,0,0,0); 
+			content: '.';
+			font-size: 0;
+			position: absolute;
+			height: 100%;
+			width:2px;
+			left: 25px;
+			top: 0;
+			z-index: 40;
+		}
+		span{
+			&::before{
+				background: url($URL+'line2.png') no-repeat; 
+				position: absolute;
+				content: '.';
+				font-size:0;
+				width: 23px;
+				height:2px;
+				top: 18px;
+				left: 30px;
+			}
+			padding-left: 55px;
+			b{
+				width: 30px;
+				height: 30px;
+				display: block;
+				float: left;
+				&.folder{
+					background: url($URL+'openDepartIcon.png') no-repeat; //展开图标
+					background-position: 0px 3px;
+				}
+				&.folderClose{
+					background: url($URL+'treeFoldHas.png') no-repeat;    //合上图标
+					background-position: 0px 3px;
+				}
+				&.folderNo{ 
+					background: url($URL+'closeDepartIcon.png') no-repeat; //没有数据合上图标
+					background-position: 0px 3px;
+				}
+				&.folderNoPen{ 
+					background: url($URL+'treeFoldCur.png') no-repeat; //没有数据展开图标
+					background-position: 0px 3px;
+				}
+			}
+			
+		}	
+		ul li{  //三级
+			&::before{
+				left: 65px;
+			}
+			span{
+				&::before{
+					left: 70px;
+				}
+				padding-left: 95px;
+				&.folder,&.folderClose,&.folderNoPen,&.folderNo { 
+					background-position: 90px 3px;
+				}
+			}		
+			ul li{  //四级
+				&::before{
+					left: 105px;
+				}
+				span{
+					&::before{
+						left: 110px;
+					}
+					padding-left: 135px;
+					&.folder,&.folderClose,&.folderNoPen,&.folderNo{
+						background-position: 130px 3px;
+					}
+				}	
+				ul li{  //五级
+					&::before{
+						left: 145px;
+					}
+					span{
+						&::before{
+							left: 150px;
+						}
+						padding-left: 175px;
+						&.folder,&.folderClose,&.folderNoPen,&.folderNo{
+							background-position: 170px 3px;
+						}
+					}		
+				}	
+			}
+		}	
+	}
+} 
+
+.treeview li.lastCollapsable{ 
+	&::before{
+		height: 20px;
+	}
+} 

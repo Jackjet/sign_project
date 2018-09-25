@@ -964,6 +964,7 @@ $pink:#FF503F;
 $pink_opa:rgba(255,80,63,0.7);
 $gray3:#f6f6f6;
 $border:#ccc;
+$blue:#3F9CDB;
  
 
 
@@ -990,6 +991,90 @@ $border:#ccc;
 .mt50{
   margin-top:50px;
 }
+.opacity{
+  opacity: 0;
+}
+.displayNo{
+  display: none;
+}
+.selectNo{
+  -webkit-user-select:none;                        
+  -moz-user-select:none;                    
+  -ms-user-select:none;                    
+  user-select:none;
+}
+/*日历插件*/
+.calendarBox{
+  .form_datetime{
+    position: relative;
+    b{
+      position: absolute;
+      right: 5px;
+      bottom: 0px;
+      color: #acacac;
+    }
+  }
+}
 
+/*公共滚动条*/
+.sign_page_scroll::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 0px #ffffff;
+    border-radius: 0px;
+    background-color: #ffffff;
+}
+.sign_page_scroll::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: #D4D5D7;
+}
 
+.sign_page_scroll::-webkit-scrollbar-thumb
+{
+    border-radius: 100px;
+    -webkit-box-shadow: inset 0 0 5px #D4D5D7;
+    background-color: #D4D5D7;
+}
 
+/*body::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 0px #ffffff;
+    border-radius: 0px;
+    background-color: #ffffff;
+}
+body::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: #D4D5D7;
+}
+
+body::-webkit-scrollbar-thumb
+{
+    border-radius: 100px;
+    -webkit-box-shadow: inset 0 0 5px #D4D5D7;
+    background-color: #D4D5D7;
+}*/
+
+/*公共滚动条*/
+.sign_page_scrollBody{
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+.sign_page_scrollBody::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 0px #fff;
+    border-radius: 0px;
+    background-color: #fff;
+}
+.sign_page_scrollBody::-webkit-scrollbar
+{
+    width:5px;
+    background-color: #eeeeee;
+}
+
+.sign_page_scrollBody::-webkit-scrollbar-thumb
+{
+    border-radius: 100px;
+    -webkit-box-shadow: inset 0 0 5px #eeeeee;
+    background-color: #eeeeee;
+}

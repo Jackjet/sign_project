@@ -10,6 +10,10 @@
 			  <div :style="{background:color}"></div>
 			  <div :style="{background:color}"></div>
 		</div>
+    <!-- <div class="progress">
+        <div class="bar"></div >
+        <div class="percent">0%</div >
+    </div> -->
       <p class="text">{{text}}</p>
 	 </div>
 </template>
@@ -26,43 +30,36 @@
 	}
 </script>
 <style type="text/css" scoped>
+.progress { position:absolute; width:400px; left: 50%;top: 60%;margin-left: -200px; border: 1px solid #fff; padding: 1px; border-radius: 3px; }
+.bar { background-color: #ff503f; width:0%; height:20px; border-radius: 3px; }
+.percent { position:absolute; display:inline-block; top:3px; left:48%;color: #fff; }
 .loader {
-     /* box-sizing: border-box;
-      display: flex;
-      flex: 0 1 auto;
-      flex-direction: column;
-      flex-grow: 1;
-      flex-shrink: 0;
-      flex-basis: 25%;
-      max-width: 25%;*/
-      height: 250px;
-      width: 250px;
+      height: 100%;
+      width: 100%;
       background: rgba(0,0,0,0.5);
-      border-radius:10px;
-     /* align-items: center;
-      justify-content: center; */
       margin:0 auto;
       position: fixed;
-      top: 50%;
-      left: 50%;
-      margin-left: -45px;
-      margin-top: -125px;
-      z-index: 1000;
+      left:0;
+      top: 0;
+      z-index: 10000;
 
       }
   .loader-inner{
         width: 30px;
         height: 30px;
         position: absolute;
-        left: 120px;
-        top: 120px;
+        left: 50%;
+        top: 50%;
+        margin-left: 75px;
+        margin-top: -100px;
       }
   .text{
     position: absolute;
-    bottom: 40px;
     text-align: center;
     color: #fff;
     width: 100%;
+    top: 50%;
+    padding-left: 90px;
   }
 	@-webkit-keyframes ball-spin-fade-loader {
   50% {

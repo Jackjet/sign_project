@@ -21,9 +21,12 @@ var webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    //chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
-    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')   //解决webpack打包成不规则问题
+    // filename: utils.assetsPath('js/[name].'+new Date().getTime()+'.js'),
+    filename: utils.assetsPath('js/[name].deda71e3884e59da97d9.js'),
+    // chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    //chunkFilename: utils.assetsPath('js/[name].[chunkhash].'+new Date().getTime()+'.js')   //解决webpack打包成不规则问题
+    // chunkFilename: utils.assetsPath('js/[name].'+new Date().getTime()+'.js')   //解决webpack打包成不规则问题
+    chunkFilename: utils.assetsPath('js/[name].deda71e3884e59da97d9.js')   //解决webpack打包成不规则问题
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html

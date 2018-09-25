@@ -4,10 +4,11 @@
     <div class="main_container">
       <menuBar v-show="comNav"></menuBar>
       <menuTop v-show="comNav"></menuTop>
+      <Model v-show="model.state" :context="model.context" :topClass="model.topClass"></Model>
       <router-view></router-view>	  
-      <div class="footer"  v-show="comNav">
+      <!-- <div class="footer"  v-show="comNav">
         <p>Copyright © 2017 广东信鉴信息科技有限公司 All Rights Reserved.</p>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -19,12 +20,19 @@ export default {
   name: 'app',
   data(){
   	return{
+      // model:{
+      //   state:false,
+      //   autoClose:false
+      // }
   	}
   },
   computed:{
     comNav(){
       return this.$store.state.comNav;
-    }
+    },
+    model(){
+      return this.$store.state.model;
+      }
   },
   components:{
       menuBar:menuBar,
